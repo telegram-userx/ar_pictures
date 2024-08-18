@@ -26,6 +26,22 @@
                 position="0 0 0"></a-video>
         </a-entity>
     </a-scene>
+
+    <script>
+        AFRAME.registerComponent('video-handler', {
+            init: function () {
+                const video = document.querySelector("#avatarModel");
+                this.el.addEventListener("targetFound", () => {
+                    video.play();
+                });
+                this.el.addEventListener("targetLost", () => {
+                    video.pause();
+                });
+            }
+        });
+
+        document.querySelector('[mindar-image-target]').setAttribute('video-handler', '');
+    </script>
 </body>
 
 </html>
