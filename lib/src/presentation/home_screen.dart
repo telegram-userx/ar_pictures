@@ -1,34 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HelloWorldPagState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HelloWorldPagState extends State<HomeScreen> {
-  late final WebViewController _webViewController;
-
-  @override
-  void initState() {
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadFlutterAsset('assets/js/index.html');
-
-    super.initState();
-  }
-
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(
-      controller: _webViewController,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('AR.js NFT Example'),
+      ),
+      body: InAppWebView(
+        initialUrlRequest: URLRequest(
+          url: WebUri.uri(Uri.parse('file:///android_asset/flutter_assets/assets/js/index.html')),
+        ),
+        initialSettings: InAppWebViewSettings(
+          javaScriptEnabled: true,
+          useOnDownloadStart: true,
+          mediaPlaybackRequiresUserGesture: false,
+          useShouldOverrideUrlLoading: true,
+          pageZoom: 10,
+        ),
+        onLoadStart: (controller, url) {
+          print("Page started loading: $url");
+        },
+        onLoadStop: (controller, url) async {
+          print("Page finished loading: $url");
+        },
+        onReceivedError: (controller, url, error) {
+          print("Error loading page: ${error.description}");
+        },
+        onPermissionRequest: (controller, request) async {
+          return PermissionResponse(
+            resources: request.resources,
+            action: PermissionResponseAction.GRANT,
+          );
+        },
+      ),
     );
   }
-}
-
-Future<String> getFileData(String path) async {
-  return await rootBundle.loadString(path);
 }
