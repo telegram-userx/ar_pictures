@@ -12,9 +12,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AR.js NFT Example'),
-      ),
       body: InAppWebView(
         initialUrlRequest: URLRequest(
           url: WebUri.uri(Uri.parse('file:///android_asset/flutter_assets/assets/js/index.html')),
