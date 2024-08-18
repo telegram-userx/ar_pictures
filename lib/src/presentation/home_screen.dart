@@ -20,9 +20,14 @@ class _HomeScreenState extends State<HomeScreen> {
           javaScriptEnabled: true,
           useOnDownloadStart: true,
           mediaPlaybackRequiresUserGesture: false,
-          useShouldOverrideUrlLoading: true,
           pageZoom: 10,
         ),
+        onReceivedServerTrustAuthRequest: (controller, challenge) async {
+          print("challenge $challenge");
+          return ServerTrustAuthResponse(
+            action: ServerTrustAuthResponseAction.PROCEED,
+          );
+        },
         onLoadStart: (controller, url) {
           print("Page started loading: $url");
         },
