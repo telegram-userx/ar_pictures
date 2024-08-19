@@ -1,14 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+@RoutePage()
+class ArJsWebViewScreen extends StatefulWidget {
+  const ArJsWebViewScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ArJsWebViewScreen> createState() => _ArJsWebViewScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

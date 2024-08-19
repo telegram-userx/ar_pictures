@@ -1,20 +1,32 @@
 targets:
       $default:
         builders:
-          json_serializable_mobx:
-            # configure your options here, same as json_serializable
-            options:
-              explicit_to_json: true
-          json_serializable:json_serializable:
+          auto_route_generator:auto_router_generator:
             generate_for:
-              # exclude everything to avoid conflicts, this library uses a custom builder
-              include:
-              exclude:
-                - test/**
-                - lib/**
+              - lib/src/common/config/router/app_router.dart
+          auto_route_generator:auto_route_generator:
+            generate_for:
+              - lib/src/presentation/screen/**.dart
+            
+          # json_serializable_mobx:
+          #   # configure your options here, same as json_serializable
+          #   options:
+          #     explicit_to_json: true
+          # json_serializable:json_serializable:
+          #   generate_for:
+          #     # exclude everything to avoid conflicts, this library uses a custom builder
+          #     include:
+          #     exclude:
+          #       - test/**
+          #       - lib/**
+        
+          source_gen|combining_builder:
+            options:
+              build_extensions:
+                '^lib/{{}}.dart': 'lib/generated/{{}}.g.dart'
 
-        slang_build_runner:
-          options:
-            base_locale: ru
-            input_directory: assets/translations/
-            output_directory: lib/generated/
+          slang_build_runner:
+            options:
+              base_locale: ru
+              input_directory: assets/translations/
+              output_directory: lib/generated/
