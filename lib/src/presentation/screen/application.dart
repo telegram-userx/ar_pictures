@@ -5,6 +5,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:turkmen_localization_support/turkmen_localization_support.dart';
 
 import '../../common/config/router/app_router.dart';
+import '../../common/widget/space.dart';
 import '../../service_locator/sl.dart';
 
 class Application extends StatelessWidget {
@@ -24,11 +25,20 @@ class Application extends StatelessWidget {
       // Router
       routerConfig: sl<AppRouter>().config(),
 
+      // Router observer
       routerDelegate: AutoRouterDelegate(
         sl<AppRouter>(),
         navigatorObservers: () => [
           TalkerRouteObserver(sl<Talker>()),
         ],
+      ),
+
+      // Builder
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: const TextScaler.linear(1),
+        ),
+        child: child ?? Space.empty,
       ),
     );
   }
