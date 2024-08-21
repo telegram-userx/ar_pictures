@@ -1,14 +1,26 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'src/common/logger/logger.dart';
 import 'src/presentation/screen/application.dart';
 import 'src/service_locator/sl.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Permission.camera.request();
+void main() => runZonedGuarded(
+      () async {
+        WidgetsFlutterBinding.ensureInitialized();
+        FlutterError.onError = Logger.logFlutterError;
+        PlatformDispatcher.instance.onError = Logger.logPlatformDispatcherError;
 
-  await initServiceLocator();
+        // Request Permissions
+        await Permission.camera.request();
 
-  runApp(const Application());
-}
+        // Init service locator
+        await initServiceLocator();
+
+        runApp(const Application());
+      },
+      Logger.logZoneError,
+    );
