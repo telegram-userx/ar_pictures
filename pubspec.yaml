@@ -25,7 +25,7 @@ dependencies:
 
   # Data
   dio: ^5.6.0
-  shared_preferences: ^2.3.1
+  shared_preferences: ^2.3.2
 
   # State management
   mobx: ^2.3.3+2
@@ -45,6 +45,9 @@ dependencies:
   path_provider: ^2.1.4
   flutter_inappwebview: ^6.0.0
   permission_handler: ^11.3.1
+
+  # UI
+  introduction_screen: ^3.1.14
 
 dev_dependencies:
   flutter_test:

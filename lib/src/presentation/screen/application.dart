@@ -23,9 +23,6 @@ class Application extends StatelessWidget {
       ],
 
       // Router
-      routerConfig: sl<AppRouter>().config(),
-
-      // Router observer
       routerDelegate: AutoRouterDelegate(
         sl<AppRouter>(),
         navigatorObservers: () => [
@@ -40,6 +37,9 @@ class Application extends StatelessWidget {
         ),
         child: child ?? Space.empty,
       ),
+
+      // Debug banner
+      debugShowCheckedModeBanner: false,
     );
   }
 }

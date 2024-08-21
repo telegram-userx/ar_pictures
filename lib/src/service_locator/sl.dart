@@ -1,8 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../common/config/router/app_router.dart';
+import '../data/data_source/shared_preferences/shared_preferences_helper.dart';
 
 part 'src/common.dart';
 part 'src/data_layer.dart';
