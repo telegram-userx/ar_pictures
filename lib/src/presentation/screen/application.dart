@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -23,8 +22,7 @@ class Application extends StatelessWidget {
       ],
 
       // Router
-      routerDelegate: AutoRouterDelegate(
-        sl<AppRouter>(),
+      routerConfig: sl<AppRouter>().config(
         navigatorObservers: () => [
           TalkerRouteObserver(sl<Talker>()),
         ],

@@ -9,29 +9,15 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          initial: true,
+          initial: sl<SharedPreferencesHelper>().isFirstAppLaunch,
           page: OnboardingRoute.page,
-          guards: [
-            _isFirstAppLaunchGuard(),
-          ],
         ),
         AutoRoute(
+          initial: !sl<SharedPreferencesHelper>().isFirstAppLaunch,
           page: PhotoAlbumRoute.page,
         ),
         AutoRoute(
           page: ArJsWebViewRoute.page,
         ),
       ];
-
-  AutoRouteGuard _isFirstAppLaunchGuard() {
-    return AutoRouteGuard.simple(
-      (resolver, router) {
-        if (!sl<SharedPreferencesHelper>().isFirstAppLaunch) {
-          sl<SharedPreferencesHelper>().setIsFirstAppLaunch(false);
-
-          resolver.redirect(const PhotoAlbumRoute());
-        }
-      },
-    );
-  }
 }
