@@ -4,6 +4,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:turkmen_localization_support/turkmen_localization_support.dart';
 
 import '../../common/config/router/app_router.dart';
+import '../../common/config/theme/theme.dart';
 import '../../common/widget/space.dart';
 import '../../service_locator/sl.dart';
 
@@ -13,6 +14,11 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      // Theme mode
+      themeMode: ThemeMode.system,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+
       // Localization
       localizationsDelegates: const [
         ...TkDelegates.delegates,
