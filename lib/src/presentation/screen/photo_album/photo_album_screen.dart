@@ -22,9 +22,12 @@ class PhotoAlbumScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'Photo Album Screen',
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            context.navigateTo(const MobileScannerRoute());
+          },
+          child: Text('Scan now'),
         ),
       ),
     );

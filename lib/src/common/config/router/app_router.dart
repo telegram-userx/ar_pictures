@@ -17,6 +17,9 @@ class AppRouter extends RootStackRouter {
           page: PhotoAlbumRoute.page,
         ),
         AutoRoute(
+          page: MobileScannerRoute.page,
+        ),
+        AutoRoute(
           page: ArJsWebViewRoute.page,
         ),
       ];
