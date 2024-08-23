@@ -1,6 +1,9 @@
 part of '../sl.dart';
 
 Future<void> _initCommon() async {
+  // .env
+  await dotenv.load(fileName: ".env");
+
   await _setOrientation();
 
   sl.registerSingleton<SharedPreferencesHelper>(

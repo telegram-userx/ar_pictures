@@ -238,6 +238,22 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "2.0.0"
+  directus:
+    dependency: "direct main"
+    description:
+      name: directus
+      sha256: ab509d05e4f1cf6e6cc257ed3466aea564dacb4f7b80806dd004c24ca00a1b85
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "0.11.0"
+  directus_core:
+    dependency: transitive
+    description:
+      name: directus_core
+      sha256: d99c947451046cacbebd405391fd6b8b8f5e7f00d98da4ac7766b2b6c746f280
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "0.11.0"
   dots_indicator:
     dependency: transitive
     description:
@@ -291,6 +307,14 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "6.0.3"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: "9357883bdd153ab78cbf9ffa07656e336b8bbb2b5a3ca596b0b27e119f7c7d77"
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "5.1.0"
   flutter_inappwebview:
     dependency: "direct main"
     description:
