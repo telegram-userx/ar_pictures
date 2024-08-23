@@ -1,4 +1,4 @@
-import '../entity/entity.dart';
+import '../../entity/entity.dart';
 
 /// A repository interface for managing AR images associated with photo albums.
 abstract interface class ArImageRepository {

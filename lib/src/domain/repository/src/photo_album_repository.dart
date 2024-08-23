@@ -1,4 +1,4 @@
-import '../entity/entity.dart';
+import '../../entity/entity.dart';
 
 /// A repository interface for managing photo albums.
 abstract interface class PhotoAlbumRepository {
