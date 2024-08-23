@@ -7,4 +7,11 @@ Future<void> _initDataLayer() async {
   await directusSdk.init();
 
   sl.registerSingleton<DirectusCore>(directusSdk);
+
+  // Initialize drift database
+  final dbOpener = AppDatabaseOpener.openDatabase(name: dotenv.env['DRIFT_DATABASE_NAME']!);
+
+  sl.registerSingleton<AppDatabase>(
+    AppDatabase(dbOpener),
+  );
 }
