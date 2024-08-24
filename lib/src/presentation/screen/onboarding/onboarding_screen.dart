@@ -4,10 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import '../../../common/config/router/app_router.gr.dart';
+import '../../../data/data_source/shared_preferences/shared_preferences_helper.dart';
+import '../../../service_locator/sl.dart';
 
 @RoutePage()
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      sl<SharedPreferencesHelper>().setIsFirstAppLaunch(false);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
