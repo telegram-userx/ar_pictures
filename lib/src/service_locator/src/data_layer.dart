@@ -14,4 +14,22 @@ Future<void> _initDataLayer() async {
   sl.registerSingleton<AppDatabase>(
     AppDatabase(dbOpener),
   );
+
+  // Init sdk
+  sl.registerSingleton<PhotoAlbumSdk>(
+    PhotoAlbumSdk(directusSdk: directusSdk),
+  );
+
+  // Init database
+  sl.registerSingleton<PhotoAlbumDao>(
+    PhotoAlbumDao(database: sl<AppDatabase>()),
+  );
+
+  // Initialize repository
+  sl.registerSingleton<PhotoAlbumRepository>(
+    PhotoAlbumRepositoryImpl(
+      photoAlbumSdk: sl<PhotoAlbumSdk>(),
+      photoAlbumDao: sl<PhotoAlbumDao>(),
+    ),
+  );
 }

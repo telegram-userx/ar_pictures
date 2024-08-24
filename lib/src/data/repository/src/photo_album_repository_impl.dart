@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 
-import '../../domain/entity/entity.dart';
-import '../../domain/repository/repository.dart';
-import '../data_source/directus_sdk/directus_sdk.dart';
-import '../data_source/drift/drift.dart';
+import '../../../domain/entity/entity.dart';
+import '../../../domain/repository/repository.dart';
+import '../../data_source/directus_sdk/directus_sdk.dart';
+import '../../data_source/drift/drift.dart';
 
 class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   final PhotoAlbumSdk _photoAlbumSdk;
@@ -84,16 +84,3 @@ PhotoAlbumEntity _mapPhotoAlbumTableDataToEntity(PhotoAlbumTableData data) {
     isFullyDownloaded: data.isFullyDownloaded,
   );
 }
-
-// PhotoAlbumDto _mapPhotoAlbumEntityToDto(PhotoAlbumEntity entity) {
-//   return PhotoAlbumDto(
-//     id: entity.id,
-//     titleRu: entity.titleRu,
-//     titleTm: entity.titleTm,
-//     titleEn: entity.titleEn,
-//     descriptionRu: entity.descriptionRu,
-//     descriptionTm: entity.descriptionTm,
-//     descriptionEn: entity.descriptionEn,
-//     posterImageUrl: entity.posterImageUrl,
-//   );
-// }
