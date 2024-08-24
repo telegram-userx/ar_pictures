@@ -20,7 +20,7 @@ class PhotoAlbumDao implements IDao<PhotoAlbumTableData> {
   Future<int> insert({
     required UpdateCompanion<PhotoAlbumTableData> companion,
   }) =>
-      database.into(database.photoAlbumTable).insert(companion);
+      database.into(database.photoAlbumTable).insertOnConflictUpdate(companion);
 
   @override
   Future<bool> update({
