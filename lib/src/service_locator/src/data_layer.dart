@@ -2,7 +2,7 @@ part of '../sl.dart';
 
 Future<void> _initDataLayer() async {
   // Initialize directus
-  final String directusBaseUrl = dotenv.env['DIRECTUS_API_URL']!;
+  final String directusBaseUrl = dotenv.env[kVarDirectusApiUrl]!;
   final directusSdk = Directus(directusBaseUrl);
   await directusSdk.init();
 
