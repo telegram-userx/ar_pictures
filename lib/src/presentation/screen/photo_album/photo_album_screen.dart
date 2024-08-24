@@ -4,11 +4,10 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../common/config/router/app_router.gr.dart';
 import '../../../common/constant/app_constants.dart';
-import '../../../common/extension/src/build_context.dart';
-import '../../../common/widget/cached_image.dart';
 import '../../../common/widget/space.dart';
 import '../../../service_locator/sl.dart';
 import 'store/photo_album_store.dart';
+import 'widget/photo_album_card_widget.dart';
 
 @RoutePage()
 class PhotoAlbumScreen extends StatelessWidget {
@@ -72,33 +71,7 @@ class PhotoAlbumScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final photoAlbum = albums[index];
 
-            return Card(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: context.height * 0.24,
-                    child: CachedImage(
-                      imageUrl: photoAlbum.posterImageUrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(AppConstants.padding),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            photoAlbum.title,
-                            style: context.textTheme.titleMedium,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return PhotoAlbumCardWidget(photoAlbum: photoAlbum);
           },
         );
       }),
