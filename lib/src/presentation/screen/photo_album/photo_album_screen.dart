@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../common/config/router/app_router.gr.dart';
+import '../../../common/constant/app_constants.dart';
 import '../../../common/extension/src/build_context.dart';
 import '../../../common/widget/cached_image.dart';
 import '../../../common/widget/space.dart';
@@ -16,7 +17,29 @@ class PhotoAlbumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Observer(builder: (_) {
+        final albums = sl<PhotoAlbumStore>().photoAlbums;
+
+        if (albums.isEmpty) {
+          return Space.empty;
+        }
+
+        return ElevatedButton(
+          onPressed: () {
+            context.pushRoute(const MobileScannerRoute());
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(AppConstants.padding * 1.6),
+            shape: const CircleBorder(),
+          ),
+          child: const Icon(
+            Icons.qr_code,
+            size: AppConstants.iconSizeMedium,
+          ),
+        );
+      }),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
@@ -29,11 +52,13 @@ class PhotoAlbumScreen extends StatelessWidget {
         ],
       ),
       body: Observer(builder: (_) {
-        if (sl<PhotoAlbumStore>().photoAlbums.isEmpty) {
+        final albums = sl<PhotoAlbumStore>().photoAlbums;
+
+        if (albums.isEmpty) {
           return Center(
             child: ElevatedButton(
               onPressed: () {
-                context.navigateTo(const MobileScannerRoute());
+                context.pushRoute(const MobileScannerRoute());
               },
               child: Text('Scan now'),
             ),
@@ -42,9 +67,9 @@ class PhotoAlbumScreen extends StatelessWidget {
 
         return ListView.separated(
           separatorBuilder: (context, index) => Space.v10,
-          itemCount: sl<PhotoAlbumStore>().photoAlbums.length,
+          itemCount: albums.length,
           itemBuilder: (context, index) {
-            final photoAlbum = sl<PhotoAlbumStore>().photoAlbums[index];
+            final photoAlbum = albums[index];
 
             return Card(
               child: Column(

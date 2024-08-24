@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 
+import '../../../../common/extension/src/future_status.dart';
 import '../../../../common/logger/logger.dart';
 import '../../../../domain/entity/entity.dart';
 import '../../../../domain/repository/repository.dart';
@@ -31,6 +32,8 @@ abstract class _PhotoAlbumStoreBase with Store {
 
   @action
   getPhotoAlbumById(String id) async {
+    if (getPhotoAlbumByIdStatus.isPending) return;
+
     try {
       getPhotoAlbumByIdStatus = FutureStatus.pending;
 

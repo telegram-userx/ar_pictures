@@ -1,15 +1,15 @@
 import 'package:drift/drift.dart';
 
 class PhotoAlbumTable extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  TextColumn get id => text().unique()();
 
   TextColumn get titleRu => text().nullable()();
-  TextColumn get titleTm => text().nullable()();
+  TextColumn get titleTk => text().nullable()();
   TextColumn get titleEn => text().nullable()();
 
-  TextColumn get descriptionRu => text().nullable()();
-  TextColumn get descriptionTm => text().nullable()();
-  TextColumn get descriptionEn => text().nullable()();
+  TextColumn get contentRu => text().nullable()();
+  TextColumn get contentTk => text().nullable()();
+  TextColumn get contentEn => text().nullable()();
 
   TextColumn get posterImageUrl => text().nullable()();
 

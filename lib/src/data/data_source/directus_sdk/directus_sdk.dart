@@ -1,4 +1,5 @@
 // DTO
+export 'dto/directus_dto_base.dart';
 export 'dto/photo_album_dto.dart';
 
 // SDK

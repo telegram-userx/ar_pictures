@@ -14,4 +14,9 @@ class AppConstants {
   static const double fontSizeP1 = 14;
   static const double fontSizeP2 = 12;
   static const double fontSizeP3 = 10;
+
+  static const double iconSizeExtraLarge = 128;
+  static const double iconSizeLarge = 72;
+  static const double iconSizeMedium = 48;
+  static const double iconSizeSmall = 24;
 }

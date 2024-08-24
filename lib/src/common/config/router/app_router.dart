@@ -15,11 +15,9 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           initial: !sl<SharedPreferencesHelper>().isFirstAppLaunch,
           page: PhotoAlbumRoute.page,
-          children: [
-            AutoRoute(
-              page: MobileScannerRoute.page,
-            ),
-          ],
+        ),
+        AutoRoute(
+          page: MobileScannerRoute.page,
         ),
         AutoRoute(
           page: ArJsWebViewRoute.page,
