@@ -68,6 +68,7 @@ class PhotoAlbumScreen extends StatelessWidget {
         return ListView.separated(
           separatorBuilder: (context, index) => Space.v10,
           itemCount: albums.length,
+          padding: const EdgeInsets.all(AppConstants.padding),
           itemBuilder: (context, index) {
             final photoAlbum = albums[index];
 
