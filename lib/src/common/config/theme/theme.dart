@@ -8,12 +8,18 @@ class AppTheme {
           brightness: Brightness.light,
           seedColor: Colors.purple,
         ),
+        cardTheme: const CardTheme(
+          clipBehavior: Clip.antiAlias,
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData.dark().copyWith(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: Colors.purple,
+        ),
+        cardTheme: const CardTheme(
+          clipBehavior: Clip.antiAlias,
         ),
       );
 }
