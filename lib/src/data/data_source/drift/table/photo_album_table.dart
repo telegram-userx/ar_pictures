@@ -1,7 +1,10 @@
 import 'package:drift/drift.dart';
 
 class PhotoAlbumTable extends Table {
-  TextColumn get id => text().unique()();
+  @override
+  Set<Column<Object>>? get primaryKey => {id};
+
+  TextColumn get id => text()();
 
   TextColumn get titleRu => text().nullable()();
   TextColumn get titleTk => text().nullable()();
