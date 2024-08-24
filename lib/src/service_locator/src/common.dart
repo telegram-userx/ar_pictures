@@ -16,6 +16,10 @@ Future<void> _initCommon() async {
     Talker(),
   );
 
+  sl.registerSingleton<PermissionsService>(
+    PermissionsService(),
+  );
+
   sl.registerSingleton<AppRouter>(
     AppRouter(),
   );

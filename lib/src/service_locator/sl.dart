@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../common/config/router/app_router.dart';
+import '../common/services/permissions_service/permissions_service.dart';
 import '../common/utility/database_opener/database_opener.dart';
 import '../data/data_source/directus_sdk/directus_sdk.dart';
 import '../data/data_source/drift/drift.dart';
