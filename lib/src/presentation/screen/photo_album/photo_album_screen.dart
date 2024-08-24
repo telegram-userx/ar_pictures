@@ -82,9 +82,19 @@ class PhotoAlbumScreen extends StatelessWidget {
                       imageUrl: photoAlbum.posterImageUrl,
                     ),
                   ),
-                  Text(
-                    photoAlbum.title,
-                    style: context.textTheme.titleMedium,
+                  Padding(
+                    padding: const EdgeInsets.all(AppConstants.padding),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            photoAlbum.title,
+                            style: context.textTheme.titleMedium,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
