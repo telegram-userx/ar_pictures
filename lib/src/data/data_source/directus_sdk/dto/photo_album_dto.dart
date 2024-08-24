@@ -6,21 +6,21 @@ part '../../../../../generated/src/data/data_source/directus_sdk/dto/photo_album
 class PhotoAlbumDto {
   final String? id;
   final String? titleRu;
-  final String? titleTm;
+  final String? titleTk;
   final String? titleEn;
-  final String? descriptionRu;
-  final String? descriptionTm;
-  final String? descriptionEn;
+  final String? contentRu;
+  final String? contentTk;
+  final String? contentEn;
   final String? posterImageUrl;
 
   PhotoAlbumDto({
     this.id,
     this.titleRu,
-    this.titleTm,
+    this.titleTk,
     this.titleEn,
-    this.descriptionRu,
-    this.descriptionTm,
-    this.descriptionEn,
+    this.contentRu,
+    this.contentTk,
+    this.contentEn,
     this.posterImageUrl,
   });
 

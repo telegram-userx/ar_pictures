@@ -7,22 +7,22 @@ part '../../../../generated/src/domain/entity/src/photo_album_entity.g.dart';
 class PhotoAlbumEntity extends Equatable {
   final String? id;
   final String? titleRu;
-  final String? titleTm;
+  final String? titleTk;
   final String? titleEn;
-  final String? descriptionRu;
-  final String? descriptionTm;
-  final String? descriptionEn;
+  final String? contentRu;
+  final String? contentTk;
+  final String? contentEn;
   final String? posterImageUrl;
   final bool isFullyDownloaded;
 
   PhotoAlbumEntity({
     this.id,
     this.titleRu,
-    this.titleTm,
+    this.titleTk,
     this.titleEn,
-    this.descriptionRu,
-    this.descriptionTm,
-    this.descriptionEn,
+    this.contentRu,
+    this.contentTk,
+    this.contentEn,
     this.posterImageUrl,
     this.isFullyDownloaded = false,
   });
@@ -30,30 +30,30 @@ class PhotoAlbumEntity extends Equatable {
   PhotoAlbumEntity copyWith({
     String? id,
     String? titleRu,
-    String? titleTm,
+    String? titleTk,
     String? titleEn,
-    String? descriptionRu,
-    String? descriptionTm,
-    String? descriptionEn,
+    String? contentRu,
+    String? contentTk,
+    String? contentEn,
     String? posterImageUrl,
     bool? isFullyDownloaded,
   }) {
     return PhotoAlbumEntity(
       id: id ?? this.id,
       titleRu: titleRu ?? this.titleRu,
-      titleTm: titleTm ?? this.titleTm,
+      titleTk: titleTk ?? this.titleTk,
       titleEn: titleEn ?? this.titleEn,
-      descriptionRu: descriptionRu ?? this.descriptionRu,
-      descriptionTm: descriptionTm ?? this.descriptionTm,
-      descriptionEn: descriptionEn ?? this.descriptionEn,
+      contentRu: contentRu ?? this.contentRu,
+      contentTk: contentTk ?? this.contentTk,
+      contentEn: contentEn ?? this.contentEn,
       posterImageUrl: posterImageUrl ?? this.posterImageUrl,
       isFullyDownloaded: isFullyDownloaded ?? this.isFullyDownloaded,
     );
   }
 
   // TODO Return according to current locale
-  String get title => titleTm ?? '';
-  String get description => descriptionTm ?? '';
+  String get title => titleTk ?? '';
+  String get content => contentTk ?? '';
 
   /// Connect the generated [_$PhotoAlbumEntityFromJson] function to the `fromJson`
   /// factory.
@@ -66,11 +66,11 @@ class PhotoAlbumEntity extends Equatable {
   List<Object?> get props => [
         id,
         titleRu,
-        titleTm,
+        titleTk,
         titleEn,
-        descriptionRu,
-        descriptionTm,
-        descriptionEn,
+        contentRu,
+        contentTk,
+        contentEn,
         posterImageUrl,
         isFullyDownloaded,
       ];

@@ -48,24 +48,24 @@ PhotoAlbumEntity _mapPhotoAlbumDtoToEntity(PhotoAlbumDto dto) {
   return PhotoAlbumEntity(
     id: dto.id,
     titleRu: dto.titleRu,
-    titleTm: dto.titleTm,
+    titleTk: dto.titleTk,
     titleEn: dto.titleEn,
-    descriptionRu: dto.descriptionRu,
-    descriptionTm: dto.descriptionTm,
-    descriptionEn: dto.descriptionEn,
+    contentRu: dto.contentRu,
+    contentTk: dto.contentTk,
+    contentEn: dto.contentEn,
     posterImageUrl: dto.posterImageUrl,
   );
 }
 
 PhotoAlbumTableCompanion _mapPhotoAlbumEntityToCompanion(PhotoAlbumEntity album) {
   return PhotoAlbumTableCompanion(
-    id: album.id == null ? const Value.absent() : Value(int.parse(album.id!)),
+    id: album.id == null ? const Value.absent() : Value(album.id!),
     titleRu: Value(album.titleRu),
-    titleTm: Value(album.titleTm),
+    titleTk: Value(album.titleTk),
     titleEn: Value(album.titleEn),
-    descriptionRu: Value(album.descriptionRu),
-    descriptionTm: Value(album.descriptionTm),
-    descriptionEn: Value(album.descriptionEn),
+    contentRu: Value(album.contentRu),
+    contentTk: Value(album.contentTk),
+    contentEn: Value(album.contentEn),
     posterImageUrl: Value(album.posterImageUrl),
     isFullyDownloaded: Value(album.isFullyDownloaded),
   );
@@ -75,11 +75,11 @@ PhotoAlbumEntity _mapPhotoAlbumTableDataToEntity(PhotoAlbumTableData data) {
   return PhotoAlbumEntity(
     id: data.id.toString(),
     titleRu: data.titleRu,
-    titleTm: data.titleTm,
+    titleTk: data.titleTk,
     titleEn: data.titleEn,
-    descriptionRu: data.descriptionRu,
-    descriptionTm: data.descriptionTm,
-    descriptionEn: data.descriptionEn,
+    contentRu: data.contentRu,
+    contentTk: data.contentTk,
+    contentEn: data.contentEn,
     posterImageUrl: data.posterImageUrl,
     isFullyDownloaded: data.isFullyDownloaded,
   );
