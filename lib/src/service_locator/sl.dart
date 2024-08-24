@@ -12,6 +12,7 @@ import '../data/data_source/drift/drift.dart';
 import '../data/data_source/shared_preferences/shared_preferences_helper.dart';
 import '../data/repository/repository.dart';
 import '../domain/repository/repository.dart';
+import '../presentation/screen/photo_album/store/photo_album_store.dart';
 
 part 'src/common.dart';
 part 'src/data_layer.dart';

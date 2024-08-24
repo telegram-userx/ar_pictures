@@ -26,10 +26,10 @@ abstract interface class PhotoAlbumRepository {
   /// This method persists the given [PhotoAlbumEntity] to local storage on the device.
   /// It can be used to store albums that have been downloaded or created locally.
   ///
-  /// [album] is the [PhotoAlbumEntity] object that needs to be saved.
+  /// [photoAlbum] is the [PhotoAlbumEntity] object that needs to be saved.
   ///
   /// Returns a [Future] that completes when the album has been successfully saved.
-  Future<void> saveAlbum({required PhotoAlbumEntity album});
+  Future<void> saveAlbum({required PhotoAlbumEntity photoAlbum});
 
   /// Checks if a photo album is fully downloaded in local storage.
   ///

@@ -23,8 +23,8 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   }
 
   @override
-  Future<void> saveAlbum({required PhotoAlbumEntity album}) async {
-    final companion = _mapPhotoAlbumEntityToCompanion(album);
+  Future<void> saveAlbum({required PhotoAlbumEntity photoAlbum}) async {
+    final companion = _mapPhotoAlbumEntityToCompanion(photoAlbum);
 
     await _photoAlbumDao.insert(companion: companion);
   }

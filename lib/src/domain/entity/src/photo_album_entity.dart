@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part '../../../../generated/src/domain/entity/src/photo_album_entity.g.dart';
 
 @JsonSerializable()
-class PhotoAlbumEntity {
+class PhotoAlbumEntity extends Equatable {
   final String? id;
   final String? titleRu;
   final String? titleTm;
@@ -60,4 +61,17 @@ class PhotoAlbumEntity {
 
   /// Connect the generated [_$PhotoAlbumEntityToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$PhotoAlbumEntityToJson(this);
+
+  @override
+  List<Object?> get props => [
+        id,
+        titleRu,
+        titleTm,
+        titleEn,
+        descriptionRu,
+        descriptionTm,
+        descriptionEn,
+        posterImageUrl,
+        isFullyDownloaded,
+      ];
 }

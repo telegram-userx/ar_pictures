@@ -29,6 +29,8 @@ dependencies:
   shared_preferences: ^2.3.2
   drift: ^2.20.0
   drift_flutter: ^0.1.0
+  equatable: ^2.0.5
+  cached_network_image: ^3.4.1
 
   # State management
   mobx: ^2.3.3+2
@@ -52,6 +54,7 @@ dependencies:
   mobile_scanner: ^5.2.1
 
   # UI
+  shimmer: ^3.0.0
   introduction_screen: ^3.1.14
 
 dev_dependencies:
