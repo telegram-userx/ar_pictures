@@ -33,6 +33,7 @@ class DioHttpClient {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
     bool fromCache = true,
+    ResponseType? responseType,
   }) =>
       _dio.get(
         url,
@@ -40,6 +41,7 @@ class DioHttpClient {
         queryParameters: queryParameters,
         options: Options(
           headers: headers,
+          responseType: responseType,
         ),
       );
 

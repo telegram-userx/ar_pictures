@@ -24,7 +24,7 @@ class PhotoAlbumCardWidget extends StatelessWidget {
         onTap: () {
           if (photoAlbum.isFullyDownloaded) {
           } else {
-            sl<ArImageStore>().downloadArImages(photoAlbum.id);
+            sl<ArImageStore>().fetchAndDownloadArImages(photoAlbum.id!);
           }
         },
         child: Column(
@@ -61,7 +61,7 @@ class PhotoAlbumCardWidget extends StatelessWidget {
   }
 }
 
-class _DownloadButton extends StatelessWidget {
+class _DownloadButton extends StatefulWidget {
   final PhotoAlbumEntity photoAlbum;
 
   const _DownloadButton({
@@ -69,29 +69,46 @@ class _DownloadButton extends StatelessWidget {
   });
 
   @override
+  State<_DownloadButton> createState() => _DownloadButtonState();
+}
+
+class _DownloadButtonState extends State<_DownloadButton> {
+  @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      final getArImagesStatus = sl<ArImageStore>().getArImagesStatus;
+      final isPending = sl<ArImageStore>().getArImagesDataStatus[widget.photoAlbum.id!]?.isPending ?? false;
 
-      return ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 40,
-        ),
+      return SizedBox(
+        height: 60,
+        width: 60,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.zero,
             shape: const CircleBorder(),
           ),
-          onPressed: getArImagesStatus[photoAlbum.id]?.isPending ?? false
+          onPressed: isPending
               ? () {}
               : () {
-                  sl<ArImageStore>().downloadArImages(photoAlbum.id);
+                  sl<ArImageStore>().fetchAndDownloadArImages(widget.photoAlbum.id);
                 },
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 400),
-            child: getArImagesStatus[photoAlbum.id]?.isPending ?? false
-                ? const Center(
-                    child: CircularProgressIndicator(),
+            child: isPending
+                ? Stack(
+                    children: [
+                      const SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: CircularProgressIndicator(),
+                      ),
+                      SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: Center(
+                          child: Text('${sl<ArImageStore>().downloadProgress[widget.photoAlbum.id!]}%'),
+                        ),
+                      ),
+                    ],
                   )
                 : const Icon(Icons.download_outlined),
           ),

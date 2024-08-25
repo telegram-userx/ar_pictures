@@ -47,66 +47,53 @@ abstract class _ArImageStoreBase with Store {
 
   @observable
   @readonly
-  ObservableMap<String, FutureStatus> getArImagesStatus = ObservableMap();
+  ObservableMap<String, FutureStatus> getArImagesDataStatus = ObservableMap();
+
+  @observable
+  @readonly
+  ObservableMap<String, double> downloadProgress = ObservableMap();
 
   @action
-  downloadArImages(String? photoAlbumId) async {
+  Future<void> fetchAndDownloadArImages(String? photoAlbumId) async {
     if (photoAlbumId == null) return;
 
-    if (getArImagesStatus[photoAlbumId]?.isPending ?? false) return;
-
-    try {
-      getArImagesStatus[photoAlbumId] = FutureStatus.pending;
-
-      arImages[photoAlbumId] = await _arImageRepository.getArImages(photoAlbumId: photoAlbumId);
-
-      getArImagesStatus[photoAlbumId] = FutureStatus.fulfilled;
-    } catch (error, stackTrace) {
-      Logger.e(error, stackTrace);
-
-      getArImagesStatus[photoAlbumId] = FutureStatus.rejected;
-    }
-  }
-
-  @observable
-  @readonly
-  Map<String, double> downloadProgress = {};
-
-  @observable
-  @readonly
-  Map<String, FutureStatus> getArImagesDataStatus = {};
-
-  @action
-  Future<void> downloadArImagesData(String photoAlbumId) async {
+    // Check if the status is pending for the specific album
     if (getArImagesDataStatus[photoAlbumId]?.isPending ?? false) return;
 
     try {
+      // Set status to pending for the specific album
       getArImagesDataStatus[photoAlbumId] = FutureStatus.pending;
-
       downloadProgress[photoAlbumId] = 0.0;
 
-      final albumImages = arImages[photoAlbumId];
-      if (albumImages == null) return;
+      // Fetch AR images for the specific album
+      arImages[photoAlbumId] = await _arImageRepository.getArImages(photoAlbumId: photoAlbumId);
 
-      final totalFiles = albumImages.length;
+      final albumImages = arImages[photoAlbumId];
+      if (albumImages == null) return; // Exit if no images are found
+
+      final totalFiles = albumImages.length * 2;
       int downloadedFilesCount = 0;
 
+      // Stream for downloading AR data
       final Stream<ArImageEntity> arImageStream = _arImageRepository.downloadArData(images: albumImages.toList());
 
+      // Process each image as it gets downloaded
       await for (final image in arImageStream) {
         final index = albumImages.indexWhere((img) => img.id == image.id);
         if (index != -1) {
-          albumImages[index] = image;
+          albumImages[index] = image; // Update the image in the list
         }
 
         downloadedFilesCount++;
         downloadProgress[photoAlbumId] = (downloadedFilesCount / totalFiles) * 100;
       }
 
+      // Update status to fulfilled once all downloads are complete
       getArImagesDataStatus[photoAlbumId] = FutureStatus.fulfilled;
     } catch (error, stackTrace) {
       Logger.e(error, stackTrace);
 
+      // Set status to rejected in case of an error
       getArImagesDataStatus[photoAlbumId] = FutureStatus.rejected;
     }
   }

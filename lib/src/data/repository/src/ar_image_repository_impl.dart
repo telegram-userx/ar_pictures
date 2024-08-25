@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 
 import '../../../common/services/file_system_service/file_system_service.dart';
@@ -38,7 +39,10 @@ class ArImageRepositoryImpl implements ArImageRepository {
       throw Exception('Mind file URL is null');
     }
 
-    final getMindFileResponse = await _httpClient.get(url: image.mindFileUrl!);
+    final getMindFileResponse = await _httpClient.get(
+      url: image.mindFileUrl!,
+      responseType: ResponseType.bytes,
+    );
 
     if (getMindFileResponse.statusCode == 200) {
       final mindFileLocation = '${image.id}.mind';
@@ -47,6 +51,7 @@ class ArImageRepositoryImpl implements ArImageRepository {
 
       await _arImageDao.update(
         companion: ArImageTableCompanion(
+          id: Value(image.id!),
           isMindFileDownloaded: const Value(true),
           mindFileLocation: Value(mindFileLocation),
         ),
@@ -69,7 +74,10 @@ class ArImageRepositoryImpl implements ArImageRepository {
       throw Exception('Video URL is null');
     }
 
-    final getVideoResponse = await _httpClient.get(url: image.videoUrl!);
+    final getVideoResponse = await _httpClient.get(
+      url: image.videoUrl!,
+      responseType: ResponseType.bytes,
+    );
 
     if (getVideoResponse.statusCode == 200) {
       final videoFileLocation = '${image.id}.mp4';
@@ -78,6 +86,7 @@ class ArImageRepositoryImpl implements ArImageRepository {
 
       await _arImageDao.update(
         companion: ArImageTableCompanion(
+          id: Value(image.id!),
           isVideoDownloaded: const Value(true),
           videoLocation: Value(videoFileLocation),
         ),
