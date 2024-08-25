@@ -2,44 +2,30 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="mindar-image.prod.js"></script>
     <script src="aframe.min.js"></script>
     <script src="mindar-image-aframe.prod.js"></script>
 </head>
 
 <body>
     <a-scene
-        mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/photo.mind;"
+        mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind; filterMinCF: 10; filterBeta: 10000"
         color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false">
         <a-assets>
-            <a-asset-item id="videoIndex"
-                src="https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/mov_bbb.mp4"></a-asset-item>
+            <img id="card"
+                src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" />
+            <a-asset-item id="avatarModel"
+                src="http://188.124.50.218:8055/admin/content/ar_photo/4533726f-c8d5-4d78-9ff2-bac2970b3495.mp4"></a-asset-item>
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
         <a-entity mindar-image-target="targetIndex: 0">
             <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-            <a-video src="#videoIndex" webkit-playsinline playsinline width="1" height="0.552" position="0 0 0"
+            <a-video src="#avatarModel" webkit-playsinline playsinline width="1" height="0.552" position="0 0 0"
                 autoplay="false"></a-video>
         </a-entity>
     </a-scene>
-
-    <script>
-        AFRAME.registerComponent('video-handler', {
-            init: function () {
-                const video = document.querySelector("#videoIndex");
-                this.el.addEventListener("targetFound", () => {
-                    video.play();
-                });
-                this.el.addEventListener("targetLost", () => {
-                    video.pause();
-                });
-            }
-        });
-
-        document.querySelector('[mindar-image-target]').setAttribute('video-handler', '');
-    </script>
 </body>
 
 </html>
