@@ -56,7 +56,7 @@ class _MobileScannerScreenState extends State<MobileScannerScreen> {
   void _handleBarcode(BarcodeCapture barcodes) {
     final barcode = barcodes.barcodes.firstOrNull;
 
-    if (barcode?.rawValue != null) {
+    if (barcode?.rawValue != null && (barcode?.rawValue?.isUUID ?? false)) {
       sl<PhotoAlbumStore>().getPhotoAlbumById(barcode!.rawValue!);
     }
   }
