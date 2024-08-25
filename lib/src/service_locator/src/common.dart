@@ -20,6 +20,14 @@ Future<void> _initCommon() async {
     PermissionsService(),
   );
 
+  sl.registerSingleton<FileSystemService>(
+    FileSystemService(sl<PermissionsService>()),
+  );
+
+  sl.registerSingleton<DioHttpClient>(
+    DioHttpClient(),
+  );
+
   sl.registerSingleton<AppRouter>(
     AppRouter(),
   );
