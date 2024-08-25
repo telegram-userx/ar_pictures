@@ -134,8 +134,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               'assets/lottie/scan_your_face.json',
               height: context.height * 0.24,
               repeat: true,
-              frameRate: const FrameRate(120),
-              reverse: true,
             ),
           ),
         ),
