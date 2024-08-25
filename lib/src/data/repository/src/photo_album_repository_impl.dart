@@ -37,12 +37,6 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   }
 
   @override
-  Future<bool> isFullyDownloaded({required PhotoAlbumEntity album}) {
-    // TODO: implement isFullyDownloaded
-    throw UnimplementedError();
-  }
-
-  @override
   Stream<List<PhotoAlbumEntity>> watchAlbums() async* {
     yield* _photoAlbumDao.watch().map(
           (event) => event.map(_mapPhotoAlbumTableDataToEntity).toList(),
@@ -74,7 +68,6 @@ PhotoAlbumTableCompanion _mapPhotoAlbumEntityToCompanion(PhotoAlbumEntity album)
     contentTk: Value(album.contentTk),
     contentEn: Value(album.contentEn),
     posterImageUrl: Value(album.posterImageUrl),
-    isFullyDownloaded: Value(album.isFullyDownloaded),
   );
 }
 
@@ -88,6 +81,5 @@ PhotoAlbumEntity _mapPhotoAlbumTableDataToEntity(PhotoAlbumTableData data) {
     contentTk: data.contentTk,
     contentEn: data.contentEn,
     posterImageUrl: data.posterImageUrl,
-    isFullyDownloaded: data.isFullyDownloaded,
   );
 }

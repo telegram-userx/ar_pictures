@@ -1,10 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../../../common/config/router/app_router.gr.dart';
 import '../../../../common/constant/app_constants.dart';
 import '../../../../common/extension/src/build_context.dart';
 import '../../../../common/extension/src/future_status.dart';
 import '../../../../common/widget/cached_image.dart';
+import '../../../../common/widget/space.dart';
 import '../../../../domain/entity/src/photo_album_entity.dart';
 import '../../../../service_locator/sl.dart';
 import '../store/ar_image_store.dart';
@@ -22,7 +25,8 @@ class PhotoAlbumCardWidget extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          if (photoAlbum.isFullyDownloaded) {
+          if (sl<ArImageStore>().isFullyDownloaded[photoAlbum.id!] ?? false) {
+            context.pushRoute(const ArJsWebViewRoute());
           } else {
             sl<ArImageStore>().fetchAndDownloadArImages(photoAlbum.id!);
           }
@@ -77,6 +81,10 @@ class _DownloadButtonState extends State<_DownloadButton> {
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       final isPending = sl<ArImageStore>().getArImagesDataStatus[widget.photoAlbum.id!]?.isPending ?? false;
+
+      if (sl<ArImageStore>().isFullyDownloaded[widget.photoAlbum.id!] ?? false) {
+        return Space.empty;
+      }
 
       return SizedBox(
         height: 60,

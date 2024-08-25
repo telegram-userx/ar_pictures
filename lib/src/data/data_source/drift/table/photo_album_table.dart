@@ -16,7 +16,5 @@ class PhotoAlbumTable extends Table {
 
   TextColumn get posterImageUrl => text().nullable()();
 
-  BoolColumn get isFullyDownloaded => boolean().withDefault(const Constant(false))();
-
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }

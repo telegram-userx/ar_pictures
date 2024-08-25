@@ -30,9 +30,14 @@ abstract class _ArImageStoreBase with Store {
 
       final allArImages = await _arImageRepository.getArImagesFromLocal();
 
-      arImages = groupBy(
-        allArImages,
-        (e) => e.photoAlbumId ?? '',
+      // Convert lists within the map to ObservableLists
+      arImages = ObservableMap.of(
+        groupBy(
+          allArImages,
+          (e) => e.photoAlbumId ?? '',
+        ).map(
+          (key, value) => MapEntry(key, ObservableList.of(value)),
+        ),
       );
     });
   }
@@ -43,7 +48,17 @@ abstract class _ArImageStoreBase with Store {
 
   @observable
   @readonly
-  Map<String, List<ArImageEntity>> arImages = {};
+  ObservableMap<String, ObservableList<ArImageEntity>> arImages = ObservableMap();
+
+  @computed
+  ObservableMap<String, bool> get isFullyDownloaded => ObservableMap.of(
+        arImages.map(
+          (key, value) => MapEntry(
+            key,
+            value.every((element) => element.isMindFileDownloaded && element.isVideoDownloaded),
+          ),
+        ),
+      );
 
   @observable
   @readonly
@@ -66,7 +81,7 @@ abstract class _ArImageStoreBase with Store {
       downloadProgress[photoAlbumId] = 0.0;
 
       // Fetch AR images for the specific album
-      arImages[photoAlbumId] = await _arImageRepository.getArImages(photoAlbumId: photoAlbumId);
+      arImages[photoAlbumId] = ObservableList.of(await _arImageRepository.getArImages(photoAlbumId: photoAlbumId));
 
       final albumImages = arImages[photoAlbumId];
       if (albumImages == null) return; // Exit if no images are found
@@ -81,7 +96,7 @@ abstract class _ArImageStoreBase with Store {
       await for (final image in arImageStream) {
         final index = albumImages.indexWhere((img) => img.id == image.id);
         if (index != -1) {
-          albumImages[index] = image; // Update the image in the list
+          albumImages[index] = image; // ObservableList supports index assignment
         }
 
         downloadedFilesCount++;

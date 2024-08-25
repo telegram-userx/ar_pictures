@@ -13,9 +13,8 @@ class PhotoAlbumEntity extends Equatable {
   final String? contentTk;
   final String? contentEn;
   final String? posterImageUrl;
-  final bool isFullyDownloaded;
 
-  PhotoAlbumEntity({
+  const PhotoAlbumEntity({
     this.id,
     this.titleRu,
     this.titleTk,
@@ -24,7 +23,6 @@ class PhotoAlbumEntity extends Equatable {
     this.contentTk,
     this.contentEn,
     this.posterImageUrl,
-    this.isFullyDownloaded = false,
   });
 
   PhotoAlbumEntity copyWith({
@@ -36,7 +34,6 @@ class PhotoAlbumEntity extends Equatable {
     String? contentTk,
     String? contentEn,
     String? posterImageUrl,
-    bool? isFullyDownloaded,
   }) {
     return PhotoAlbumEntity(
       id: id ?? this.id,
@@ -47,7 +44,6 @@ class PhotoAlbumEntity extends Equatable {
       contentTk: contentTk ?? this.contentTk,
       contentEn: contentEn ?? this.contentEn,
       posterImageUrl: posterImageUrl ?? this.posterImageUrl,
-      isFullyDownloaded: isFullyDownloaded ?? this.isFullyDownloaded,
     );
   }
 
@@ -72,6 +68,5 @@ class PhotoAlbumEntity extends Equatable {
         contentTk,
         contentEn,
         posterImageUrl,
-        isFullyDownloaded,
       ];
 }

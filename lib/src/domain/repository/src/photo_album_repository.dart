@@ -38,16 +38,4 @@ abstract interface class PhotoAlbumRepository {
   ///
   /// Returns a [Future] that completes when the album has been successfully saved.
   Future<void> saveAlbum({required PhotoAlbumEntity photoAlbum});
-
-  /// Checks if a photo album is fully downloaded in local storage.
-  ///
-  /// This method verifies whether all the necessary data for the given [album] is
-  /// available locally on the device. It can be used to determine if an album is
-  /// ready for offline use.
-  ///
-  /// [album] is the [PhotoAlbumEntity] object to be checked.
-  ///
-  /// Returns a [Future] containing a boolean value indicating whether the album is
-  /// fully downloaded (true) or not (false).
-  Future<bool> isFullyDownloaded({required PhotoAlbumEntity album});
 }
