@@ -1,13 +1,17 @@
 import '../../../domain/entity/src/ar_image_entity.dart';
 import '../../../domain/repository/repository.dart';
 import '../../data_source/directus_sdk/directus_sdk.dart';
+import '../../data_source/drift/drift.dart';
 
 class ArImageRepositoryImpl implements ArImageRepository {
   final ArImageSdk _arImageSdk;
+  final ArImageDao _arImageDao;
 
   ArImageRepositoryImpl({
     required ArImageSdk arImageSdk,
-  }) : _arImageSdk = arImageSdk;
+    required ArImageDao arImageDao,
+  })  : _arImageSdk = arImageSdk,
+        _arImageDao = arImageDao;
 
   @override
   Future<List<ArImageEntity>> getArImages({required String photoAlbumId}) async {

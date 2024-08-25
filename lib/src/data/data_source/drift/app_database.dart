@@ -7,6 +7,7 @@ part '../../../../generated/src/data/data_source/drift/app_database.g.dart';
 @DriftDatabase(
   tables: [
     PhotoAlbumTable,
+    ArImageTable,
   ],
 )
 class AppDatabase extends _$AppDatabase {
