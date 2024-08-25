@@ -44,12 +44,12 @@ abstract interface class ArImageRepository {
   ///
   /// This method sequentially downloads the mind file (using [downloadMindFile])
   /// followed by the video (using [downloadVideo]) for each AR image in the [images] list.
-  /// The returned list contains updated [ArImageEntity] objects with download statuses
-  /// and local storage paths updated accordingly.
+  /// The returned stream emits updated [ArImageEntity] objects as they are downloaded,
+  /// allowing for progress tracking.
   ///
   /// [images] is the list of [ArImageEntity] objects whose mind files and videos are
   /// to be downloaded.
   ///
-  /// Returns a [Future] containing a list of updated [ArImageEntity] objects.
-  Future<List<ArImageEntity>> downloadArData({required List<ArImageEntity> images});
+  /// Returns a [Stream] of updated [ArImageEntity] objects.
+  Stream<ArImageEntity> downloadArData({required List<ArImageEntity> images});
 }

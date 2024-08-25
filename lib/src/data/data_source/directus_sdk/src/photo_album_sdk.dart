@@ -10,15 +10,7 @@ class PhotoAlbumSdk {
   }) : _directusSdk = directusSdk;
 
   Future<PhotoAlbumDto> getById(String id) async {
-    final response = await _directusSdk.items(PhotoAlbumDto.className).readOne(
-          id,
-          query: OneQuery(
-            fields: [
-              '*',
-              '$kVarTranslations.*',
-            ],
-          ),
-        );
+    final response = await _directusSdk.items(PhotoAlbumDto.className).readOne(id);
 
     final photoAlbumDto = PhotoAlbumDto.fromJson(response.data);
 

@@ -6,7 +6,7 @@ import '../directus_sdk.dart';
 part '../../../../../generated/src/data/data_source/directus_sdk/dto/photo_album_dto.g.dart';
 
 @JsonSerializable()
-class PhotoAlbumDto {
+class PhotoAlbumDto extends DirectusDtoBase {
   final String? id;
   final String? titleRu;
   final String? titleTk;
@@ -25,7 +25,7 @@ class PhotoAlbumDto {
     this.contentTk,
     this.contentEn,
     this.posterImage,
-  });
+  }) : super(className);
 
   // Static getters
   static const className = 'photo_album';

@@ -7,7 +7,6 @@ part '../../../../generated/src/domain/entity/src/ar_image_entity.g.dart';
 class ArImageEntity extends Equatable {
   final String? id;
   final String? photoAlbumId;
-  final String? name;
   final String? videoUrl;
   final String? mindFileUrl;
   final String? videoLocation;
@@ -15,14 +14,13 @@ class ArImageEntity extends Equatable {
   final bool isVideoDownloaded;
   final bool isMindFileDownloaded;
 
-  ArImageEntity({
-    required this.id,
-    required this.photoAlbumId,
-    required this.name,
-    required this.videoUrl,
-    required this.mindFileUrl,
-    required this.videoLocation,
-    required this.mindFileLocation,
+  const ArImageEntity({
+    this.id,
+    this.photoAlbumId,
+    this.videoUrl,
+    this.mindFileUrl,
+    this.videoLocation,
+    this.mindFileLocation,
     this.isVideoDownloaded = false,
     this.isMindFileDownloaded = false,
   });
@@ -41,7 +39,6 @@ class ArImageEntity extends Equatable {
     return ArImageEntity(
       id: id ?? this.id,
       photoAlbumId: photoAlbumId ?? this.photoAlbumId,
-      name: name ?? this.name,
       videoUrl: videoUrl ?? this.videoUrl,
       mindFileUrl: mindFileUrl ?? this.mindFileUrl,
       videoLocation: videoLocation ?? this.videoLocation,
@@ -62,7 +59,6 @@ class ArImageEntity extends Equatable {
   List<Object?> get props => [
         id,
         photoAlbumId,
-        name,
         videoUrl,
         mindFileUrl,
         videoLocation,
