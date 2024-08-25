@@ -14,6 +14,7 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: InAppWebView(
         initialUrlRequest: URLRequest(
           url: WebUri.uri(Uri.parse('file:///android_asset/flutter_assets/assets/js/index.html')),
