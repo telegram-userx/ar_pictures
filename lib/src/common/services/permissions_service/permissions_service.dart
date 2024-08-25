@@ -1,4 +1,3 @@
-import 'package:mobx/mobx.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsService {
@@ -7,14 +6,20 @@ class PermissionsService {
   }
 
   _init() async {
-    hasCameraPermission = Observable(await requestCameraPermission());
+    hasCameraPermission = await requestCameraPermission();
+    hasStoragePermission = await requestStoragePermission();
   }
 
-  Observable<bool> hasCameraPermission = Observable(false);
+  bool hasCameraPermission = false;
+  bool hasStoragePermission = false;
 
   Future<bool> requestCameraPermission() async {
     final PermissionStatus status = await Permission.camera.request();
+    return status.isGranted;
+  }
 
+  Future<bool> requestStoragePermission() async {
+    final PermissionStatus status = await Permission.storage.request();
     return status.isGranted;
   }
 }

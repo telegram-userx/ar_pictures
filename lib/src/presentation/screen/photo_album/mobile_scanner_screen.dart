@@ -32,7 +32,7 @@ class _MobileScannerScreenState extends State<MobileScannerScreen> {
       reaction(
         (_) => sl<PermissionsService>().hasCameraPermission,
         (hasCameraPermission) {
-          if (!hasCameraPermission.value) {
+          if (!hasCameraPermission) {
             sl<PermissionsService>().requestCameraPermission();
           }
         },
