@@ -26,7 +26,11 @@ class PhotoAlbumCardWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (sl<ArImageStore>().isFullyDownloaded[photoAlbum.id!] ?? false) {
-            context.pushRoute(const ArJsWebViewRoute());
+            context.pushRoute(
+              ArJsWebViewRoute(
+                arImages: sl<ArImageStore>().arImages[photoAlbum.id] ?? [],
+              ),
+            );
           } else {
             sl<ArImageStore>().fetchAndDownloadArImages(photoAlbum.id!);
           }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'src/common/logger/logger.dart';
 import 'src/presentation/screen/application.dart';
@@ -12,6 +13,10 @@ void main() => runZonedGuarded(
         WidgetsFlutterBinding.ensureInitialized();
         FlutterError.onError = Logger.logFlutterError;
         PlatformDispatcher.instance.onError = Logger.logPlatformDispatcherError;
+
+        if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+          await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+        }
 
         // Init service locator
         await initServiceLocator();
