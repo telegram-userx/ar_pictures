@@ -47,22 +47,24 @@ abstract class _ArImageStoreBase with Store {
 
   @observable
   @readonly
-  FutureStatus getArImagesStatus = FutureStatus.fulfilled;
+  ObservableMap<String, FutureStatus> getArImagesStatus = ObservableMap();
 
   @action
-  downloadArImages(String photoAlbumId) async {
-    if (getArImagesStatus.isPending) return;
+  downloadArImages(String? photoAlbumId) async {
+    if (photoAlbumId == null) return;
+
+    if (getArImagesStatus[photoAlbumId]?.isPending ?? false) return;
 
     try {
-      getArImagesStatus = FutureStatus.pending;
+      getArImagesStatus[photoAlbumId] = FutureStatus.pending;
 
       arImages[photoAlbumId] = await _arImageRepository.getArImages(photoAlbumId: photoAlbumId);
 
-      getArImagesStatus = FutureStatus.fulfilled;
+      getArImagesStatus[photoAlbumId] = FutureStatus.fulfilled;
     } catch (error, stackTrace) {
       Logger.e(error, stackTrace);
 
-      getArImagesStatus = FutureStatus.rejected;
+      getArImagesStatus[photoAlbumId] = FutureStatus.rejected;
     }
   }
 

@@ -16,7 +16,7 @@ class ArImageSdk {
           ),
           filters: Filters(
             {
-              'photoAlbumId': Filter.eq(photoAlbumId),
+              ArImageDto.kPhotoAlbum: Filter.eq(photoAlbumId),
             },
           ),
         );

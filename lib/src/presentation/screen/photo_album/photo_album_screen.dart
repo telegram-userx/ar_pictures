@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../../common/config/router/app_router.gr.dart';
 import '../../../common/constant/app_constants.dart';
+import '../../../common/extension/src/future_status.dart';
 import '../../../common/widget/space.dart';
 import '../../../service_locator/sl.dart';
 import 'store/photo_album_store.dart';
@@ -52,6 +53,7 @@ class PhotoAlbumScreen extends StatelessWidget {
       ),
       body: Observer(builder: (_) {
         final albums = sl<PhotoAlbumStore>().photoAlbums;
+        final getPhotoAlbumByIdStatus = sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus;
 
         if (albums.isEmpty) {
           return Center(
@@ -61,6 +63,12 @@ class PhotoAlbumScreen extends StatelessWidget {
               },
               child: Text('Scan now'),
             ),
+          );
+        }
+
+        if (getPhotoAlbumByIdStatus.isPending) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         }
 

@@ -23,6 +23,7 @@ class ArImageDto extends DirectusDtoBase {
 
   // Static getters
   static const className = 'ar_photo';
+  static const kPhotoAlbum = 'photoAlbum';
 
   String? get imageUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$image';
   String? get imageMarkerUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$imageMarker';
