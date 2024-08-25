@@ -39,21 +39,41 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
         onWebViewCreated: (controller) {
           webViewController = controller;
 
-          // webViewController.addJavaScriptHandler(
-          //   handlerName: 'requestAssetData',
-          //   callback: (args) {
-          //     // Create a list of assets from widget.arImages
-          //     List<Map<String, String>> assets = widget.arImages.map((e) {
-          //       return {
-          //         'id': e.id ?? '',
-          //         'mindFileUrl': e.mindFileUrl ?? '',
-          //         'videoUrl': e.videoUrl ?? '',
-          //       };
-          //     }).toList();
+          // Requesting assets for <a-assets>
+          webViewController.addJavaScriptHandler(
+            handlerName: 'requestAAssets',
+            callback: (args) {
+              List<String> assets = widget.arImages.map<String>(
+                (e) {
+                  return '''
+                    <a-asset-item id="${e.id ?? ''}"
+                      src="${e.videoUrl ?? ''}"></a-asset-item>
+                  ''';
+                },
+              ).toList();
 
-          //     return assets;
-          //   },
-          // );
+              return assets;
+            },
+          );
+
+          // Requesting entities for <a-scene>
+          webViewController.addJavaScriptHandler(
+            handlerName: 'requestAEntities',
+            callback: (args) {
+              List<String> entities = widget.arImages.map<String>(
+                (e) {
+                  return '''
+                    <a-entity mindar-image-target="targetIndex: 1">
+                      <a-video src="#${e.id ?? ''}" webkit-playsinline playsinline width="1" height="0.552" position="0 0 0"
+                          autoplay="false"></a-video>
+                    </a-entity>
+                  ''';
+                },
+              ).toList();
+
+              return entities;
+            },
+          );
         },
         onLoadStop: (controller, url) async {
           print("Page finished loading: $url");
@@ -65,6 +85,7 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
         },
         onReceivedServerTrustAuthRequest: (controller, challenge) async {
           print("challenge $challenge");
+
           return ServerTrustAuthResponse(
             action: ServerTrustAuthResponseAction.PROCEED,
           );

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' as io;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ void main() => runZonedGuarded(
 
         // TODO Remove from here
         LocaleSettings.useDeviceLocale();
+        io.HttpOverrides.global = MyHttpOverrides();
 
         if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
           await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
@@ -33,3 +35,11 @@ void main() => runZonedGuarded(
       },
       Logger.logZoneError,
     );
+
+class MyHttpOverrides extends io.HttpOverrides {
+  @override
+  io.HttpClient createHttpClient(io.SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (io.X509Certificate cert, String host, int port) => true;
+  }
+}
