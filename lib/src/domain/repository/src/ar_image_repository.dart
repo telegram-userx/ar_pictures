@@ -14,6 +14,18 @@ abstract interface class ArImageRepository {
   /// Returns a [Future] containing a list of [ArImageEntity] objects.
   Future<List<ArImageEntity>> getArImages({required String photoAlbumId});
 
+  /// Fetches a list of AR images associated with a specific photo album from a local source.
+  ///
+  /// This method retrieves all the AR images linked to the specified [photoAlbumId]
+  /// from a local database or file storage. It is used to get the AR data associated with
+  /// a particular photo album that is stored locally.
+  ///
+  /// [photoAlbumId] is the unique identifier of the photo album whose AR images
+  /// are to be fetched.
+  ///
+  /// Returns a [Future] containing a list of [ArImageEntity] objects.
+  Future<List<ArImageEntity>> getArImagesFromLocal();
+
   /// Downloads the video associated with the specified AR image from a remote source.
   ///
   /// This method downloads the video file linked to the provided [ArImageEntity]

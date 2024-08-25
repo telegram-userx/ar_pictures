@@ -104,6 +104,11 @@ class ArImageRepositoryImpl implements ArImageRepository {
       yield image;
     }
   }
+
+  @override
+  Future<List<ArImageEntity>> getArImagesFromLocal() async {
+    return (await _arImageDao.get()).map(_mapArImageTableDataToEntity).toList();
+  }
 }
 
 ArImageEntity _mapArImageDtoToEntity(ArImageDto dto) {
@@ -112,5 +117,18 @@ ArImageEntity _mapArImageDtoToEntity(ArImageDto dto) {
     photoAlbumId: dto.photoAlbum,
     videoUrl: dto.videoUrl,
     mindFileUrl: dto.imageMarkerUrl,
+  );
+}
+
+ArImageEntity _mapArImageTableDataToEntity(ArImageTableData dao) {
+  return ArImageEntity(
+    id: dao.id,
+    photoAlbumId: dao.photoAlbumId,
+    mindFileUrl: dao.mindFileUrl,
+    mindFileLocation: dao.mindFileLocation,
+    isMindFileDownloaded: dao.isMindFileDownloaded,
+    videoUrl: dao.videoUrl,
+    videoLocation: dao.videoLocation,
+    isVideoDownloaded: dao.isVideoDownloaded,
   );
 }

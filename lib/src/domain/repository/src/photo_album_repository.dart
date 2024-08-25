@@ -9,6 +9,14 @@ abstract interface class PhotoAlbumRepository {
   /// Returns a [Future] containing a list of [PhotoAlbumEntity] objects.
   Future<List<PhotoAlbumEntity>> getAlbums();
 
+  /// Returns a stream of photo albums that can be observed for changes.
+  ///
+  /// This stream emits updates whenever the list of photo albums changes,
+  /// allowing subscribers to react to these changes in real-time.
+  ///
+  /// Returns an [ObservableStream] of [PhotoAlbumEntity] lists.
+  Stream<List<PhotoAlbumEntity>> watchAlbums();
+
   /// Fetches a specific photo album from a remote source by its ID.
   ///
   /// This method retrieves a single photo album from a remote server or API

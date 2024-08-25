@@ -41,6 +41,13 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
     // TODO: implement isFullyDownloaded
     throw UnimplementedError();
   }
+
+  @override
+  Stream<List<PhotoAlbumEntity>> watchAlbums() async* {
+    yield* _photoAlbumDao.watch().map(
+          (event) => event.map(_mapPhotoAlbumTableDataToEntity).toList(),
+        );
+  }
 }
 
 // Mapping

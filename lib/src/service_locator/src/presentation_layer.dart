@@ -6,4 +6,11 @@ Future<void> _initPresentationLayer() async {
       albumRepository: sl<PhotoAlbumRepository>(),
     ),
   );
+
+  sl.registerSingleton<ArImageStore>(
+    ArImageStore(
+      arImageRepository: sl<ArImageRepository>(),
+      photoAlbumRepository: sl<PhotoAlbumRepository>(),
+    ),
+  );
 }
