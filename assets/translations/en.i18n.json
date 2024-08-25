@@ -1,4 +1,12 @@
 {
     "@@locale": "en",
-    "hello": "Salam!"
+    "hello": "Hello!",
+    "welcome": "Welcome!",
+    "gozelAyStudio": "\"Gözel Ay\" studio",
+    "qrCode": "QR-code",
+    "qrCodeInfo": "Point the camera at the QR code, download the data and enjoy",
+    "arPhoto": "AR-photo",
+    "arPhotoInfo": "Point the camera at your photo.\nYour photo comes to life.",
+    "next": "Next",
+    "start": "Start"
 }

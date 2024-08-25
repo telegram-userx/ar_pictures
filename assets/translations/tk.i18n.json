@@ -1,4 +1,12 @@
 {
     "@@locale": "tk",
-    "hello": "Salam!"
+    "hello": "Salam!",
+    "welcome": "Hoş geldiňiz!",
+    "gozelAyStudio": "\"Gözel Ay\" studio",
+    "qrCode": "QR-kod",
+    "qrCodeInfo": "Kameranyňyzy QR koda gönükdiriň, maglumatlary göçüriň we lezzet alyň",
+    "arPhoto": "AR-surat",
+    "arPhotoInfo": "Kamerany suratyňyza gönükdiriň!\nSiziň suratyňyz janlanar",
+    "next": "Indiki",
+    "start": "Başla"
 }
