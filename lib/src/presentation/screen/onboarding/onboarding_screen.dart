@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../generated/strings.g.dart';
 import '../../../common/config/router/app_router.gr.dart';
@@ -41,6 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
         isLastPage = activePage == 2;
       }),
+      bodyPadding: const EdgeInsets.only(top: kToolbarHeight),
       globalFooter: SizedBox(
         height: context.height * 0.12,
         child: Center(
@@ -92,8 +94,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
           body: TranslationProvider.of(context).translations.gozelAyStudio,
-          image: const Center(
-            child: Icon(Icons.waving_hand, size: 50.0),
+          // TODO Add flutter_gen package
+          image: ClipRRect(
+            borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+            child: Image.asset(
+              'assets/images/app_logo.png',
+              height: context.height * 0.24,
+            ),
           ),
         ),
         PageViewModel(
@@ -106,8 +113,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
           body: TranslationProvider.of(context).translations.qrCodeInfo,
-          image: const Center(
-            child: Icon(Icons.waving_hand, size: 50.0),
+          image: Lottie.asset(
+            'assets/lottie/qr_code.json',
+            height: context.height * 0.3,
           ),
         ),
         PageViewModel(
@@ -120,8 +128,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
           body: TranslationProvider.of(context).translations.arPhotoInfo,
-          image: const Center(
-            child: Icon(Icons.waving_hand, size: 50.0),
+          image: ClipRRect(
+            borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+            child: Lottie.asset(
+              'assets/lottie/scan_your_face.json',
+              height: context.height * 0.24,
+              repeat: true,
+              frameRate: const FrameRate(120),
+              reverse: true,
+            ),
           ),
         ),
       ],

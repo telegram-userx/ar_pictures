@@ -1,4 +1,4 @@
-name: ar_pictures
+name: gozel_ay
 description: "A new Flutter project."
 publish_to: 'none'
 version: 0.1.0
@@ -19,6 +19,7 @@ dependencies:
 
   # Icons
   cupertino_icons: ^1.0.8
+  lottie: ^3.1.2
 
   # Navigation
   auto_route: ^9.2.1+1
@@ -88,6 +89,7 @@ flutter:
   # assets
   assets:
     - assets/images/
+    - assets/lottie/
     - assets/js/
     - assets/js/data/
     - .env
