@@ -77,6 +77,7 @@ dev_dependencies:
 
   # Utility
   json_serializable: ^6.8.0
+  flutter_launcher_icons: ^0.13.1
 
   # Localization
   slang_build_runner: ^3.31.0
@@ -90,3 +91,9 @@ flutter:
     - assets/js/
     - assets/js/data/
     - .env
+
+flutter_launcher_icons:
+  image_path_android: "assets/images/app_logo.png"
+  image_path_ios: "assets/images/app_logo.png"
+  android: true 
+  ios: true 
