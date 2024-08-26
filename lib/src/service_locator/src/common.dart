@@ -31,6 +31,13 @@ Future<void> _initCommon() async {
   sl.registerSingleton<AppRouter>(
     AppRouter(),
   );
+
+  // Register local server
+  sl.registerSingleton<LocalServer>(
+    LocalServer(
+      fileSystemService: sl<FileSystemService>(),
+    ),
+  );
 }
 
 _setOrientation() async {

@@ -46,6 +46,8 @@ dependencies:
   flutter_archive: ^6.0.3
   talker_flutter: ^4.4.1
   flutter_dotenv: ^5.1.0
+  shelf_router: ^1.1.4
+  shelf: ^1.4.1
 
   # System
   path: ^1.9.0
@@ -91,7 +93,6 @@ flutter:
     - assets/images/
     - assets/lottie/
     - assets/js/
-    - assets/js/data/
     - .env
 
 flutter_launcher_icons:

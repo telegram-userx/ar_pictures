@@ -28,7 +28,8 @@ class PhotoAlbumCardWidget extends StatelessWidget {
           if (sl<ArImageStore>().isFullyDownloaded[photoAlbum.id!] ?? false) {
             context.pushRoute(
               ArJsWebViewRoute(
-                arImages: sl<ArImageStore>().arImages[photoAlbum.id] ?? [],
+                albumId: photoAlbum.id ?? '',
+                // arImages: sl<ArImageStore>().arImages[] ?? [],
               ),
             );
           } else {
