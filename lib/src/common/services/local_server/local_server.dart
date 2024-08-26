@@ -77,7 +77,7 @@ class LocalServer {
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
               </head>
               <body>
-                <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/band-example/band.mind; 
+                <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/targets.mind; 
                 filterMinCF: 10; filterBeta: 10000" 
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
                 vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
