@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -27,52 +27,76 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: InAppWebView(
-        initialUrlRequest: URLRequest(
-          url: WebUri.uri(Uri.parse('file:///android_asset/flutter_assets/assets/js/index.html')),
-        ),
         initialSettings: InAppWebViewSettings(
           javaScriptEnabled: true,
           useOnDownloadStart: true,
           mediaPlaybackRequiresUserGesture: false,
           pageZoom: 10,
         ),
-        onWebViewCreated: (controller) {
+        onWebViewCreated: (controller) async {
           webViewController = controller;
 
-          // Requesting assets for <a-assets>
-          webViewController.addJavaScriptHandler(
-            handlerName: 'requestAAssets',
-            callback: (args) {
-              List<String> assets = widget.arImages.map<String>(
-                (e) {
-                  return '''
-                    <a-asset-item id="${e.id ?? ''}"
-                      src="${e.videoUrl ?? ''}"></a-asset-item>
-                  ''';
-                },
-              ).toList();
+          // Generate entities and assets
+          List<String> assets = [];
+          List<String> entities = [];
 
-              return assets;
-            },
-          );
+          for (var e in widget.arImages) {
+            final videoFile = await sl<FileSystemService>().getFile(e.videoLocation!);
+            final videoBase64 = base64Encode(videoFile);
 
-          // Requesting entities for <a-scene>
-          webViewController.addJavaScriptHandler(
-            handlerName: 'requestAEntities',
-            callback: (args) {
-              List<String> entities = widget.arImages.map<String>(
-                (e) {
-                  return '''
-                    <a-entity mindar-image-target="targetIndex: 1">
-                      <a-video src="#${e.id ?? ''}" webkit-playsinline playsinline width="1" height="0.552" position="0 0 0"
-                          autoplay="false"></a-video>
-                    </a-entity>
-                  ''';
-                },
-              ).toList();
+            // If you still want to keep assets in <a-assets>
+            assets.add('''
+              <video id="${e.id ?? ''}" src="data:video/mp4;base64,$videoBase64"></video>
+            ''');
 
-              return entities;
-            },
+            // Set the video source directly in the entity
+            entities.add('''
+      <a-entity mindar-image-target="targetIndex: ${widget.arImages.indexOf(e)}">
+        <a-video webkit-playsinline playsinline width="1" height="1" position="0 0 0"
+            autoplay="false" src="#${e.id ?? ''}">
+        </a-video>
+      </a-entity>
+    ''');
+          }
+
+          // Create the full a-scene HTML with <a-assets>
+          String sceneHtml = '''
+    <a-scene
+        mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/multi_target.mind; filterMinCF: 10; filterBeta: 10000"
+        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+
+        <a-assets id="aAssets">
+          ${assets.join('\n')}
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        ${entities.join('\n')}
+
+    </a-scene>
+  ''';
+
+          // Load the HTML into the WebView
+          webViewController.loadData(
+            data: '''
+      <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+        </head>
+        <body>
+            $sceneHtml
+        </body>
+      </html>
+    ''',
+            mimeType: 'text/html',
+            encoding: 'utf-8',
+            baseUrl: WebUri.uri(
+              Uri.parse('file:///android_asset/flutter_assets/assets/js/index.html'),
+            ),
           );
         },
         onLoadStop: (controller, url) async {
@@ -102,26 +126,6 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
         onLoadStart: (controller, url) {
           print("Page started loading: $url");
         },
-        // onLoadResourceWithCustomScheme: (controller, request) async {
-        //   if (request.url.toString().contains('.mind') || request.url.toString().contains('.mp4')) {
-        //     try {
-        //       final file = await sl<FileSystemService>().getFile(
-        //         request.url.toString(),
-        //       );
-
-        //       final response = CustomSchemeResponse(
-        //         data: Uint8List.fromList(file),
-        //         contentType: "image/jpeg",
-        //         contentEncoding: "utf-8",
-        //       );
-        //       return response;
-        //     } catch (error, stackTrace) {
-        //       print("Error: $error, StackTrace: $stackTrace");
-        //     }
-        //   }
-
-        //   return null;
-        // },
       ),
     );
   }
