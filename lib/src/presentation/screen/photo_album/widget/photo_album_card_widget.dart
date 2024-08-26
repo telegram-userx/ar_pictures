@@ -29,7 +29,6 @@ class PhotoAlbumCardWidget extends StatelessWidget {
             context.pushRoute(
               ArJsWebViewRoute(
                 albumId: photoAlbum.id ?? '',
-                // arImages: sl<ArImageStore>().arImages[] ?? [],
               ),
             );
           } else {
