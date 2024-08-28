@@ -73,7 +73,7 @@ class LocalServer {
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-                <script src="http://localhost:8080/assets/js/aframe-extras.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
               </head>
               <body>
@@ -109,9 +109,9 @@ class LocalServer {
     );
 
     // Define a route to serve assets
-    app.get('/assets/js/<fileName>', (Request request, String fileName) async {
+    app.get('/assets/<fileName>', (Request request, String fileName) async {
       try {
-        final assetPath = 'assets/js/$fileName'; // Construct asset path
+        final assetPath = 'assets/$fileName'; // Construct asset path
         final assetData = await rootBundle.load(assetPath); // Load asset from bundle
         final mimeType = _getMimeType(assetPath); // Get MIME type based on file extension
         return Response.ok(
