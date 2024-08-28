@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -37,6 +38,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return IntroductionScreen(
       key: _key,
+      globalHeader: SafeArea(
+        child: Row(
+          children: [
+            const Spacer(),
+            IconButton.filled(
+              onPressed: () {
+                AdaptiveTheme.of(context).toggleThemeMode();
+              },
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                child: AdaptiveTheme.of(context).brightness == Brightness.dark
+                    ? const Icon(
+                        Icons.light_mode,
+                      )
+                    : const Icon(
+                        Icons.dark_mode,
+                      ),
+              ),
+            ),
+          ],
+        ),
+      ),
       onChange: (value) => setState(() {
         activePage = value;
 
@@ -46,7 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       globalFooter: SizedBox(
         height: context.height * 0.12,
         child: Center(
-          child: ElevatedButton(
+          child: FilledButton(
             style: ElevatedButton.styleFrom(
               elevation: 4,
               padding: EdgeInsets.symmetric(
@@ -69,15 +92,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 );
               }
             },
-            child: Text(
-              (isLastPage
-                      ? TranslationProvider.of(context).translations.start
-                      : TranslationProvider.of(context).translations.next)
-                  .toUpperCase(),
-              style: context.textTheme.titleMedium?.copyWith(),
+            child: SizedBox(
+              width: context.width * 0.2,
+              child: Text(
+                (isLastPage ? context.translations.start : context.translations.next).toUpperCase(),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
+      ),
+      dotsDecorator: DotsDecorator(
+        activeColor: context.colorScheme.primary,
       ),
       showDoneButton: false,
       showNextButton: false,
@@ -85,7 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       showSkipButton: false,
       pages: [
         PageViewModel(
-          title: TranslationProvider.of(context).translations.welcome,
+          title: context.translations.welcome,
           decoration: PageDecoration(
             titleTextStyle: context.textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
@@ -93,18 +119,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
-          body: TranslationProvider.of(context).translations.gozelAyStudio,
+          body: context.translations.gozelAyStudio,
           // TODO Add flutter_gen package
           image: ClipRRect(
             borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-            child: Image.asset(
-              'assets/images/app_logo.png',
-              height: context.height * 0.24,
+            child: Container(
+              color: AdaptiveTheme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withOpacity(0.9)
+                  : Colors.white,
+              height: context.height * 0.3,
+              child: Image.asset(
+                'assets/images/app_logo.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
         PageViewModel(
-          title: TranslationProvider.of(context).translations.qrCode,
+          title: context.translations.qrCode,
           decoration: PageDecoration(
             titleTextStyle: context.textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
@@ -112,14 +144,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
-          body: TranslationProvider.of(context).translations.qrCodeInfo,
-          image: Lottie.asset(
-            'assets/lottie/qr_code.json',
+          body: context.translations.qrCodeInfo,
+          image: Container(
+            padding: const EdgeInsets.all(AppConstants.padding),
+            decoration: BoxDecoration(
+              color: AdaptiveTheme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withOpacity(0.9)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+            ),
             height: context.height * 0.3,
+            child: Lottie.asset(
+              'assets/lottie/qr_code.json',
+            ),
           ),
         ),
         PageViewModel(
-          title: TranslationProvider.of(context).translations.arPhoto,
+          title: context.translations.arPhoto,
           decoration: PageDecoration(
             titleTextStyle: context.textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.bold,
@@ -127,12 +168,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
-          body: TranslationProvider.of(context).translations.arPhotoInfo,
-          image: ClipRRect(
-            borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+          body: context.translations.arPhotoInfo,
+          image: Container(
+            padding: const EdgeInsets.all(AppConstants.padding),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+              color: AdaptiveTheme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withOpacity(0.9)
+                  : Colors.white,
+            ),
+            height: context.height * 0.3,
             child: Lottie.asset(
               'assets/lottie/scan_your_face.json',
-              height: context.height * 0.24,
               repeat: true,
             ),
           ),

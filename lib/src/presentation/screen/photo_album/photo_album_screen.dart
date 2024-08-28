@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../../../generated/strings.g.dart';
 import '../../../common/config/router/app_router.gr.dart';
 import '../../../common/constant/app_constants.dart';
+import '../../../common/extension/src/build_context.dart';
 import '../../../common/extension/src/future_status.dart';
 import '../../../common/widget/space.dart';
 import '../../../service_locator/sl.dart';
@@ -24,12 +27,12 @@ class PhotoAlbumScreen extends StatelessWidget {
           return Space.empty;
         }
 
-        return ElevatedButton(
+        return FilledButton(
           onPressed: () {
             context.pushRoute(const MobileScannerRoute());
           },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(AppConstants.padding * 1.6),
+          style: FilledButton.styleFrom(
+            padding: const EdgeInsets.all(AppConstants.padding * 1.4),
             shape: const CircleBorder(),
           ),
           child: const Icon(
@@ -41,34 +44,35 @@ class PhotoAlbumScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(
+          IconButton.filled(
             onPressed: () {
               context.navigateTo(const OnboardingRoute());
             },
-            icon: const Icon(
-              Icons.info_outline,
+            icon: Icon(
+              CupertinoIcons.info_circle,
+              color: context.colorScheme.onPrimary,
             ),
           ),
         ],
       ),
       body: Observer(builder: (_) {
-        final albums = sl<PhotoAlbumStore>().photoAlbums;
         final getPhotoAlbumByIdStatus = sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus;
-
-        if (albums.isEmpty) {
-          return Center(
-            child: ElevatedButton(
-              onPressed: () {
-                context.pushRoute(const MobileScannerRoute());
-              },
-              child: Text('Scan now'),
-            ),
-          );
-        }
 
         if (getPhotoAlbumByIdStatus.isPending) {
           return const Center(
             child: CircularProgressIndicator(),
+          );
+        }
+
+        final albums = sl<PhotoAlbumStore>().photoAlbums;
+        if (albums.isEmpty) {
+          return Center(
+            child: FilledButton(
+              onPressed: () {
+                context.pushRoute(const MobileScannerRoute());
+              },
+              child: Text(context.translations.scan),
+            ),
           );
         }
 

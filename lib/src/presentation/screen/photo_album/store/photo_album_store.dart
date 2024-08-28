@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 
 import '../../../../common/extension/src/future_status.dart';
@@ -18,8 +20,11 @@ abstract class _PhotoAlbumStoreBase with Store {
     _init();
   }
 
+  @action
   _init() async {
+    getPhotoAlbumByIdStatus = FutureStatus.pending;
     photoAlbums = await _albumRepository.getAlbums();
+    getPhotoAlbumByIdStatus = FutureStatus.fulfilled;
   }
 
   @observable

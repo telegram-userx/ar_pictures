@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -13,37 +14,41 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      // Theme mode
-      themeMode: ThemeMode.system,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+    return AdaptiveTheme(
+      initial: AdaptiveThemeMode.system,
+      light: AppTheme.lightTheme,
+      dark: AppTheme.darkTheme,
+      builder: (theme, darkTheme) => MaterialApp.router(
+        // Theme mode
+        theme: theme,
+        darkTheme: darkTheme,
 
-      // Localization
-      localizationsDelegates: const [
-        ...TkDelegates.delegates,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-
-      // Router
-      routerConfig: sl<AppRouter>().config(
-        navigatorObservers: () => [
-          TalkerRouteObserver(sl<Talker>()),
+        // Localization
+        localizationsDelegates: const [
+          ...TkDelegates.delegates,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
         ],
-      ),
 
-      // Builder
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: const TextScaler.linear(1),
+        // Router
+        routerConfig: sl<AppRouter>().config(
+          navigatorObservers: () => [
+            TalkerRouteObserver(sl<Talker>()),
+          ],
         ),
-        child: child ?? Space.empty,
-      ),
 
-      // Debug banner
-      debugShowCheckedModeBanner: false,
+        // Builder
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: const TextScaler.linear(1),
+          ),
+          child: child ?? Space.empty,
+        ),
+
+        // Debug banner
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

@@ -30,3 +30,4 @@ targets:
               base_locale: ru
               input_directory: assets/translations/
               output_directory: lib/generated/
+              translate_var: translations

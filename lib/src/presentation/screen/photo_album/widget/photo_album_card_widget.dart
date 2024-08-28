@@ -35,31 +35,40 @@ class PhotoAlbumCardWidget extends StatelessWidget {
             sl<ArImageStore>().fetchAndDownloadArImages(photoAlbum.id!);
           }
         },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            SizedBox(
-              height: context.height * 0.24,
-              child: CachedImage(
-                imageUrl: photoAlbum.posterImageUrl,
-                borderRadius: AppConstants.borderRadius - 10,
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: context.height * 0.24,
+                  child: CachedImage(
+                    imageUrl: photoAlbum.posterImageUrl,
+                    borderRadius: AppConstants.borderRadius - 10,
+                  ),
+                ),
+                Space.v10,
+                Padding(
+                  padding: const EdgeInsets.all(AppConstants.padding),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          photoAlbum.title,
+                          style: context.textTheme.titleMedium,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(AppConstants.padding),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      photoAlbum.title,
-                      style: context.textTheme.titleMedium,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  _DownloadButton(
-                    photoAlbum: photoAlbum,
-                  ),
-                ],
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: _DownloadButton(
+                photoAlbum: photoAlbum,
               ),
             ),
           ],
@@ -90,10 +99,16 @@ class _DownloadButtonState extends State<_DownloadButton> {
         return Space.empty;
       }
 
-      return SizedBox(
-        height: 60,
-        width: 60,
-        child: ElevatedButton(
+      return Container(
+        height: 50,
+        width: 50,
+        padding: const EdgeInsets.fromLTRB(
+          0,
+          0,
+          AppConstants.padding,
+          AppConstants.padding,
+        ),
+        child: FilledButton(
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.zero,
             shape: const CircleBorder(),
@@ -117,7 +132,11 @@ class _DownloadButtonState extends State<_DownloadButton> {
                         height: 60,
                         width: 60,
                         child: Center(
-                          child: Text('${sl<ArImageStore>().downloadProgress[widget.photoAlbum.id!]}%'),
+                          child: FittedBox(
+                            child: Text(
+                              '${sl<ArImageStore>().downloadProgress[widget.photoAlbum.id!]}%',
+                            ),
+                          ),
                         ),
                       ),
                     ],

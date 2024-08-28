@@ -8,5 +8,6 @@
     "arPhoto": "AR-photo",
     "arPhotoInfo": "Point the camera at your photo.\nYour photo comes to life.",
     "next": "Next",
-    "start": "Start"
+    "start": "Start",
+    "scan": "Scan"
 }
