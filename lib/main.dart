@@ -16,8 +16,6 @@ void main() => runZonedGuarded(
         FlutterError.onError = Logger.logFlutterError;
         PlatformDispatcher.instance.onError = Logger.logPlatformDispatcherError;
 
-        // TODO Remove from here
-        LocaleSettings.useDeviceLocale();
         io.HttpOverrides.global = MyHttpOverrides();
 
         if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {

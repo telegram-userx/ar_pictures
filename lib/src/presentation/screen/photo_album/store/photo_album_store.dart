@@ -33,6 +33,10 @@ abstract class _PhotoAlbumStoreBase with Store {
 
   @observable
   @readonly
+  PhotoAlbumEntity? latestScannedPhotoAlbum;
+
+  @observable
+  @readonly
   FutureStatus getPhotoAlbumByIdStatus = FutureStatus.fulfilled;
 
   @action
@@ -44,6 +48,8 @@ abstract class _PhotoAlbumStoreBase with Store {
 
       final photoAlbum = await _albumRepository.getAlbum(id: id);
       await _albumRepository.saveAlbum(photoAlbum: photoAlbum);
+
+      latestScannedPhotoAlbum = photoAlbum;
 
       if (!photoAlbums.contains(photoAlbum)) {
         photoAlbums.add(photoAlbum);

@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+import '../../generated/strings.g.dart';
 import '../common/config/router/app_router.dart';
 import '../common/services/local_server/local_server.dart';
 import '../common/services/services.dart';

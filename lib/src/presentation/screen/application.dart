@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:turkmen_localization_support/turkmen_localization_support.dart';
 
+import '../../../generated/strings.g.dart';
 import '../../common/config/router/app_router.dart';
 import '../../common/config/theme/theme.dart';
 import '../../common/widget/space.dart';
@@ -24,6 +25,8 @@ class Application extends StatelessWidget {
         darkTheme: darkTheme,
 
         // Localization
+        locale: LocaleSettings.currentLocale.flutterLocale,
+        supportedLocales: AppLocaleUtils.supportedLocales,
         localizationsDelegates: const [
           ...TkDelegates.delegates,
           GlobalMaterialLocalizations.delegate,

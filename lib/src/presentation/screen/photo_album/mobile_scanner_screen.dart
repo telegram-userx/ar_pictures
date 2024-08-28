@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../common/config/router/app_router.gr.dart';
 import '../../../common/extension/extensions.dart';
 import '../../../common/services/permissions_service/permissions_service.dart';
 import '../../../service_locator/sl.dart';
@@ -68,7 +69,9 @@ class _MobileScannerScreenState extends State<MobileScannerScreen> {
         (_) => sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus,
         (status) {
           if (status.isFulfilled) {
-            context.maybePop();
+            context.replaceRoute(
+              ArJsWebViewRoute(albumId: sl<PhotoAlbumStore>().latestScannedPhotoAlbum?.id ?? ''),
+            );
           }
         },
       ),

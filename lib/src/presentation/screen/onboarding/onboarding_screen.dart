@@ -8,6 +8,7 @@ import '../../../../generated/strings.g.dart';
 import '../../../common/config/router/app_router.gr.dart';
 import '../../../common/constant/app_constants.dart';
 import '../../../common/extension/extensions.dart';
+import '../../../common/widget/space.dart';
 import '../../../data/data_source/shared_preferences/shared_preferences_helper.dart';
 import '../../../service_locator/sl.dart';
 
@@ -41,7 +42,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       globalHeader: SafeArea(
         child: Row(
           children: [
-            const Spacer(),
             IconButton.filled(
               onPressed: () {
                 AdaptiveTheme.of(context).toggleThemeMode();
@@ -57,6 +57,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
               ),
             ),
+            const Spacer(),
+            DropdownMenu<AppLocale>(
+              inputDecorationTheme: InputDecorationTheme(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+                ),
+              ),
+              menuStyle: MenuStyle(
+                padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+                  ),
+                ),
+                visualDensity: VisualDensity.compact,
+              ),
+              initialSelection: LocaleSettings.currentLocale,
+              onSelected: (locale) => LocaleSettings.setLocaleRaw(locale?.languageTag ?? ''),
+              trailingIcon: Space.empty,
+              selectedTrailingIcon: Space.empty,
+              dropdownMenuEntries: List<DropdownMenuEntry<AppLocale>>.generate(
+                AppLocale.values.length,
+                (index) {
+                  final locale = AppLocale.values[index];
+
+                  return DropdownMenuEntry<AppLocale>(
+                    label: locale.languageTag,
+                    style: FilledButton.styleFrom(),
+                    value: locale,
+                  );
+                },
+              ),
+            ),
+            Space.h10,
           ],
         ),
       ),

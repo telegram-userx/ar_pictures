@@ -32,4 +32,12 @@ Future<void> _initDataLayer() async {
   sl.registerSingleton<ArImageDao>(
     ArImageDao(database: sl<AppDatabase>()),
   );
+
+  // TODO Remove from here
+  LocaleSettings.setLocaleRaw(sl<SharedPreferencesHelper>().locale ?? '');
+  LocaleSettings.getLocaleStream().listen(
+    (event) async {
+      await sl<SharedPreferencesHelper>().setLocale(event.languageTag);
+    },
+  );
 }
