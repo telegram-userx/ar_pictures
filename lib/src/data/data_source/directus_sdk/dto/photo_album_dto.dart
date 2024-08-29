@@ -15,6 +15,10 @@ class PhotoAlbumDto extends DirectusDtoBase {
   final String? contentTk;
   final String? contentEn;
   final String? posterImage;
+  @JsonKey(
+    name: 'imageMarkers',
+  )
+  final String? mindFile;
 
   PhotoAlbumDto({
     this.id,
@@ -25,12 +29,14 @@ class PhotoAlbumDto extends DirectusDtoBase {
     this.contentTk,
     this.contentEn,
     this.posterImage,
+    this.mindFile,
   }) : super(className);
 
   // Static getters
   static const className = 'photo_album';
 
-  String? get posterImageUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$posterImage';
+  String get posterImageUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$posterImage';
+  String get mindFileUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$mindFile';
 
   /// Connect the generated [_$PhotoAlbumDtoFromJson] function to the `fromJson`
   /// factory.

@@ -11,13 +11,12 @@ class ArImageTable extends Table {
   TextColumn get photoAlbumId => text().nullable().references(PhotoAlbumTable, #id)();
 
   TextColumn get videoUrl => text().nullable()();
-  TextColumn get mindFileUrl => text().nullable()();
 
   TextColumn get videoLocation => text().nullable()();
-  TextColumn get mindFileLocation => text().nullable()();
+
+  RealColumn get filesizeInMegaBytes => real().nullable()();
 
   BoolColumn get isVideoDownloaded => boolean().withDefault(const Constant(false))();
-  BoolColumn get isMindFileDownloaded => boolean().withDefault(const Constant(false))();
 
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }

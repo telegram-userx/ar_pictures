@@ -8,21 +8,17 @@ class ArImageEntity extends Equatable {
   final String? id;
   final String? photoAlbumId;
   final String? videoUrl;
-  final String? mindFileUrl;
   final String? videoLocation;
-  final String? mindFileLocation;
   final bool isVideoDownloaded;
-  final bool isMindFileDownloaded;
+  final double? videoSize;
 
   const ArImageEntity({
     this.id,
     this.photoAlbumId,
     this.videoUrl,
-    this.mindFileUrl,
     this.videoLocation,
-    this.mindFileLocation,
     this.isVideoDownloaded = false,
-    this.isMindFileDownloaded = false,
+    this.videoSize,
   });
 
   ArImageEntity copyWith({
@@ -30,21 +26,17 @@ class ArImageEntity extends Equatable {
     String? photoAlbumId,
     String? name,
     String? videoUrl,
-    String? mindFileUrl,
     String? videoLocation,
-    String? mindFileLocation,
     bool? isVideoDownloaded,
-    bool? isMindFileDownloaded,
+    double? videoSize,
   }) {
     return ArImageEntity(
       id: id ?? this.id,
       photoAlbumId: photoAlbumId ?? this.photoAlbumId,
       videoUrl: videoUrl ?? this.videoUrl,
-      mindFileUrl: mindFileUrl ?? this.mindFileUrl,
       videoLocation: videoLocation ?? this.videoLocation,
-      mindFileLocation: mindFileLocation ?? this.mindFileLocation,
       isVideoDownloaded: isVideoDownloaded ?? this.isVideoDownloaded,
-      isMindFileDownloaded: isMindFileDownloaded ?? this.isMindFileDownloaded,
+      videoSize: videoSize ?? this.videoSize,
     );
   }
 
@@ -60,10 +52,8 @@ class ArImageEntity extends Equatable {
         id,
         photoAlbumId,
         videoUrl,
-        mindFileUrl,
         videoLocation,
-        mindFileLocation,
         isVideoDownloaded,
-        isMindFileDownloaded,
+        videoSize,
       ];
 }

@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../common/config/router/app_router.dart';
 import '../../../common/config/router/app_router.gr.dart';
 import '../../../common/extension/extensions.dart';
 import '../../../common/services/permissions_service/permissions_service.dart';
@@ -54,42 +55,43 @@ class _MobileScannerScreenState extends State<MobileScannerScreen> {
     super.dispose();
   }
 
-  void _handleBarcode(BarcodeCapture barcodes) {
+  void _handleBarcode(BarcodeCapture barcodes) async {
     final barcode = barcodes.barcodes.firstOrNull;
 
     if (barcode?.rawValue != null && (barcode?.rawValue?.isUUID ?? false)) {
-      sl<PhotoAlbumStore>().getPhotoAlbumById(barcode!.rawValue!);
+      final album = await sl<PhotoAlbumStore>().getPhotoAlbumById(barcode!.rawValue!);
+
+      if (sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus.isFulfilled) {
+        if (album?.isFullyDownloaded ?? false) {
+          sl<AppRouter>().replace(
+            ArJsWebViewRoute(albumId: album?.id ?? ''),
+          );
+        } else {
+          // TODO Show submit dialog route
+        }
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ReactionBuilder(
-      builder: (_) => reaction(
-        (_) => sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus,
-        (status) {
-          if (status.isFulfilled) {
-            context.replaceRoute(
-              ArJsWebViewRoute(albumId: sl<PhotoAlbumStore>().latestScannedPhotoAlbum?.id ?? ''),
-            );
-          }
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Gözel aý'),
+        automaticallyImplyLeading: false,
       ),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Observer(builder: (_) {
-          if (sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus.isPending) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return MobileScanner(
-            controller: _scannerController,
-            onDetect: _handleBarcode,
+      body: Observer(builder: (_) {
+        if (sl<PhotoAlbumStore>().getPhotoAlbumByIdStatus.isPending) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
-        }),
-      ),
+        }
+
+        return MobileScanner(
+          controller: _scannerController,
+          onDetect: _handleBarcode,
+        );
+      }),
     );
   }
 }

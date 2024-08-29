@@ -50,16 +50,6 @@ abstract class _ArImageStoreBase with Store {
   @readonly
   ObservableMap<String, ObservableList<ArImageEntity>> arImages = ObservableMap();
 
-  @computed
-  ObservableMap<String, bool> get isFullyDownloaded => ObservableMap.of(
-        arImages.map(
-          (key, value) => MapEntry(
-            key,
-            value.every((element) => element.isMindFileDownloaded && element.isVideoDownloaded),
-          ),
-        ),
-      );
-
   @observable
   @readonly
   ObservableMap<String, FutureStatus> getArImagesDataStatus = ObservableMap();
@@ -90,7 +80,7 @@ abstract class _ArImageStoreBase with Store {
       int downloadedFilesCount = 0;
 
       // Stream for downloading AR data
-      final Stream<ArImageEntity> arImageStream = _arImageRepository.downloadArData(images: albumImages.toList());
+      final Stream<ArImageEntity> arImageStream = _arImageRepository.downloadVideos(images: albumImages.toList());
 
       // Process each image as it gets downloaded
       await for (final image in arImageStream) {

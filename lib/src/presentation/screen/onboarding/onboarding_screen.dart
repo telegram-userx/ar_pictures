@@ -116,7 +116,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
               if (isLastPage) {
                 context.navigateTo(
-                  const PhotoAlbumRoute(),
+                  const MobileScannerRoute(),
                 );
               } else {
                 pageController.animateToPage(

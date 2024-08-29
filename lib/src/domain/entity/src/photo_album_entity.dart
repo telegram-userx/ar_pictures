@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:mobx/mobx.dart';
 
-part '../../../../generated/src/domain/entity/src/photo_album_entity.g.dart';
+import '../entity.dart';
 
-@JsonSerializable()
 class PhotoAlbumEntity extends Equatable {
   final String? id;
   final String? titleRu;
@@ -13,6 +12,10 @@ class PhotoAlbumEntity extends Equatable {
   final String? contentTk;
   final String? contentEn;
   final String? posterImageUrl;
+  final String mindFileUrl;
+  final bool isFullyDownloaded;
+  final double? markersSizeInMegaBytes;
+  final ObservableList<ArImageEntity>? arImages;
 
   const PhotoAlbumEntity({
     this.id,
@@ -23,6 +26,10 @@ class PhotoAlbumEntity extends Equatable {
     this.contentTk,
     this.contentEn,
     this.posterImageUrl,
+    this.mindFileUrl = '',
+    this.isFullyDownloaded = false,
+    this.markersSizeInMegaBytes,
+    this.arImages,
   });
 
   PhotoAlbumEntity copyWith({
@@ -34,6 +41,10 @@ class PhotoAlbumEntity extends Equatable {
     String? contentTk,
     String? contentEn,
     String? posterImageUrl,
+    String? mindFileUrl,
+    bool? isFullyDownloaded,
+    double? markersSizeInMegaBytes,
+    ObservableList<ArImageEntity>? arImages,
   }) {
     return PhotoAlbumEntity(
       id: id ?? this.id,
@@ -44,19 +55,16 @@ class PhotoAlbumEntity extends Equatable {
       contentTk: contentTk ?? this.contentTk,
       contentEn: contentEn ?? this.contentEn,
       posterImageUrl: posterImageUrl ?? this.posterImageUrl,
+      mindFileUrl: mindFileUrl ?? this.mindFileUrl,
+      isFullyDownloaded: isFullyDownloaded ?? this.isFullyDownloaded,
+      markersSizeInMegaBytes: markersSizeInMegaBytes ?? this.markersSizeInMegaBytes,
+      arImages: arImages ?? this.arImages,
     );
   }
 
   // TODO Return according to current locale
   String get title => titleTk ?? '';
   String get content => contentTk ?? '';
-
-  /// Connect the generated [_$PhotoAlbumEntityFromJson] function to the `fromJson`
-  /// factory.
-  factory PhotoAlbumEntity.fromJson(Map<String, dynamic> json) => _$PhotoAlbumEntityFromJson(json);
-
-  /// Connect the generated [_$PhotoAlbumEntityToJson] function to the `toJson` method.
-  Map<String, dynamic> toJson() => _$PhotoAlbumEntityToJson(this);
 
   @override
   List<Object?> get props => [
@@ -68,5 +76,9 @@ class PhotoAlbumEntity extends Equatable {
         contentTk,
         contentEn,
         posterImageUrl,
+        mindFileUrl,
+        isFullyDownloaded,
+        markersSizeInMegaBytes,
+        arImages,
       ];
 }

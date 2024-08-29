@@ -9,5 +9,9 @@
     "arPhotoInfo": "Point the camera at your photo.\nYour photo comes to life.",
     "next": "Next",
     "start": "Start",
-    "scan": "Scan"
+    "scan": "Scan",
+    "areYouSureDownload(megabytes)": "Do you want to download the album data now? ($megabytes MB)",
+    "download": "Download",
+    "cancel": "Cancel",
+    "somethingWentWrong": "Something went wrong"
 }

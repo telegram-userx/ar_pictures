@@ -16,4 +16,16 @@ class PhotoAlbumSdk {
 
     return photoAlbumDto;
   }
+
+  Future<double> getFileSize(String fileId) async {
+    final file = await _directusSdk.files.readOne(fileId);
+
+    final fileSizeInBytes = int.tryParse(file.data.filesize.toString()) ?? 0;
+
+    return bytesToMegabytes(fileSizeInBytes.toDouble());
+  }
+
+  double bytesToMegabytes(double bytes) {
+    return bytes / (1024 * 1024);
+  }
 }

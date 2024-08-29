@@ -33,15 +33,11 @@ abstract class _PhotoAlbumStoreBase with Store {
 
   @observable
   @readonly
-  PhotoAlbumEntity? latestScannedPhotoAlbum;
-
-  @observable
-  @readonly
   FutureStatus getPhotoAlbumByIdStatus = FutureStatus.fulfilled;
 
   @action
-  getPhotoAlbumById(String id) async {
-    if (getPhotoAlbumByIdStatus.isPending) return;
+  Future<PhotoAlbumEntity?> getPhotoAlbumById(String id) async {
+    if (getPhotoAlbumByIdStatus.isPending) return null;
 
     try {
       getPhotoAlbumByIdStatus = FutureStatus.pending;
@@ -49,16 +45,37 @@ abstract class _PhotoAlbumStoreBase with Store {
       final photoAlbum = await _albumRepository.getAlbum(id: id);
       await _albumRepository.saveAlbum(photoAlbum: photoAlbum);
 
-      latestScannedPhotoAlbum = photoAlbum;
+      final fetchedAlbum = photoAlbum;
 
       if (!photoAlbums.contains(photoAlbum)) {
         photoAlbums.add(photoAlbum);
       }
 
       getPhotoAlbumByIdStatus = FutureStatus.fulfilled;
+
+      return fetchedAlbum;
     } catch (error, stackTrace) {
       Logger.e(error, stackTrace);
       getPhotoAlbumByIdStatus = FutureStatus.rejected;
+
+      return null;
+    }
+  }
+
+  @observable
+  @readonly
+  ObservableFuture<double> requiredDownloadSize = ObservableFuture.value(0);
+
+  @action
+  getRequiredDownloadSize(String albumId) async {
+    if (requiredDownloadSize.status.isPending) return;
+
+    try {
+      requiredDownloadSize = ObservableFuture(_albumRepository.getRequiredDownloadFilesSize(albumId));
+
+      await requiredDownloadSize;
+    } catch (error, stackTrace) {
+      Logger.e(error, stackTrace);
     }
   }
 }

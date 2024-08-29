@@ -12,6 +12,7 @@ class ArImageDto extends DirectusDtoBase {
   final String? imageMarker;
   final String? arVideo;
   final String? photoAlbum;
+  final double? videoSize;
 
   ArImageDto({
     this.id,
@@ -19,6 +20,7 @@ class ArImageDto extends DirectusDtoBase {
     this.imageMarker,
     this.arVideo,
     this.photoAlbum,
+    this.videoSize,
   }) : super(className);
 
   // Static getters

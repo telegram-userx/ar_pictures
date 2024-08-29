@@ -38,4 +38,8 @@ abstract interface class PhotoAlbumRepository {
   ///
   /// Returns a [Future] that completes when the album has been successfully saved.
   Future<void> saveAlbum({required PhotoAlbumEntity photoAlbum});
+
+  Future<double> getRequiredDownloadFilesSize(String albumId);
+
+  Future<bool> isAlbumFullyDownloaded(String albumId);
 }

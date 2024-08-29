@@ -32,41 +32,6 @@ class ArImageRepositoryImpl implements ArImageRepository {
   }
 
   @override
-  Future<ArImageEntity> downloadMindFile({required ArImageEntity image}) async {
-    if (image.isMindFileDownloaded) return image;
-
-    if (image.mindFileUrl == null) {
-      throw Exception('Mind file URL is null');
-    }
-
-    final getMindFileResponse = await _httpClient.get(
-      url: image.mindFileUrl!,
-      responseType: ResponseType.bytes,
-    );
-
-    if (getMindFileResponse.statusCode == 200) {
-      final mindFileLocation = '${image.id}.mind';
-
-      await _fileSystemService.saveFile(mindFileLocation, getMindFileResponse.data);
-
-      await _arImageDao.update(
-        companion: ArImageTableCompanion(
-          id: Value(image.id!),
-          isMindFileDownloaded: const Value(true),
-          mindFileLocation: Value(mindFileLocation),
-        ),
-      );
-
-      return image.copyWith(
-        isMindFileDownloaded: true,
-        mindFileLocation: mindFileLocation,
-      );
-    }
-
-    throw Exception('Failed to download mind file, status code: ${getMindFileResponse.statusCode}');
-  }
-
-  @override
   Future<ArImageEntity> downloadVideo({required ArImageEntity image}) async {
     if (image.isVideoDownloaded) return image;
 
@@ -102,21 +67,15 @@ class ArImageRepositoryImpl implements ArImageRepository {
   }
 
   @override
-  Stream<ArImageEntity> downloadArData({required List<ArImageEntity> images}) async* {
-    for (ArImageEntity image in images) {
-      image = await downloadMindFile(image: image);
-
-      yield image;
-
-      image = await downloadVideo(image: image);
-
-      yield image;
-    }
+  Future<List<ArImageEntity>> getArImagesFromLocal() async {
+    return (await _arImageDao.get()).map(_mapArImageTableDataToEntity).toList();
   }
 
   @override
-  Future<List<ArImageEntity>> getArImagesFromLocal() async {
-    return (await _arImageDao.get()).map(_mapArImageTableDataToEntity).toList();
+  Stream<ArImageEntity> downloadVideos({required List<ArImageEntity> images}) async* {
+    for (final image in images) {
+      yield await downloadVideo(image: image);
+    }
   }
 }
 
@@ -125,7 +84,7 @@ ArImageEntity _mapArImageDtoToEntity(ArImageDto dto) {
     id: dto.id,
     photoAlbumId: dto.photoAlbum,
     videoUrl: dto.videoUrl,
-    mindFileUrl: dto.imageMarkerUrl,
+    videoSize: dto.videoSize,
   );
 }
 
@@ -133,9 +92,6 @@ ArImageEntity _mapArImageTableDataToEntity(ArImageTableData dao) {
   return ArImageEntity(
     id: dao.id,
     photoAlbumId: dao.photoAlbumId,
-    mindFileUrl: dao.mindFileUrl,
-    mindFileLocation: dao.mindFileLocation,
-    isMindFileDownloaded: dao.isMindFileDownloaded,
     videoUrl: dao.videoUrl,
     videoLocation: dao.videoLocation,
     isVideoDownloaded: dao.isVideoDownloaded,
