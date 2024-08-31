@@ -117,7 +117,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             bodyTextStyle: context.textTheme.titleLarge!,
           ),
           body: context.translations.gozelAyStudio,
-          // TODO Add flutter_gen package
           image: ClipRRect(
             borderRadius: BorderRadius.circular(AppConstants.borderRadius),
             child: Container(
