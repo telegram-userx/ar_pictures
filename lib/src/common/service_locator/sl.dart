@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../generated/strings.g.dart';
-import '../../data/data_source/shared_preferences/shared_preferences_helper.dart';
+import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
 import '../config/router/app_router.dart';
 import '../constant/app_constants.dart';
 

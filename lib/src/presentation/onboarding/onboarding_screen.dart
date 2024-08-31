@@ -1,16 +1,16 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:gozel_ay/src/common/extension/extensions.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../generated/strings.g.dart';
 import '../../common/config/router/app_router.gr.dart';
 import '../../common/constant/app_constants.dart';
+import '../../common/extension/extensions.dart';
 import '../../common/service_locator/sl.dart';
 import '../../common/widget/space.dart';
-import '../../data/data_source/shared_preferences/shared_preferences_helper.dart';
+import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
 
 @RoutePage()
 class OnboardingScreen extends StatefulWidget {
