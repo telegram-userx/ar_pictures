@@ -7,8 +7,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'generated/strings.g.dart';
 import 'src/common/logger/logger.dart';
-import 'src/presentation/screen/application.dart';
-import 'src/service_locator/sl.dart';
+import 'src/common/service_locator/sl.dart';
+import 'src/presentation/application.dart';
 
 void main() => runZonedGuarded(
       () async {

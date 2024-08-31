@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-import '../../service_locator/sl.dart';
+import '../service_locator/sl.dart';
 
 class Logger {
   /// Helper static method to log a flutter error [FlutterError.onError]

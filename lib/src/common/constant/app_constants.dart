@@ -1,3 +1,6 @@
+// Constants
+const kVarDirectusApiUrl = 'DIRECTUS_API_URL';
+
 class AppConstants {
   const AppConstants._();
 

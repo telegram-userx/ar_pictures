@@ -6,7 +6,7 @@ targets:
               - lib/src/common/config/router/app_router.dart
           auto_route_generator:auto_route_generator:
             generate_for:
-              - lib/src/presentation/screen/**.dart
+              - lib/src/presentation/**.dart
             
           # json_serializable_mobx:
           #   # configure your options here, same as json_serializable
