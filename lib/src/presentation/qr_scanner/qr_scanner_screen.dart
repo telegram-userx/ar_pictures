@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../common/config/router/app_router.gr.dart';
 import '../../common/extension/extensions.dart';
+import '../../common/service_locator/sl.dart';
+import 'store/qr_scanner_store.dart';
 
 @RoutePage()
 class QrScannerScreen extends StatefulWidget {
@@ -17,12 +21,25 @@ class QrScannerScreen extends StatefulWidget {
 }
 
 class _QrScannerScreenState extends State<QrScannerScreen> with WidgetsBindingObserver {
+  late final List<ReactionDisposer> _disposers;
+
   late final MobileScannerController _scannerController;
   StreamSubscription<Object?>? _subscription;
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+
+    _disposers = [
+      reaction(
+        (_) => sl<QrScannerStore>().albumFuture.status,
+        (status) {
+          if (status.isFulfilled) {
+            context.pushRoute(const ArDataLoaderRoute());
+          }
+        },
+      ),
+    ];
 
     _scannerController = MobileScannerController();
 
@@ -69,16 +86,20 @@ class _QrScannerScreenState extends State<QrScannerScreen> with WidgetsBindingOb
 
     _subscription = null;
 
+    for (final disposer in _disposers) {
+      disposer();
+    }
+
     super.dispose();
 
     await _scannerController.dispose();
   }
 
   void _handleBarcode(BarcodeCapture barcodes) async {
-    final barcode = barcodes.barcodes.firstOrNull;
+    final barcodeValue = barcodes.barcodes.firstOrNull?.rawValue ?? '';
 
-    if (barcode?.rawValue != null && (barcode?.rawValue?.isUUID ?? false)) {
-      // TODO
+    if (barcodeValue.isUUID) {
+      sl<QrScannerStore>().getAlbum(barcodeValue);
     }
   }
 
@@ -98,10 +119,20 @@ class _QrScannerScreenState extends State<QrScannerScreen> with WidgetsBindingOb
           ),
         ],
       ),
-      body: MobileScanner(
-        controller: _scannerController,
-        onDetect: _handleBarcode,
-      ),
+      body: Observer(builder: (_) {
+        final albumFuture = sl<QrScannerStore>().albumFuture;
+
+        if (albumFuture.status.isPending) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return MobileScanner(
+          controller: _scannerController,
+          onDetect: _handleBarcode,
+        );
+      }),
     );
   }
 }

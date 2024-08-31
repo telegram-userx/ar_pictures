@@ -48,6 +48,20 @@ class PhotoAlbumEntity extends Equatable {
     return bytesToMegabytes(markerFileSizeInBytes + arVideosSize);
   }
 
+  bool get isFullyDownloaded {
+    final isVideosDownloaded = arVideos?.fold<bool>(
+          false,
+          (previousValue, arVideo) {
+            if (previousValue) return previousValue;
+
+            return arVideo.isVideoDownloaded;
+          },
+        ) ??
+        false;
+
+    return isMarkerFileDownloaded && isVideosDownloaded;
+  }
+
   double bytesToMegabytes(double bytes) {
     return bytes / (1024 * 1024);
   }
