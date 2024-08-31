@@ -11,6 +11,7 @@ import '../../../generated/strings.g.dart';
 import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
 import '../config/router/app_router.dart';
 import '../constant/app_constants.dart';
+import '../services/permissions_service/permissions_service.dart';
 
 part 'src/common.dart';
 part 'src/data_layer.dart';

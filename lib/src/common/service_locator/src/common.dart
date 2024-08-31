@@ -6,6 +6,10 @@ Future<void> _initCommon() async {
 
   await _setOrientation();
 
+  sl.registerSingleton<PermissionsService>(
+    PermissionsService(),
+  );
+
   sl.registerSingleton<SharedPreferencesHelper>(
     SharedPreferencesHelper(
       preferences: await SharedPreferences.getInstance(),
