@@ -40,12 +40,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return IntroductionScreen(
       key: _key,
       globalHeader: SafeArea(
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _ThemeSwitcher(),
-            const Spacer(),
-            _LanguageSelector(),
-            Space.h10,
+            Space.v20,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppConstants.padding * 2),
+              child: Row(
+                children: [
+                  _ThemeSwitcher(),
+                  const Spacer(),
+                  _LanguageSelector(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -76,7 +84,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               } else {
                 pageController.animateToPage(
                   activePage + 1,
-                  duration: const Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 450),
                   curve: Curves.easeInOut,
                 );
               }
@@ -181,19 +189,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 class _ThemeSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return IconButton.filled(
-      onPressed: () {
-        AdaptiveTheme.of(context).toggleThemeMode();
-      },
-      icon: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
-        child: AdaptiveTheme.of(context).brightness == Brightness.dark
-            ? const Icon(
-                Icons.light_mode,
-              )
-            : const Icon(
-                Icons.dark_mode,
-              ),
+    return SizedBox(
+      height: 45,
+      width: 45,
+      child: IconButton.filled(
+        style: IconButton.styleFrom(
+          elevation: 8,
+        ),
+        onPressed: () {
+          AdaptiveTheme.of(context).toggleThemeMode();
+        },
+        icon: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 450),
+          child: AdaptiveTheme.of(context).brightness == Brightness.dark
+              ? const Icon(
+                  Icons.light_mode,
+                )
+              : const Icon(
+                  Icons.dark_mode,
+                ),
+        ),
       ),
     );
   }
@@ -218,10 +233,9 @@ class _LanguageSelector extends StatelessWidget {
           onSelected: LocaleSettings.setLocale,
           tooltip: '',
           constraints: const BoxConstraints(
-            maxWidth: 40,
+            maxWidth: 45,
           ),
           elevation: 4,
-          padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(90),
           ),
@@ -233,10 +247,10 @@ class _LanguageSelector extends StatelessWidget {
                 value: value,
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Container(
-                  width: 40,
-                  height: 40,
+                  width: 45,
+                  height: 45,
                   decoration: BoxDecoration(
-                    color: value == selectedValue ? context.theme.colorScheme.onPrimary : null,
+                    color: value == selectedValue ? context.theme.colorScheme.primary : null,
                     shape: BoxShape.circle,
                   ),
                   padding: const EdgeInsets.all(8),
@@ -244,7 +258,7 @@ class _LanguageSelector extends StatelessWidget {
                   child: Text(
                     value.languageTag,
                     style: context.textTheme.labelLarge?.copyWith(
-                      color: value == selectedValue ? context.theme.colorScheme.primary : null,
+                      color: value == selectedValue ? context.theme.colorScheme.onPrimary : null,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -253,13 +267,13 @@ class _LanguageSelector extends StatelessWidget {
             }).toList();
           },
           child: Container(
-            width: 40,
-            height: 40,
+            width: 45,
+            height: 45,
             decoration: BoxDecoration(
               color: context.theme.colorScheme.primary,
               shape: BoxShape.circle,
             ),
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(4),
             margin: EdgeInsets.zero,
             alignment: Alignment.center,
             child: Text(
