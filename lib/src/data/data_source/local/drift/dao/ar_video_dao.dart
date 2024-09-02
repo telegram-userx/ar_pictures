@@ -10,7 +10,7 @@ class ArVideoDao implements IDao<ArVideoTableData> {
     required this.database,
   });
 
-  Future<List<ArVideoTableData>> getByPhotoAlbumId(String photoAlbumId) => (database.select(
+  Future<List<ArVideoTableData>> getByAlbumId(String photoAlbumId) => (database.select(
         database.arVideoTable,
       )..where(
               (tbl) => tbl.photoAlbumId.equals(photoAlbumId),

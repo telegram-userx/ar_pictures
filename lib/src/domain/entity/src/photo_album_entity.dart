@@ -7,7 +7,6 @@ class PhotoAlbumEntity extends Equatable {
   final String id;
   final String markerFileUrl;
   final double markerFileSizeInBytes;
-  final String markerFileLocation;
   final bool isMarkerFileDownloaded;
   final ObservableList<ArVideoEntity>? arVideos;
 
@@ -15,7 +14,6 @@ class PhotoAlbumEntity extends Equatable {
     this.id = '',
     this.markerFileUrl = '',
     this.markerFileSizeInBytes = 0,
-    this.markerFileLocation = '',
     this.isMarkerFileDownloaded = false,
     this.arVideos,
   });
@@ -24,7 +22,6 @@ class PhotoAlbumEntity extends Equatable {
     String? id,
     String? markerFileUrl,
     double? markerFileSizeInBytes,
-    String? markerFileLocation,
     bool? isMarkerFileDownloaded,
     ObservableList<ArVideoEntity>? arVideos,
   }) {
@@ -32,7 +29,6 @@ class PhotoAlbumEntity extends Equatable {
       id: id ?? this.id,
       markerFileUrl: markerFileUrl ?? this.markerFileUrl,
       markerFileSizeInBytes: markerFileSizeInBytes ?? this.markerFileSizeInBytes,
-      markerFileLocation: markerFileLocation ?? this.markerFileLocation,
       isMarkerFileDownloaded: isMarkerFileDownloaded ?? this.isMarkerFileDownloaded,
       arVideos: arVideos ?? this.arVideos,
     );
@@ -71,7 +67,6 @@ class PhotoAlbumEntity extends Equatable {
         id,
         markerFileUrl,
         markerFileSizeInBytes,
-        markerFileLocation,
         isMarkerFileDownloaded,
         arVideos,
       ];
