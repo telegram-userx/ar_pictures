@@ -47,7 +47,7 @@ abstract class _ArDataLoaderStoreBase with Store {
 
     isDownloading = true;
 
-    final appCacheDirectory = await getApplicationCacheDirectory();
+    final appCacheDirectory = await getApplicationDocumentsDirectory();
 
     if (!photoAlbum!.isMarkerFileDownloaded) {
       await _downloadFileService.downloadFile(
