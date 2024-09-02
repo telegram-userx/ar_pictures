@@ -1,5 +1,6 @@
 // Constants
 const kVarDirectusApiUrl = 'DIRECTUS_API_URL';
+const kVarDatabaseName = 'ar_images_database';
 
 class AppConstants {
   const AppConstants._();
