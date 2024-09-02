@@ -20,7 +20,7 @@ class ArVideoDto {
   });
 
   // ClassName
-  static const className = 'ar_photo';
+  static const className = 'ar_video';
   static const kPhotoAlbum = 'photoAlbum';
 
   String? get videoUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$video';
