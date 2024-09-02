@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../common/logger/logger.dart';
 import '../../../common/services/download_file/download_file_service.dart';
 import '../../../domain/entity/entity.dart';
 
@@ -40,38 +39,35 @@ abstract class _ArDataLoaderStoreBase with Store {
   bool isDownloadSuccess = false;
 
   @action
+  setIsDownloading(bool value) => isDownloading = value;
+
+  @action
   startDownloading() async {
     if (photoAlbum == null || isDownloading) return;
 
-    try {
-      isDownloading = true;
+    isDownloading = true;
 
-      final appCacheDirectory = await getApplicationCacheDirectory();
+    final appCacheDirectory = await getApplicationCacheDirectory();
 
-      if (!photoAlbum!.isMarkerFileDownloaded) {
+    if (!photoAlbum!.isMarkerFileDownloaded) {
+      await _downloadFileService.downloadFile(
+        photoAlbum!.markerFileUrl,
+        '${appCacheDirectory.path}/${photoAlbum!.id}',
+        onReceiveProgress: (received, total) => updateProgress(received),
+      );
+    }
+
+    final videos = photoAlbum?.arVideos ?? [];
+    if (videos.isNotEmpty) {
+      await Future.forEach(videos, (video) async {
         await _downloadFileService.downloadFile(
           photoAlbum!.markerFileUrl,
           '${appCacheDirectory.path}/${photoAlbum!.id}',
           onReceiveProgress: (received, total) => updateProgress(received),
         );
-      }
+      });
 
-      final videos = photoAlbum?.arVideos ?? [];
-      if (videos.isNotEmpty) {
-        await Future.forEach(videos, (video) async {
-          await _downloadFileService.downloadFile(
-            photoAlbum!.markerFileUrl,
-            '${appCacheDirectory.path}/${photoAlbum!.id}',
-            onReceiveProgress: (received, total) => updateProgress(received),
-          );
-        });
-
-        isDownloadSuccess = true;
-      }
-    } catch (error, stackTrace) {
-      Logger.e(error, stackTrace);
-    } finally {
-      isDownloading = false;
+      isDownloadSuccess = true;
     }
   }
 

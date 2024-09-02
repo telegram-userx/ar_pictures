@@ -13,6 +13,7 @@ class _Screen extends StatefulWidget {
 
 class _ScreenState extends State<_Screen> {
   late final List<ReactionDisposer> _disposers;
+  bool hasErrors = false;
 
   @override
   void initState() {
@@ -36,6 +37,20 @@ class _ScreenState extends State<_Screen> {
     super.dispose();
   }
 
+  _onDownload() async {
+    try {
+      await sl<ArDataLoaderStore>().startDownloading();
+    } catch (error, stackTrace) {
+      Logger.e(error, stackTrace);
+
+      setState(() {
+        hasErrors = true;
+      });
+    } finally {
+      sl<ArDataLoaderStore>().setIsDownloading(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog.fullscreen(
@@ -44,6 +59,15 @@ class _ScreenState extends State<_Screen> {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           child: Observer(builder: (_) {
+            if (hasErrors) {
+              return Center(
+                child: ElevatedButton(
+                  onPressed: _onDownload,
+                  child: Text(context.translations.retry),
+                ),
+              );
+            }
+
             if (sl<ArDataLoaderStore>().isDownloading) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +111,7 @@ class _ScreenState extends State<_Screen> {
                       Space.h20,
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: sl<ArDataLoaderStore>().startDownloading,
+                          onPressed: _onDownload,
                           child: Text(context.translations.download),
                         ),
                       ),

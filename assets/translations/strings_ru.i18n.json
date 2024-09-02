@@ -14,5 +14,6 @@
     "download": "Скачать",
     "cancel": "Отменить",
     "downloadInProgress(received, total)": "Скачивается $received / $total МБ",
-    "somethingWentWrong": "Что-то пошло не так"
+    "somethingWentWrong": "Что-то пошло не так",
+    "retry": "Повторить"
 }

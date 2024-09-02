@@ -14,5 +14,6 @@
     "download": "Download",
     "cancel": "Cancel",
     "downloadInProgress(received, total)": "Download in progress $received / $total MB",
-    "somethingWentWrong": "Something went wrong"
+    "somethingWentWrong": "Something went wrong",
+    "retry": "Retry"
 }

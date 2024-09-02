@@ -9,6 +9,7 @@ import '../../common/config/router/app_router.dart';
 import '../../common/config/router/app_router.gr.dart';
 import '../../common/constant/app_constants.dart';
 import '../../common/extension/extensions.dart';
+import '../../common/logger/logger.dart';
 import '../../common/service_locator/sl.dart';
 import '../../common/services/download_file/download_file_service.dart';
 import '../../common/widget/space.dart';

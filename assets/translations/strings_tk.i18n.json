@@ -14,5 +14,6 @@
     "download": "Ýükle",
     "cancel": "Yza dolan",
     "downloadInProgress(received, total)": "Ýüklenilýär $received / $total MB",
-    "somethingWentWrong": "Ýalňyşlyk ýüze çykdy"
+    "somethingWentWrong": "Ýalňyşlyk ýüze çykdy",
+    "retry": "Täzeden synanş"
 }
