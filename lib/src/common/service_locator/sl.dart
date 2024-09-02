@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:directus/directus.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,6 +12,8 @@ import '../../../generated/strings.g.dart';
 import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
 import '../config/router/app_router.dart';
 import '../constant/app_constants.dart';
+import '../logger/logger_observer.dart';
+import '../services/download_file/download_file_service.dart';
 import '../services/permissions_service/permissions_service.dart';
 
 part 'src/common.dart';

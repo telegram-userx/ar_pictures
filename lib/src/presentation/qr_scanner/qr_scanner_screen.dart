@@ -35,7 +35,11 @@ class _QrScannerScreenState extends State<QrScannerScreen> with WidgetsBindingOb
         (_) => sl<QrScannerStore>().albumFuture.status,
         (status) {
           if (status.isFulfilled) {
-            context.pushRoute(const ArDataLoaderRoute());
+            context.pushRoute(
+              ArDataLoaderRoute(
+                photoAlbum: sl<QrScannerStore>().albumFuture.value,
+              ),
+            );
           }
         },
       ),

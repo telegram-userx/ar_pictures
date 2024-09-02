@@ -6,6 +6,12 @@ Future<void> _initCommon() async {
 
   await _setOrientation();
 
+  sl.registerSingleton<Talker>(
+    Talker(
+      observer: LoggerObserver(),
+    ),
+  );
+
   sl.registerSingleton<PermissionsService>(
     PermissionsService(),
   );
@@ -16,6 +22,16 @@ Future<void> _initCommon() async {
     ),
   );
 
+  sl.registerSingleton<Dio>(
+    Dio(),
+  );
+
+  sl.registerSingleton<DownloadFileService>(
+    DownloadFileService(
+      dio: sl<Dio>(),
+    ),
+  );
+
   // Locale settings
   LocaleSettings.setLocaleRaw(sl<SharedPreferencesHelper>().locale ?? '');
 
@@ -23,10 +39,6 @@ Future<void> _initCommon() async {
     (event) {
       sl<SharedPreferencesHelper>().setLocale(event.languageTag);
     },
-  );
-
-  sl.registerSingleton<Talker>(
-    Talker(),
   );
 }
 

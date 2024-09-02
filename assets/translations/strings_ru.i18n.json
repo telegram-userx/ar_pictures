@@ -13,5 +13,6 @@
     "areYouSureDownload(megabytes)": "Вы хотите скачать данные для альбома сейчас? ($megabytes MB)",
     "download": "Скачать",
     "cancel": "Отменить",
+    "downloadInProgress(received, total)": "Скачивается $received / $total МБ",
     "somethingWentWrong": "Что-то пошло не так"
 }

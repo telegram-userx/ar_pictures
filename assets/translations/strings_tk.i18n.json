@@ -13,5 +13,6 @@
     "areYouSureDownload(megabytes)": "Siz alboma degişli maglumatlary häzir ýüklemek isleýärsiňizmi? ($megabytes MB)",
     "download": "Ýükle",
     "cancel": "Yza dolan",
+    "downloadInProgress(received, total)": "Ýüklenilýär $received / $total MB",
     "somethingWentWrong": "Ýalňyşlyk ýüze çykdy"
 }

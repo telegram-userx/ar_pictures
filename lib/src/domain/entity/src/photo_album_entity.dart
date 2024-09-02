@@ -45,7 +45,7 @@ class PhotoAlbumEntity extends Equatable {
         ) ??
         0;
 
-    return bytesToMegabytes(markerFileSizeInBytes + arVideosSize);
+    return _bytesToMegabytes(markerFileSizeInBytes + arVideosSize);
   }
 
   bool get isFullyDownloaded {
@@ -62,7 +62,7 @@ class PhotoAlbumEntity extends Equatable {
     return isMarkerFileDownloaded && isVideosDownloaded;
   }
 
-  double bytesToMegabytes(double bytes) {
+  double _bytesToMegabytes(double bytes) {
     return bytes / (1024 * 1024);
   }
 
