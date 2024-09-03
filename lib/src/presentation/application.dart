@@ -7,7 +7,7 @@ import 'package:turkmen_localization_support/turkmen_localization_support.dart';
 import '../../../generated/strings.g.dart';
 import '../common/config/router/app_router.dart';
 import '../common/config/theme/theme.dart';
-import '../common/service_locator/sl.dart';
+import '../service_locator/sl.dart';
 import '../common/widget/space.dart';
 
 class Application extends StatelessWidget {

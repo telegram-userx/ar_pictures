@@ -9,7 +9,7 @@ import 'package:mobx/mobx.dart';
 
 import '../../common/config/router/app_router.gr.dart';
 import '../../common/extension/extensions.dart';
-import '../../common/service_locator/sl.dart';
+import '../../service_locator/sl.dart';
 import 'store/qr_scanner_store.dart';
 
 @RoutePage()

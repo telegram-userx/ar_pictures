@@ -8,7 +8,7 @@ import '../../../generated/strings.g.dart';
 import '../../common/config/router/app_router.gr.dart';
 import '../../common/constant/app_constants.dart';
 import '../../common/extension/extensions.dart';
-import '../../common/service_locator/sl.dart';
+import '../../service_locator/sl.dart';
 import '../../common/widget/space.dart';
 import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
 

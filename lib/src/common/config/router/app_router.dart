@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
-import '../../service_locator/sl.dart';
+import '../../../service_locator/sl.dart';
 import 'app_router.gr.dart';
 
 @AutoRouterConfig()
