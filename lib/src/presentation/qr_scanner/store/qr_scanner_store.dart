@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 
+import '../../../common/extension/src/future_status.dart';
 import '../../../common/logger/logger.dart';
 import '../../../domain/entity/entity.dart';
 import '../../../domain/repository/repository.dart';
@@ -21,6 +22,8 @@ abstract class _QrScannerStoreBase with Store {
 
   @action
   getAlbum(String id) async {
+    if (albumFuture.status.isPending) return;
+
     try {
       albumFuture = ObservableFuture(_albumRepository.getAlbum(id));
 

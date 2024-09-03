@@ -18,7 +18,7 @@ class _ScreenState extends State<_Screen> {
   @override
   void initState() {
     _disposers = [
-      reaction((_) => sl<ArDataLoaderStore>().isDownloadSuccess, (bool isSuccess) {
+      reaction((_) => Provider.of<ArDataLoaderStore>(context).isDownloadSuccess, (bool isSuccess) {
         if (isSuccess) {
           sl<AppRouter>().replace(const ArJsWebviewRoute());
         }
@@ -39,7 +39,7 @@ class _ScreenState extends State<_Screen> {
 
   _onDownload() async {
     try {
-      await sl<ArDataLoaderStore>().startDownloading();
+      await Provider.of<ArDataLoaderStore>(context).startDownloading();
     } catch (error, stackTrace) {
       Logger.e(error, stackTrace);
 
@@ -47,7 +47,7 @@ class _ScreenState extends State<_Screen> {
         hasErrors = true;
       });
     } finally {
-      sl<ArDataLoaderStore>().setIsDownloading(false);
+      Provider.of<ArDataLoaderStore>(context).setIsDownloading(false);
     }
   }
 
@@ -61,22 +61,37 @@ class _ScreenState extends State<_Screen> {
           child: Observer(builder: (_) {
             if (hasErrors) {
               return Center(
-                child: ElevatedButton(
-                  onPressed: _onDownload,
-                  child: Text(context.translations.retry),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.maybePop();
+                        },
+                        child: Text(context.translations.cancel),
+                      ),
+                    ),
+                    Space.h20,
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: _onDownload,
+                        child: Text(context.translations.retry),
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
 
-            if (sl<ArDataLoaderStore>().isDownloading) {
+            if (Provider.of<ArDataLoaderStore>(context).isDownloading) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     context.translations.downloadInProgress(
-                      total: sl<ArDataLoaderStore>().totalSizeInMegaBytes.toStringAsFixed(2),
-                      received: sl<ArDataLoaderStore>().downloadProgressTotal.toStringAsFixed(2),
+                      total: Provider.of<ArDataLoaderStore>(context).totalSizeInMegaBytes.toStringAsFixed(2),
+                      received: Provider.of<ArDataLoaderStore>(context).downloadProgressTotal.toStringAsFixed(2),
                     ),
                     style: context.textTheme.titleLarge,
                   ),
@@ -93,7 +108,7 @@ class _ScreenState extends State<_Screen> {
                 children: [
                   Text(
                     context.translations.areYouSureDownload(
-                      megabytes: sl<ArDataLoaderStore>().totalSizeInMegaBytes.toStringAsFixed(2),
+                      megabytes: Provider.of<ArDataLoaderStore>(context).totalSizeInMegaBytes.toStringAsFixed(2),
                     ),
                     style: context.textTheme.titleLarge,
                   ),
