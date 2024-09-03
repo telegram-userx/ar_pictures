@@ -20,7 +20,7 @@ class _ScreenState extends State<_Screen> {
     _disposers = [
       reaction((_) => Provider.of<ArDataLoaderStore>(context, listen: false).isDownloadSuccess, (bool isSuccess) {
         if (isSuccess) {
-          sl<AppRouter>().replace(const ArJsWebviewRoute());
+          sl<AppRouter>().replace(ArJsWebViewRoute(albumId: widget.photoAlbum?.id ?? ''));
         }
       }),
     ];

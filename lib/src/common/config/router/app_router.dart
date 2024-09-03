@@ -18,7 +18,7 @@ class AppRouter extends RootStackRouter {
           page: QrScannerRoute.page,
         ),
         AutoRoute(
-          page: ArJsWebviewRoute.page,
+          page: ArJsWebViewRoute.page,
         ),
         CustomRoute(
           customRouteBuilder: <T>(context, child, page) {
