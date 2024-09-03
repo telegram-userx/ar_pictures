@@ -13,6 +13,8 @@ abstract class _ArDataLoaderStoreBase with Store {
 
   _ArDataLoaderStoreBase({
     required DownloadFileService downloadFileService,
+    // ignore: unused_element
+    this.photoAlbum,
   }) : _downloadFileService = downloadFileService;
 
   @observable
@@ -28,7 +30,7 @@ abstract class _ArDataLoaderStoreBase with Store {
 
   @observable
   @readonly
-  double _downloadProgress = 0;
+  int _totalBytesReceived = 0;
 
   @observable
   @readonly
@@ -53,29 +55,32 @@ abstract class _ArDataLoaderStoreBase with Store {
       await _downloadFileService.downloadFile(
         photoAlbum!.markerFileUrl,
         '${appCacheDirectory.path}/${photoAlbum!.id}',
-        onReceiveProgress: (received, total) => updateProgress(received),
+        onReceiveProgress: (received, total) => updateProgress(received, total),
       );
     }
 
-    final videos = photoAlbum?.arVideos ?? [];
+    final videos = photoAlbum?.arVideos?.nonObservableInner ?? [];
     if (videos.isNotEmpty) {
       await Future.forEach(videos, (video) async {
-        await _downloadFileService.downloadFile(
-          photoAlbum!.markerFileUrl,
-          '${appCacheDirectory.path}/${photoAlbum!.id}',
-          onReceiveProgress: (received, total) => updateProgress(received),
-        );
+        if (video.videoUrl.isNotEmpty) {
+          await _downloadFileService.downloadFile(
+            video.videoUrl, // Corrected to use the actual video URL
+            '${appCacheDirectory.path}/${photoAlbum!.id}',
+            onReceiveProgress: (received, total) => updateProgress(received, total),
+          );
+        }
       });
 
       isDownloadSuccess = true;
     }
+
+    isDownloading = false;
   }
 
   @action
-  updateProgress(int bytes) async {
-    downloadProgressTotal -= _downloadProgress;
-    _downloadProgress = _bytesToMegabytes(bytes);
-    downloadProgressTotal += _downloadProgress;
+  updateProgress(int bytesReceived, int totalBytes) async {
+    _totalBytesReceived = bytesReceived; // Keep track of total bytes received
+    downloadProgressTotal = _bytesToMegabytes(_totalBytesReceived); // Convert to MB for UI display
   }
 
   double _bytesToMegabytes(num bytes) {

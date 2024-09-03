@@ -18,7 +18,7 @@ class _ScreenState extends State<_Screen> {
   @override
   void initState() {
     _disposers = [
-      reaction((_) => Provider.of<ArDataLoaderStore>(context).isDownloadSuccess, (bool isSuccess) {
+      reaction((_) => Provider.of<ArDataLoaderStore>(context, listen: false).isDownloadSuccess, (bool isSuccess) {
         if (isSuccess) {
           sl<AppRouter>().replace(const ArJsWebviewRoute());
         }
@@ -37,9 +37,9 @@ class _ScreenState extends State<_Screen> {
     super.dispose();
   }
 
-  _onDownload() async {
+  _onDownload(BuildContext context) async {
     try {
-      await Provider.of<ArDataLoaderStore>(context).startDownloading();
+      await Provider.of<ArDataLoaderStore>(context, listen: false).startDownloading();
     } catch (error, stackTrace) {
       Logger.e(error, stackTrace);
 
@@ -47,7 +47,9 @@ class _ScreenState extends State<_Screen> {
         hasErrors = true;
       });
     } finally {
-      Provider.of<ArDataLoaderStore>(context).setIsDownloading(false);
+      if (context.mounted) {
+        Provider.of<ArDataLoaderStore>(context, listen: false).setIsDownloading(false);
+      }
     }
   }
 
@@ -74,7 +76,7 @@ class _ScreenState extends State<_Screen> {
                     Space.h20,
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: _onDownload,
+                        onPressed: () => _onDownload(context),
                         child: Text(context.translations.retry),
                       ),
                     ),
@@ -83,15 +85,19 @@ class _ScreenState extends State<_Screen> {
               );
             }
 
-            if (Provider.of<ArDataLoaderStore>(context).isDownloading) {
+            if (Provider.of<ArDataLoaderStore>(context, listen: false).isDownloading) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     context.translations.downloadInProgress(
-                      total: Provider.of<ArDataLoaderStore>(context).totalSizeInMegaBytes.toStringAsFixed(2),
-                      received: Provider.of<ArDataLoaderStore>(context).downloadProgressTotal.toStringAsFixed(2),
+                      total: Provider.of<ArDataLoaderStore>(context, listen: false)
+                          .totalSizeInMegaBytes
+                          .toStringAsFixed(2),
+                      received: Provider.of<ArDataLoaderStore>(context, listen: false)
+                          .downloadProgressTotal
+                          .toStringAsFixed(2),
                     ),
                     style: context.textTheme.titleLarge,
                   ),
@@ -108,7 +114,9 @@ class _ScreenState extends State<_Screen> {
                 children: [
                   Text(
                     context.translations.areYouSureDownload(
-                      megabytes: Provider.of<ArDataLoaderStore>(context).totalSizeInMegaBytes.toStringAsFixed(2),
+                      megabytes: Provider.of<ArDataLoaderStore>(context, listen: false)
+                          .totalSizeInMegaBytes
+                          .toStringAsFixed(2),
                     ),
                     style: context.textTheme.titleLarge,
                   ),
@@ -126,7 +134,7 @@ class _ScreenState extends State<_Screen> {
                       Space.h20,
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: _onDownload,
+                          onPressed: () => _onDownload(context),
                           child: Text(context.translations.download),
                         ),
                       ),

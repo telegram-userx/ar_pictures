@@ -37,6 +37,7 @@ class _ArDataLoaderScreenState extends State<ArDataLoaderScreen> {
     return Provider(
       create: (context) => ArDataLoaderStore(
         downloadFileService: sl<DownloadFileService>(),
+        photoAlbum: widget.photoAlbum,
       ),
       child: _Screen(photoAlbum: widget.photoAlbum),
     );
