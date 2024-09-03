@@ -77,9 +77,16 @@ abstract class _ArDataLoaderStoreBase with Store {
     isDownloading = false;
   }
 
+  int latestBytesReceived = 0;
+  int latestTotalBytes = 0;
+
   @action
   updateProgress(int bytesReceived, int totalBytes) async {
-    _totalBytesReceived = bytesReceived; // Keep track of total bytes received
+    _totalBytesReceived -= latestBytesReceived == latestTotalBytes ? 0 : latestBytesReceived;
+    latestBytesReceived = bytesReceived;
+    latestTotalBytes = totalBytes;
+    _totalBytesReceived += bytesReceived;
+
     downloadProgressTotal = _bytesToMegabytes(_totalBytesReceived); // Convert to MB for UI display
   }
 
