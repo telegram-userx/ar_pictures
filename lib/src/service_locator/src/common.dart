@@ -32,6 +32,11 @@ Future<void> _initCommon() async {
     ),
   );
 
+  // Register local server
+  sl.registerSingleton<LocalServer>(
+    LocalServer(),
+  );
+
   // Locale settings
   LocaleSettings.setLocaleRaw(sl<SharedPreferencesHelper>().locale ?? '');
 
