@@ -42,7 +42,8 @@ class LocalServer {
       '/albums/<id>',
       (Request request, String id) async {
         try {
-          final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
+          // TODO
+          // final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
           final arVideos = sl<QrScannerStore>().albumFuture.value?.arVideos?.nonObservableInner ?? [];
 
           // Generate entities and assets
@@ -73,7 +74,7 @@ class LocalServer {
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
               </head>
               <body>
-                <a-scene mindar-image="imageTargetSrc: http://localhost:8080/files/$arMarkerId; 
+                <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/targets.mind;
                 uiError:no; uiScanning:no;
                 filterMinCF: 0.1; filterBeta: 100" 
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
