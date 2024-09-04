@@ -65,7 +65,7 @@ abstract class _ArDataLoaderStoreBase with Store {
         if (video.videoUrl.isNotEmpty) {
           await _downloadFileService.downloadFile(
             video.videoUrl, // Corrected to use the actual video URL
-            '${appCacheDirectory.path}/${photoAlbum!.id}',
+            '${appCacheDirectory.path}/${video.id}',
             onReceiveProgress: (received, total) => updateProgress(received, total),
           );
         }
