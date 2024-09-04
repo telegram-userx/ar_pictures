@@ -9,15 +9,14 @@ import '../../../presentation/qr_scanner/store/qr_scanner_store.dart';
 import '../../../service_locator/sl.dart';
 import '../../logger/logger.dart';
 
-// Function to add CORS headers
 Middleware _addCorsHeaders() {
   return createMiddleware(
     responseHandler: (Response response) {
       return response.change(headers: {
         ...response.headers,
-        'Access-Control-Allow-Origin': '*', // Allow all origins
-        'Access-Control-Allow-Methods': 'GET, OPTIONS', // Allow specific methods
-        'Access-Control-Allow-Headers': 'Origin, Content-Type', // Allow specific headers
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type',
       });
     },
   );
@@ -42,7 +41,6 @@ class LocalServer {
       '/albums/<id>',
       (Request request, String id) async {
         try {
-          // TODO
           // final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
           final arVideos = sl<QrScannerStore>().albumFuture.value?.arVideos?.nonObservableInner ?? [];
 
@@ -53,7 +51,7 @@ class LocalServer {
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:8080/files/${arVideo.id}" crossorigin="anonymous"></video>
+              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:8080/videos/${arVideo.id}"></video>
             ''');
 
             entities.add('''
@@ -76,7 +74,7 @@ class LocalServer {
               <body>
                 <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/targets.mind;
                 uiError:no; uiScanning:no;
-                filterMinCF: 0.1; filterBeta: 100" 
+                filterMinCF: 10; filterBeta: 10000" 
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
                 vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
                   
@@ -87,6 +85,8 @@ class LocalServer {
                   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
                   
                   ${entities.join('\n')}
+                
+                </a-scene>
 
               </body>
             </html>
@@ -106,25 +106,47 @@ class LocalServer {
       },
     );
 
-    // Define a route to serve video files
-    app.get('/files/<fileName>', (Request request, String fileName) async {
+    app.get('/videos/<fileName>', (Request request, String fileName) async {
       try {
         final appCacheDirectory = await getApplicationDocumentsDirectory();
         final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
         Logger.i('App cache directory: ${appCacheDirectory.path}');
 
-        return Response.ok(
-          file,
-          headers: {
-            'Content-Type': 'application/octet-stream',
-          },
-        );
+        return Response.ok(file, headers: {'Content-Type': _getMimeType(fileName)});
       } catch (e) {
+        Logger.e(e);
+        return Response.notFound('File not found');
+      }
+    });
+
+    app.get('/targets/<fileName>', (Request request, String fileName) async {
+      try {
+        final appCacheDirectory = await getApplicationDocumentsDirectory();
+        final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
+        Logger.i('App cache directory: ${appCacheDirectory.path}');
+
+        return Response.ok(file, headers: {'Content-Type': _getMimeType(fileName)});
+      } catch (e) {
+        Logger.e(e);
         return Response.notFound('File not found');
       }
     });
 
     httpServer = await io.serve(handler, 'localhost', 8080);
     Logger.i('Local server running at http://${httpServer.address.host}:${httpServer.port}');
+  }
+
+  String _getMimeType(String fileName) {
+    final extension = fileName.split('.').last.toLowerCase();
+    switch (extension) {
+      case 'mp4':
+        return 'video/mp4';
+      case 'webm':
+        return 'video/webm';
+      case 'ogg':
+        return 'video/ogg';
+      default:
+        return 'application/octet-stream';
+    }
   }
 }

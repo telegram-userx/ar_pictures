@@ -14,6 +14,7 @@ import '../../service_locator/sl.dart';
 import '../../common/services/download_file/download_file_service.dart';
 import '../../common/widget/space.dart';
 import '../../domain/entity/entity.dart';
+import '../qr_scanner/store/qr_scanner_store.dart';
 import 'store/ar_data_loader_store.dart';
 
 part '_screen.dart';
@@ -32,6 +33,13 @@ class ArDataLoaderScreen extends StatefulWidget {
 }
 
 class _ArDataLoaderScreenState extends State<ArDataLoaderScreen> {
+  @override
+  void dispose() {
+    sl<QrScannerStore>().reset();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Provider(

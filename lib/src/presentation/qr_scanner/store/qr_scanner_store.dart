@@ -21,6 +21,11 @@ abstract class _QrScannerStoreBase with Store {
   ObservableFuture<PhotoAlbumEntity?> albumFuture = ObservableFuture.value(null);
 
   @action
+  reset() {
+    albumFuture = ObservableFuture.value(null);
+  }
+
+  @action
   getAlbum(String id) async {
     if (albumFuture.status.isPending) return;
 
