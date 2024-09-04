@@ -255,7 +255,7 @@ class _LanguageSelector extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   alignment: Alignment.center,
                   child: Text(
-                    value.languageTag,
+                    value.getName(),
                     style: context.textTheme.labelLarge?.copyWith(
                       color: value == selectedValue ? context.theme.colorScheme.onPrimary : null,
                     ),
@@ -276,7 +276,7 @@ class _LanguageSelector extends StatelessWidget {
             margin: EdgeInsets.zero,
             alignment: Alignment.center,
             child: Text(
-              TranslationProvider.of(context).locale.languageTag,
+              TranslationProvider.of(context).locale.getName(),
               style: context.textTheme.labelLarge?.copyWith(
                 color: context.theme.colorScheme.onPrimary,
               ),
