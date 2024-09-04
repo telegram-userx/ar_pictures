@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_router/shelf_router.dart';
 
-import '../../../presentation/ar_data_loader/store/ar_data_loader_store.dart';
+import '../../../presentation/qr_scanner/store/qr_scanner_store.dart';
 import '../../../service_locator/sl.dart';
 import '../../logger/logger.dart';
 
@@ -43,8 +42,8 @@ class LocalServer {
       '/albums/<id>',
       (Request request, String id) async {
         try {
-          final arMarkerId = sl<ArDataLoaderStore>().photoAlbum?.id ?? '';
-          final arVideos = sl<ArDataLoaderStore>().photoAlbum?.arVideos?.nonObservableInner ?? [];
+          final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
+          final arVideos = sl<QrScannerStore>().albumFuture.value?.arVideos?.nonObservableInner ?? [];
 
           // Generate entities and assets
           List<String> assets = [];
@@ -53,7 +52,7 @@ class LocalServer {
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:8080/files/${arVideo.id}"></video>
+              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:8080/files/${arVideo.id}" crossorigin="anonymous"></video>
             ''');
 
             entities.add('''
@@ -65,20 +64,17 @@ class LocalServer {
             ''');
           }
 
-          final aframe = await rootBundle.loadString('assets/js/aframe.min.js');
-          final aframeExtras = await rootBundle.loadString('assets/js/aframe-extras.min.js');
-          final mindAr = await rootBundle.loadString('assets/js/mindar-image-aframe.prod.js');
-
           final html = '''
             <html>
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <script>$aframe</script>
-                <script>$aframeExtras</script>
-                <script>$mindAr</script>
+                <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
               </head>
               <body>
                 <a-scene mindar-image="imageTargetSrc: http://localhost:8080/files/$arMarkerId; 
+                uiError:no; uiScanning:no;
                 filterMinCF: 0.1; filterBeta: 100" 
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
                 vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
@@ -112,14 +108,14 @@ class LocalServer {
     // Define a route to serve video files
     app.get('/files/<fileName>', (Request request, String fileName) async {
       try {
-        final appCacheDirectory = await getApplicationCacheDirectory();
-        final file = File('$appCacheDirectory/$fileName');
+        final appCacheDirectory = await getApplicationDocumentsDirectory();
+        final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
+        Logger.i('App cache directory: ${appCacheDirectory.path}');
 
         return Response.ok(
           file,
           headers: {
-            if (fileName.endsWith('.mp4')) 'Content-Type': 'video/mp4',
-            if (fileName.endsWith('.mind')) 'Content-Type': 'application/octet-stream',
+            'Content-Type': 'application/octet-stream',
           },
         );
       } catch (e) {
