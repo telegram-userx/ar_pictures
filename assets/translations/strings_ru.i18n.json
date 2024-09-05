@@ -10,10 +10,10 @@
     "next": "Далее",
     "start": "Начать",
     "scan": "Сканировать",
-    "areYouSureDownload(megabytes)": "Вы хотите скачать данные для альбома сейчас? ($megabytes MB)",
+    "areYouSureDownload(megabytes)": "Вы хотите скачать данные для альбома сейчас? \n ($megabytes MB)",
     "download": "Скачать",
     "cancel": "Отменить",
-    "downloadInProgress(received, total)": "Скачивается $received / $total МБ",
+    "downloadInProgress(received, total)": "Скачивается \n $received / $total МБ",
     "somethingWentWrong": "Что-то пошло не так",
     "retry": "Повторить"
 }

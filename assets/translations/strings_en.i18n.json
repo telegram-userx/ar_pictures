@@ -10,10 +10,10 @@
     "next": "Next",
     "start": "Start",
     "scan": "Scan",
-    "areYouSureDownload(megabytes)": "Do you want to download the album data now? ($megabytes MB)",
+    "areYouSureDownload(megabytes)": "Do you want to download the album data now? \n ($megabytes MB)",
     "download": "Download",
     "cancel": "Cancel",
-    "downloadInProgress(received, total)": "Download in progress $received / $total MB",
+    "downloadInProgress(received, total)": "Download in progress \n $received / $total MB",
     "somethingWentWrong": "Something went wrong",
     "retry": "Retry"
 }

@@ -31,11 +31,21 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         (_) => sl<QrScannerStore>().albumFuture.status,
         (status) {
           if (status.isFulfilled) {
-            context.pushRoute(
-              ArDataLoaderRoute(
-                photoAlbum: sl<QrScannerStore>().albumFuture.value,
-              ),
-            );
+            final album = sl<QrScannerStore>().albumFuture.value;
+
+            if (album?.isFullyDownloaded ?? false) {
+              context.pushRoute(
+                ArJsWebViewRoute(
+                  albumId: album?.id ?? '',
+                ),
+              );
+            } else {
+              context.pushRoute(
+                ArDataLoaderRoute(
+                  photoAlbum: album,
+                ),
+              );
+            }
           }
         },
       ),

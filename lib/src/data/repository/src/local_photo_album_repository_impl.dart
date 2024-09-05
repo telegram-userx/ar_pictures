@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/logger/logger.dart';
@@ -28,17 +27,7 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
       jsonDecode(albumJson),
     );
 
-    final videos = await getVideos(album.id);
-
-    return PhotoAlbumEntity(
-      id: album.id,
-      markerFileSizeInBytes: album.markerFileSizeInBytes,
-      markerFileUrl: album.markerFileUrl,
-      isMarkerFileDownloaded: album.isMarkerFileDownloaded,
-      arVideos: ObservableList.of(
-        videos,
-      ),
-    );
+    return album;
   }
 
   @override
@@ -51,28 +40,35 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
             jsonDecode(video),
           ),
         )
+        .where(
+          (e) => e.albumId == albumId,
+        )
         .toList();
   }
 
   @override
-  Future<void> updateAlbum(PhotoAlbumEntity album) async {
+  Future<void> updateAlbum(PhotoAlbumEntity album, {bool override = false}) async {
+    late final PhotoAlbumEntity? localAlbum;
+
+    try {
+      localAlbum = await getAlbum(album.id);
+    } catch (e) {
+      localAlbum = null;
+    }
+
+    final json = jsonEncode(localAlbum == null
+        ? album.toJson()
+        : localAlbum
+            .copyWith(
+              arVideos: album.arVideos,
+            )
+            .toJson());
+
     final isSuccess = await _prefs.setString(
       '$_key${album.id}',
-      jsonEncode(album),
+      json,
     );
 
     Logger.i('Save photo album status: $isSuccess');
-  }
-
-  @override
-  Future<void> updateVideo(ArVideoEntity video) async {
-    final videosJson = _prefs.getStringList('$_key${video.albumId}') ?? [];
-    videosJson.add(
-      jsonEncode(video),
-    );
-
-    final isSuccess = await _prefs.setStringList('$_key${video.albumId}', videosJson);
-
-    Logger.i('Save video status: $isSuccess');
   }
 }

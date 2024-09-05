@@ -10,10 +10,10 @@
     "next": "Indiki",
     "start": "Başla",
     "scan": "Skan et",
-    "areYouSureDownload(megabytes)": "Siz alboma degişli maglumatlary häzir ýüklemek isleýärsiňizmi? ($megabytes MB)",
+    "areYouSureDownload(megabytes)": "Siz alboma degişli maglumatlary häzir ýüklemek isleýärsiňizmi? \n ($megabytes MB)",
     "download": "Ýükle",
     "cancel": "Yza dolan",
-    "downloadInProgress(received, total)": "Ýüklenilýär $received / $total MB",
+    "downloadInProgress(received, total)": "Ýüklenilýär \n $received / $total MB",
     "somethingWentWrong": "Ýalňyşlyk ýüze çykdy",
     "retry": "Täzeden synanş"
 }

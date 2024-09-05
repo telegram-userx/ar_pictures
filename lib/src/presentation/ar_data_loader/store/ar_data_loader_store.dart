@@ -61,14 +61,6 @@ abstract class _ArDataLoaderStoreBase with Store {
         '${appCacheDirectory.path}/${photoAlbum!.id}',
         onReceiveProgress: (received, total) => updateProgress(received, total),
       );
-
-      if (photoAlbum != null) {
-        await _albumRepository.updateAlbum(
-          photoAlbum!.copyWith(
-            isMarkerFileDownloaded: true,
-          ),
-        );
-      }
     }
 
     final videos = photoAlbum?.arVideos?.nonObservableInner ?? [];
@@ -80,16 +72,25 @@ abstract class _ArDataLoaderStoreBase with Store {
             '${appCacheDirectory.path}/${video.id}',
             onReceiveProgress: (received, total) => updateProgress(received, total),
           );
-
-          await _albumRepository.updateVideo(
-            video.copyWith(
-              isVideoDownloaded: true,
-            ),
-          );
         }
       });
 
       isDownloadSuccess = true;
+    }
+
+    if (photoAlbum != null) {
+      await _albumRepository.updateAlbum(
+        photoAlbum!.copyWith(
+          isMarkerFileDownloaded: true,
+          arVideos: ObservableList.of(videos
+              .map<ArVideoEntity>(
+                (e) => e.copyWith(
+                  isVideoDownloaded: true,
+                ),
+              )
+              .toList()),
+        ),
+      );
     }
 
     isDownloading = false;

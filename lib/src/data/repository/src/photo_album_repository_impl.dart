@@ -21,15 +21,14 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   Future<PhotoAlbumEntity> getAlbum(String id) async {
     try {
       final localAlbum = await _localPhotoAlbumRepository.getAlbum(id);
-      final localVideos = await _localPhotoAlbumRepository.getVideos(localAlbum.id);
 
-      return localAlbum.copyWith(
-        arVideos: ObservableList.of(localVideos),
-      );
+      return localAlbum;
     } catch (e) {
       try {
         final remoteAlbum = await _remotePhotoAlbumRepository.getAlbum(id);
         final remoteVideos = await _remotePhotoAlbumRepository.getVideos(remoteAlbum.id);
+
+        await _localPhotoAlbumRepository.updateAlbum(remoteAlbum);
 
         return remoteAlbum.copyWith(
           arVideos: ObservableList.of(remoteVideos),
@@ -49,10 +48,5 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   @override
   Future<void> updateAlbum(PhotoAlbumEntity album) async {
     await _localPhotoAlbumRepository.updateAlbum(album);
-  }
-
-  @override
-  Future<void> updateVideo(ArVideoEntity video) async {
-    await _localPhotoAlbumRepository.updateVideo(video);
   }
 }
