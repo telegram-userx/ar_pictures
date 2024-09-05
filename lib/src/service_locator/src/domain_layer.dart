@@ -8,8 +8,7 @@ Future<void> _initDomainLayer() async {
         arVideoSdk: sl<ArVideoSdk>(),
       ),
       localPhotoAlbumRepository: LocalPhotoAlbumRepositoryImpl(
-        albumDao: sl<PhotoAlbumDao>(),
-        arVideoDao: sl<ArVideoDao>(),
+        prefs: sl<SharedPreferences>(),
       ),
     ),
   );

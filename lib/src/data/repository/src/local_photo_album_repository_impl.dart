@@ -1,37 +1,39 @@
-import 'package:drift/drift.dart';
+import 'dart:convert';
+
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/logger/logger.dart';
 import '../../../domain/entity/entity.dart';
 import '../../../domain/repository/repository.dart';
-import '../../data_source/local/drift/app_database.dart';
-import '../../data_source/local/drift/dao/ar_video_dao.dart';
-import '../../data_source/local/drift/dao/photo_album_dao.dart';
 
 class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
-  final PhotoAlbumDao _albumDao;
-  final ArVideoDao _arVideoDao;
+  final SharedPreferences _prefs;
+  late final String _key;
 
   LocalPhotoAlbumRepositoryImpl({
-    required PhotoAlbumDao albumDao,
-    required ArVideoDao arVideoDao,
-  })  : _albumDao = albumDao,
-        _arVideoDao = arVideoDao;
+    required SharedPreferences prefs,
+  })  : _prefs = prefs,
+        _key = 'photo_album_';
 
   @override
   Future<PhotoAlbumEntity> getAlbum(String id) async {
-    final album = await _albumDao.getById(id);
+    final albumJson = _prefs.getString('$_key$id');
 
-    if (album == null) {
+    if (albumJson == null) {
       throw Exception('Failed to get album with id: $id locally');
     }
+
+    final album = PhotoAlbumEntity.fromJson(
+      jsonDecode(albumJson),
+    );
 
     final videos = await getVideos(album.id);
 
     return PhotoAlbumEntity(
       id: album.id,
-      markerFileSizeInBytes: album.markerFileSizeInBytes ?? 0,
-      markerFileUrl: album.markerFileUrl ?? '',
+      markerFileSizeInBytes: album.markerFileSizeInBytes,
+      markerFileUrl: album.markerFileUrl,
       isMarkerFileDownloaded: album.isMarkerFileDownloaded,
       arVideos: ObservableList.of(
         videos,
@@ -41,16 +43,12 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
 
   @override
   Future<List<ArVideoEntity>> getVideos(String albumId) async {
-    final videos = await _arVideoDao.getByAlbumId(albumId);
+    final videosJson = _prefs.getStringList('$_key$albumId') ?? [];
 
-    return videos
+    return videosJson
         .map<ArVideoEntity>(
-          (e) => ArVideoEntity(
-            id: e.id,
-            albumId: e.photoAlbumId ?? '',
-            isVideoDownloaded: e.isVideoDownloaded,
-            videoSizeInBytes: e.videoSizeInBytes ?? 0,
-            videoUrl: e.videoUrl ?? '',
+          (video) => ArVideoEntity.fromJson(
+            jsonDecode(video),
           ),
         )
         .toList();
@@ -58,13 +56,9 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
 
   @override
   Future<void> updateAlbum(PhotoAlbumEntity album) async {
-    final isSuccess = await _albumDao.update(
-      companion: PhotoAlbumTableCompanion(
-        id: Value(album.id),
-        isMarkerFileDownloaded: Value(album.isMarkerFileDownloaded),
-        markerFileSizeInBytes: Value(album.markerFileSizeInBytes),
-        markerFileUrl: Value(album.markerFileUrl),
-      ),
+    final isSuccess = await _prefs.setString(
+      '$_key${album.id}',
+      jsonEncode(album),
     );
 
     Logger.i('Save photo album status: $isSuccess');
@@ -72,15 +66,12 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
 
   @override
   Future<void> updateVideo(ArVideoEntity video) async {
-    final isSuccess = await _arVideoDao.update(
-      companion: ArVideoTableCompanion(
-        id: Value(video.id),
-        isVideoDownloaded: Value(video.isVideoDownloaded),
-        photoAlbumId: Value(video.albumId),
-        videoSizeInBytes: Value(video.videoSizeInBytes),
-        videoUrl: Value(video.videoUrl),
-      ),
+    final videosJson = _prefs.getStringList('$_key${video.albumId}') ?? [];
+    videosJson.add(
+      jsonEncode(video),
     );
+
+    final isSuccess = await _prefs.setStringList('$_key${video.albumId}', videosJson);
 
     Logger.i('Save video status: $isSuccess');
   }

@@ -8,13 +8,6 @@ Future<void> _initDataLayer() async {
 
   sl.registerSingleton<DirectusCore>(directusSdk);
 
-  // Init database
-  final dbOpener = AppDatabaseOpener.openDatabase(name: kVarDatabaseName);
-
-  sl.registerSingleton<AppDatabase>(
-    AppDatabase(dbOpener),
-  );
-
   // Init sdk
   sl.registerSingleton<ArVideoSdk>(
     ArVideoSdk(directusSdk: directusSdk),
@@ -22,14 +15,5 @@ Future<void> _initDataLayer() async {
 
   sl.registerSingleton<PhotoAlbumSdk>(
     PhotoAlbumSdk(directusSdk: directusSdk),
-  );
-
-  // Init database
-  sl.registerSingleton<PhotoAlbumDao>(
-    PhotoAlbumDao(database: sl<AppDatabase>()),
-  );
-
-  sl.registerSingleton<ArVideoDao>(
-    ArVideoDao(database: sl<AppDatabase>()),
   );
 }

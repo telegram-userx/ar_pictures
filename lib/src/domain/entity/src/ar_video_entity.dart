@@ -32,6 +32,26 @@ class ArVideoEntity extends Equatable {
     );
   }
 
+  factory ArVideoEntity.fromJson(Map<String, dynamic> json) {
+    return ArVideoEntity(
+      id: json['id'] as String? ?? '',
+      albumId: json['albumId'] as String? ?? '',
+      videoUrl: json['videoUrl'] as String? ?? '',
+      videoSizeInBytes: (json['videoSizeInBytes'] as num?)?.toDouble() ?? 0,
+      isVideoDownloaded: json['isVideoDownloaded'] as bool? ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'albumId': albumId,
+      'videoUrl': videoUrl,
+      'videoSizeInBytes': videoSizeInBytes,
+      'isVideoDownloaded': isVideoDownloaded,
+    };
+  }
+
   @override
   List<Object?> get props => [
         id,

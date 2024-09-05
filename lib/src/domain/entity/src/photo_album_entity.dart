@@ -62,6 +62,29 @@ class PhotoAlbumEntity extends Equatable {
     return bytes / (1024 * 1024);
   }
 
+  factory PhotoAlbumEntity.fromJson(Map<String, dynamic> json) {
+    return PhotoAlbumEntity(
+      id: json['id'] as String? ?? '',
+      markerFileUrl: json['markerFileUrl'] as String? ?? '',
+      markerFileSizeInBytes: (json['markerFileSizeInBytes'] as num?)?.toDouble() ?? 0,
+      isMarkerFileDownloaded: json['isMarkerFileDownloaded'] as bool? ?? false,
+      arVideos: (json['arVideos'] as List<dynamic>?)
+          ?.map((video) => ArVideoEntity.fromJson(video as Map<String, dynamic>))
+          .toList()
+          .asObservable(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'markerFileUrl': markerFileUrl,
+      'markerFileSizeInBytes': markerFileSizeInBytes,
+      'isMarkerFileDownloaded': isMarkerFileDownloaded,
+      'arVideos': arVideos?.map((video) => video.toJson()).toList(),
+    };
+  }
+
   @override
   List<Object?> get props => [
         id,

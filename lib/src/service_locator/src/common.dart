@@ -16,9 +16,13 @@ Future<void> _initCommon() async {
     PermissionsService(),
   );
 
+  sl.registerSingleton<SharedPreferences>(
+    await SharedPreferences.getInstance(),
+  );
+
   sl.registerSingleton<SharedPreferencesHelper>(
     SharedPreferencesHelper(
-      preferences: await SharedPreferences.getInstance(),
+      preferences: sl<SharedPreferences>(),
     ),
   );
 
