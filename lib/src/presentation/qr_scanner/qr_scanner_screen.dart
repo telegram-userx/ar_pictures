@@ -99,7 +99,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
           );
         }
 
-        if (albumFuture.value != null || context.router.current.name != QrScannerRoute.name) {
+        if (albumFuture.value != null || AutoRouter.of(context, watch: true).current.name != QrScannerRoute.name) {
           return Space.empty;
         }
 

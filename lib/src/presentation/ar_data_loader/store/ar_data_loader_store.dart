@@ -84,7 +84,7 @@ abstract class _ArDataLoaderStoreBase with Store {
           isMarkerFileDownloaded: true,
           arVideos: ObservableList.of(videos
               .map<ArVideoEntity>(
-                (e) => e.copyWith(
+                (video) => video.copyWith(
                   isVideoDownloaded: true,
                 ),
               )

@@ -28,11 +28,13 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
         final remoteAlbum = await _remotePhotoAlbumRepository.getAlbum(id);
         final remoteVideos = await _remotePhotoAlbumRepository.getVideos(remoteAlbum.id);
 
-        await _localPhotoAlbumRepository.updateAlbum(remoteAlbum);
-
-        return remoteAlbum.copyWith(
+        final album = remoteAlbum.copyWith(
           arVideos: ObservableList.of(remoteVideos),
         );
+
+        await updateAlbum(album);
+
+        return album;
       } catch (error, stackTrace) {
         Logger.e(error, stackTrace);
         rethrow;
