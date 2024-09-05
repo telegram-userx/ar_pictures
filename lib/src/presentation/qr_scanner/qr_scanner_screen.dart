@@ -48,6 +48,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             }
           }
         },
+        delay: 3000,
       ),
     ];
 

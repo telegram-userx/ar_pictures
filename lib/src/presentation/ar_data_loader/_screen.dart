@@ -105,6 +105,7 @@ class _ScreenState extends State<_Screen> {
                           .downloadProgressTotal
                           .toStringAsFixed(2),
                     ),
+                    textAlign: TextAlign.center,
                     style: context.textTheme.titleLarge,
                   ),
                   Space.v20,
@@ -124,6 +125,7 @@ class _ScreenState extends State<_Screen> {
                           .totalSizeInMegaBytes
                           .toStringAsFixed(2),
                     ),
+                    textAlign: TextAlign.center,
                     style: context.textTheme.titleLarge,
                   ),
                   Space.v20,
