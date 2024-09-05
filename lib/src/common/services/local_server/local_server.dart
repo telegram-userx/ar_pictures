@@ -51,7 +51,7 @@ class LocalServer {
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:8080/videos/${arVideo.id}"></video>
+              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:3333/videos/${arVideo.id}"></video>
             ''');
 
             entities.add('''
@@ -132,7 +132,7 @@ class LocalServer {
       }
     });
 
-    httpServer = await io.serve(handler, 'localhost', 8080);
+    httpServer = await io.serve(handler, 'localhost', 3333);
     Logger.i('Local server running at http://${httpServer.address.host}:${httpServer.port}');
   }
 

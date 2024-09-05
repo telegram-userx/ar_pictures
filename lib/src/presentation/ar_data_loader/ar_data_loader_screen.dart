@@ -10,10 +10,11 @@ import '../../common/config/router/app_router.gr.dart';
 import '../../common/constant/app_constants.dart';
 import '../../common/extension/extensions.dart';
 import '../../common/logger/logger.dart';
-import '../../service_locator/sl.dart';
 import '../../common/services/download_file/download_file_service.dart';
 import '../../common/widget/space.dart';
 import '../../domain/entity/entity.dart';
+import '../../domain/repository/repository.dart';
+import '../../service_locator/sl.dart';
 import '../qr_scanner/store/qr_scanner_store.dart';
 import 'store/ar_data_loader_store.dart';
 
@@ -44,6 +45,7 @@ class _ArDataLoaderScreenState extends State<ArDataLoaderScreen> {
   Widget build(BuildContext context) {
     return Provider(
       create: (context) => ArDataLoaderStore(
+        albumRepository: sl<PhotoAlbumRepository>(),
         downloadFileService: sl<DownloadFileService>(),
         photoAlbum: widget.photoAlbum,
       ),

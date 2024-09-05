@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 
 import '../../../../../common/data/local/drift/dao.dart';
@@ -11,14 +12,15 @@ class PhotoAlbumDao implements IDao<PhotoAlbumTableData> {
   });
 
   Future<PhotoAlbumTableData?> getById(String id) async {
-    final query = database.select(database.photoAlbumTable)
-      ..where(
-        (tbl) => tbl.id.equals(id),
+    final response = await get();
+
+    if (response.isNotEmpty) {
+      return response.firstWhereOrNull(
+        (e) => e.id == id,
       );
+    }
 
-    final response = query.getSingleOrNull();
-
-    return await response;
+    return null;
   }
 
   @override

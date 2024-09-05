@@ -25,6 +25,12 @@ class _ScreenState extends State<_Screen> {
       }),
     ];
 
+    if (Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.isFullyDownloaded ?? false) {
+      context.pushRoute(
+        ArJsWebViewRoute(albumId: Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.id ?? ''),
+      );
+    }
+
     super.initState();
   }
 
@@ -55,7 +61,7 @@ class _ScreenState extends State<_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog.fullscreen(
+    return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(AppConstants.padding),
         child: AnimatedSwitcher(

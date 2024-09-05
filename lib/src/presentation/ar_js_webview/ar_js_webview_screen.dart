@@ -33,7 +33,7 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
         ),
         initialUrlRequest: URLRequest(
           url: WebUri(
-            'http://localhost:8080/albums/${widget.albumId}',
+            'http://localhost:3333/albums/${widget.albumId}',
           ),
         ),
         onWebViewCreated: (controller) async {

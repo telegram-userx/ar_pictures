@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../common/services/download_file/download_file_service.dart';
 import '../../../domain/entity/entity.dart';
+import '../../../domain/repository/repository.dart';
 
 part '../../../../generated/src/presentation/ar_data_loader/store/ar_data_loader_store.g.dart';
 
@@ -10,12 +11,15 @@ class ArDataLoaderStore = _ArDataLoaderStoreBase with _$ArDataLoaderStore;
 
 abstract class _ArDataLoaderStoreBase with Store {
   final DownloadFileService _downloadFileService;
+  final PhotoAlbumRepository _albumRepository;
 
   _ArDataLoaderStoreBase({
     required DownloadFileService downloadFileService,
+    required PhotoAlbumRepository albumRepository,
     // ignore: unused_element
     this.photoAlbum,
-  }) : _downloadFileService = downloadFileService;
+  })  : _downloadFileService = downloadFileService,
+        _albumRepository = albumRepository;
 
   @observable
   @readonly
@@ -57,6 +61,14 @@ abstract class _ArDataLoaderStoreBase with Store {
         '${appCacheDirectory.path}/${photoAlbum!.id}',
         onReceiveProgress: (received, total) => updateProgress(received, total),
       );
+
+      if (photoAlbum != null) {
+        await _albumRepository.updateAlbum(
+          photoAlbum!.copyWith(
+            isMarkerFileDownloaded: true,
+          ),
+        );
+      }
     }
 
     final videos = photoAlbum?.arVideos?.nonObservableInner ?? [];
@@ -67,6 +79,12 @@ abstract class _ArDataLoaderStoreBase with Store {
             video.videoUrl, // Corrected to use the actual video URL
             '${appCacheDirectory.path}/${video.id}',
             onReceiveProgress: (received, total) => updateProgress(received, total),
+          );
+
+          await _albumRepository.updateVideo(
+            video.copyWith(
+              isVideoDownloaded: true,
+            ),
           );
         }
       });

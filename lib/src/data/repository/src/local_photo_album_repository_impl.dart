@@ -1,7 +1,10 @@
+import 'package:drift/drift.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../common/logger/logger.dart';
 import '../../../domain/entity/entity.dart';
 import '../../../domain/repository/repository.dart';
+import '../../data_source/local/drift/app_database.dart';
 import '../../data_source/local/drift/dao/ar_video_dao.dart';
 import '../../data_source/local/drift/dao/photo_album_dao.dart';
 
@@ -51,5 +54,34 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
           ),
         )
         .toList();
+  }
+
+  @override
+  Future<void> updateAlbum(PhotoAlbumEntity album) async {
+    final isSuccess = await _albumDao.update(
+      companion: PhotoAlbumTableCompanion(
+        id: Value(album.id),
+        isMarkerFileDownloaded: Value(album.isMarkerFileDownloaded),
+        markerFileSizeInBytes: Value(album.markerFileSizeInBytes),
+        markerFileUrl: Value(album.markerFileUrl),
+      ),
+    );
+
+    Logger.i('Save photo album status: $isSuccess');
+  }
+
+  @override
+  Future<void> updateVideo(ArVideoEntity video) async {
+    final isSuccess = await _arVideoDao.update(
+      companion: ArVideoTableCompanion(
+        id: Value(video.id),
+        isVideoDownloaded: Value(video.isVideoDownloaded),
+        photoAlbumId: Value(video.albumId),
+        videoSizeInBytes: Value(video.videoSizeInBytes),
+        videoUrl: Value(video.videoUrl),
+      ),
+    );
+
+    Logger.i('Save video status: $isSuccess');
   }
 }

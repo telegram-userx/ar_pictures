@@ -45,4 +45,14 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   Future<List<ArVideoEntity>> getVideos(String albumId) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> updateAlbum(PhotoAlbumEntity album) async {
+    await _localPhotoAlbumRepository.updateAlbum(album);
+  }
+
+  @override
+  Future<void> updateVideo(ArVideoEntity video) async {
+    await _localPhotoAlbumRepository.updateVideo(video);
+  }
 }

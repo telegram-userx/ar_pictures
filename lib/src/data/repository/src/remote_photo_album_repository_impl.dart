@@ -45,4 +45,16 @@ class RemotePhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
         )
         .toList();
   }
+
+  @override
+  Future<void> updateAlbum(PhotoAlbumEntity album) {
+    // TODO: implement updateAlbum
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateVideo(ArVideoEntity video) {
+    // TODO: implement updateVideo
+    throw UnimplementedError();
+  }
 }
