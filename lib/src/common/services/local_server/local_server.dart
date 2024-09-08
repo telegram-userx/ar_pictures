@@ -65,20 +65,27 @@ class LocalServer {
           }
 
           final aframe = await rootBundle.loadString('assets/js/aframe.min.js');
+          final aframeAr = await rootBundle.loadString('assets/js/aframe-ar-nft.js');
+
           const eventListeners = '''
-            document.addEventListener('DOMContentLoaded', () => {
-              const targets = document.querySelectorAll('a-entity');
+            window.onload = function () {
+              AFRAME.registerComponent('videohandler', {
+                init: function () {
+                    var marker = this.el;
 
-              targets.forEach(target => {
-                target.addEventListener('targetFound', (event) => {
-                  console.log('Target found', target);
-                });
+                    this.vid = document.querySelector("#vid");
 
-                target.addEventListener('targetLost', (event) => {
-                  console.log('Target lost', target);
-                });
+                    marker.addEventListener('markerFound', function () {
+                      this.vid.play();
+                    }.bind(this));
+
+                    marker.addEventListener('markerLost', function () {
+                      this.vid.pause();
+                      this.vid.currentTime = 0;
+                    }.bind(this));
+                }
               });
-            });
+          };
           ''';
 
           final html = '''
@@ -87,29 +94,69 @@ class LocalServer {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <script>$aframe</script>
-                <script src="http://localhost/libs/aframe-extras.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+                <script>$aframeAr</script>
 
                 <script>$eventListeners</script>
+
+                <!-- style for the loader -->
+                <style>
+                  .arjs-loader {
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    background-color: rgba(0, 0, 0, 0.8);
+                    z-index: 9999;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+
+                  .arjs-loader div {
+                    text-align: center;
+                    font-size: 1.25em;
+                    color: white;
+                  }
+                </style>
               </head>
-              <body>
-                <a-scene stats
-                mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
-                uiError:no; uiScanning:no;
-                filterMinCF: 10; filterBeta: 1000;  "
-                color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
-                vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+              
+              <body style="margin : 0px; overflow: hidden;">
+                <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
+                <div class="arjs-loader">
+                  <div>Loading, please wait...</div>
+                </div>
 
-                  <a-assets>
-                    ${assets.join('\n')}
-                  </a-assets>
-
-                  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-                  
-                  ${entities.join('\n')}
-                
+                <!-- a-frame scene -->
+                <a-scene
+                  stats
+                  vr-mode-ui="enabled: false;"
+                  renderer="logarithmicDepthBuffer: true;"
+                  embedded
+                  arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+                >
+                  $assets
+                  <!-- a-nft is the anchor that defines an Image Tracking entity -->
+                  <!-- on 'url' use the path to the Image Descriptors created before. -->
+                  <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
+                  <a-nft
+                    type="nft"
+                    url="http://localhost:3333/targets/4"
+                    smooth="true"
+                    smoothCount="10"
+                    smoothTolerance=".01"
+                    smoothThreshold="5"
+                  >
+                    <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
+                    <a-entity mindar-image-target="targetIndex: 0">
+                      <a-video autoplay="false" webkit-playsinline playsinline width="1" height="1" preload="none"
+                                position="0 0 0" src="#20fb751f-a6e5-4877-ab01-33b304bf4a36">
+                      </a-video>
+                    </a-entity>
+                  </a-nft>
+                  <!-- static camera that moves according to the device movemenents -->
+                  <a-entity camera></a-entity>
                 </a-scene>
-
               </body>
             </html>
           ''';
@@ -144,14 +191,40 @@ class LocalServer {
       }
     });
 
-    app.get('/targets/<fileName>', (Request request, String fileName) async {
+    app.get('/targets/<fileName>.iset', (Request request, String fileName) async {
       try {
-        final appCacheDirectory = await getApplicationDocumentsDirectory();
-        final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
-        Logger.i('App cache directory: ${appCacheDirectory.path}');
+        final asset = await rootBundle.loadString('assets/js/$fileName.iset');
 
         return Response.ok(
-          file,
+          asset,
+          headers: {'Content-Type': 'application/octet-stream'},
+        );
+      } catch (e) {
+        Logger.e(e);
+        return Response.notFound('File not found');
+      }
+    });
+
+    app.get('/targets/<fileName>.fset3', (Request request, String fileName) async {
+      try {
+        final asset = await rootBundle.loadString('assets/js/$fileName.fset3');
+
+        return Response.ok(
+          asset,
+          headers: {'Content-Type': 'application/octet-stream'},
+        );
+      } catch (e) {
+        Logger.e(e);
+        return Response.notFound('File not found');
+      }
+    });
+
+    app.get('/targets/<fileName>.fset', (Request request, String fileName) async {
+      try {
+        final asset = await rootBundle.loadString('assets/js/$fileName.fset');
+
+        return Response.ok(
+          asset,
           headers: {'Content-Type': 'application/octet-stream'},
         );
       } catch (e) {
