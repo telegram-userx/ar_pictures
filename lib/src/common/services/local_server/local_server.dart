@@ -52,12 +52,12 @@ class LocalServer {
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" preload="auto" src="http://localhost:3333/videos/${arVideo.id}"></video>
+              <video id="${arVideo.id}" autoplay="false" loop="true" preload="none" src="http://localhost:3333/videos/${arVideo.id}"></video>
             ''');
 
             entities.add('''
               <a-entity mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}">
-                <a-video autoplay="false" webkit-playsinline playsinline width="1" height="1" 
+                <a-video autoplay="false" webkit-playsinline playsinline width="1" height="1" preload="none"
                           position="0 0 0" src="#${arVideo.id}">
                 </a-video>
               </a-entity>
@@ -85,6 +85,7 @@ class LocalServer {
             <html>
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="apple-mobile-web-app-capable" content="yes">
                 <script>$aframe</script>
                 <script src="http://localhost/libs/aframe-extras.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -92,7 +93,8 @@ class LocalServer {
                 <script>$eventListeners</script>
               </head>
               <body>
-                <a-scene mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
+                <a-scene stats
+                mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
                 uiError:no; uiScanning:no;
                 filterMinCF: 10; filterBeta: 1000;  "
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
