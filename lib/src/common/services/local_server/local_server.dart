@@ -65,6 +65,21 @@ class LocalServer {
           }
 
           final aframe = await rootBundle.loadString('assets/js/aframe.min.js');
+          const eventListeners = '''
+            document.addEventListener('DOMContentLoaded', () => {
+              const targets = document.querySelectorAll('a-entity');
+
+              targets.forEach(target => {
+                target.addEventListener('targetFound', (event) => {
+                  console.log('Target found', target);
+                });
+
+                target.addEventListener('targetLost', (event) => {
+                  console.log('Target lost', target);
+                });
+              });
+            });
+          ''';
 
           final html = '''
             <html>
@@ -73,14 +88,16 @@ class LocalServer {
                 <script>$aframe</script>
                 <script src="http://localhost/libs/aframe-extras.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+                <script>$eventListeners</script>
               </head>
               <body>
                 <a-scene mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
                 uiError:no; uiScanning:no;
-                filterMinCF: 10; filterBeta: 1000"
+                filterMinCF: 10; filterBeta: 1000;  "
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
                 vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-                  
+
                   <a-assets>
                     ${assets.join('\n')}
                   </a-assets>
@@ -117,7 +134,7 @@ class LocalServer {
 
         return Response.ok(
           file,
-          headers: {'Content-Type': 'video/mp4'},
+          headers: {'Content-Type': 'application/octet-stream'},
         );
       } catch (e) {
         Logger.e(e);

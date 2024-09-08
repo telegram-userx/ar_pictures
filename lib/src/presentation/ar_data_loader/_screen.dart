@@ -133,24 +133,27 @@ class _ScreenState extends State<_Screen> {
                           style: context.textTheme.titleLarge,
                         ),
                         Space.v20,
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  context.maybePop();
-                                },
-                                child: Text(context.translations.cancel),
+                        SizedBox(
+                          height: 60,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context.maybePop();
+                                  },
+                                  child: Text(context.translations.cancel),
+                                ),
                               ),
-                            ),
-                            Space.h20,
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () => _onDownload(context),
-                                child: Text(context.translations.download),
+                              Space.h20,
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () => _onDownload(context),
+                                  child: Text(context.translations.download),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     );
