@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
@@ -51,7 +52,7 @@ class LocalServer {
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:3333/videos/${arVideo.id}"></video>
+              <video id="${arVideo.id}" autoplay="false" loop="true" preload="auto" src="http://localhost:3333/videos/${arVideo.id}"></video>
             ''');
 
             entities.add('''
@@ -63,12 +64,14 @@ class LocalServer {
             ''');
           }
 
+          final aframe = await rootBundle.loadString('assets/js/aframe.min.js');
+
           final html = '''
             <html>
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+                <script>$aframe</script>
+                <script src="http://localhost/libs/aframe-extras.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
               </head>
               <body>
@@ -131,6 +134,20 @@ class LocalServer {
         return Response.ok(
           file,
           headers: {'Content-Type': 'application/octet-stream'},
+        );
+      } catch (e) {
+        Logger.e(e);
+        return Response.notFound('File not found');
+      }
+    });
+
+    app.get('/libs/<assetName>', (Request request, String assetName) async {
+      try {
+        final asset = await rootBundle.loadString('assets/js/$assetName');
+
+        return Response.ok(
+          asset,
+          headers: {'Content-Type': 'text/javascript'},
         );
       } catch (e) {
         Logger.e(e);
