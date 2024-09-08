@@ -41,7 +41,7 @@ class LocalServer {
       '/albums/<id>',
       (Request request, String id) async {
         try {
-          // final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
+          final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
           final arVideos = sl<QrScannerStore>().albumFuture.value?.arVideos?.nonObservableInner ?? [];
 
           // Generate entities and assets
@@ -72,7 +72,7 @@ class LocalServer {
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
               </head>
               <body>
-                <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/telegram-userx/ar_pictures@master/assets/js/targets.mind;
+                <a-scene mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
                 uiError:no; uiScanning:no;
                 filterMinCF: 10; filterBeta: 10000" 
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
@@ -112,7 +112,10 @@ class LocalServer {
         final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
         Logger.i('App cache directory: ${appCacheDirectory.path}');
 
-        return Response.ok(file, headers: {'Content-Type': _getMimeType(fileName)});
+        return Response.ok(
+          file,
+          headers: {'Content-Type': 'video/mp4'},
+        );
       } catch (e) {
         Logger.e(e);
         return Response.notFound('File not found');
@@ -125,7 +128,10 @@ class LocalServer {
         final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
         Logger.i('App cache directory: ${appCacheDirectory.path}');
 
-        return Response.ok(file, headers: {'Content-Type': _getMimeType(fileName)});
+        return Response.ok(
+          file,
+          headers: {'Content-Type': 'application/octet-stream'},
+        );
       } catch (e) {
         Logger.e(e);
         return Response.notFound('File not found');
@@ -134,19 +140,5 @@ class LocalServer {
 
     httpServer = await io.serve(handler, 'localhost', 3333);
     Logger.i('Local server running at http://${httpServer.address.host}:${httpServer.port}');
-  }
-
-  String _getMimeType(String fileName) {
-    final extension = fileName.split('.').last.toLowerCase();
-    switch (extension) {
-      case 'mp4':
-        return 'video/mp4';
-      case 'webm':
-        return 'video/webm';
-      case 'ogg':
-        return 'video/ogg';
-      default:
-        return 'application/octet-stream';
-    }
   }
 }

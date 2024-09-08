@@ -48,7 +48,7 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   }
 
   @override
-  Future<void> updateAlbum(PhotoAlbumEntity album) async {
+  Future<void> updateAlbum(PhotoAlbumEntity album, {bool override = false}) async {
     await _localPhotoAlbumRepository.updateAlbum(album);
   }
 }

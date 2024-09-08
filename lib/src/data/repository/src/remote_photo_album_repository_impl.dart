@@ -47,8 +47,7 @@ class RemotePhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   }
 
   @override
-  Future<void> updateAlbum(PhotoAlbumEntity album) {
-    // TODO: implement updateAlbum
+  Future<void> updateAlbum(PhotoAlbumEntity album, {bool override = false}) {
     throw UnimplementedError();
   }
 }

@@ -6,5 +6,5 @@ abstract interface class PhotoAlbumRepository {
 
   Future<List<ArVideoEntity>> getVideos(String albumId);
 
-  Future<void> updateAlbum(PhotoAlbumEntity album);
+  Future<void> updateAlbum(PhotoAlbumEntity album, {bool override = false});
 }

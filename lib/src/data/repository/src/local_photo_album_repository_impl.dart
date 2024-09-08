@@ -56,13 +56,15 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
       localAlbum = null;
     }
 
-    final json = jsonEncode(localAlbum == null
-        ? album.toJson()
-        : localAlbum
-            .copyWith(
-              arVideos: album.arVideos,
-            )
-            .toJson());
+    final json = jsonEncode(
+      localAlbum == null || override
+          ? album.toJson()
+          : localAlbum
+              .copyWith(
+                arVideos: album.arVideos,
+              )
+              .toJson(),
+    );
 
     final isSuccess = await _prefs.setString(
       '$_key${album.id}',

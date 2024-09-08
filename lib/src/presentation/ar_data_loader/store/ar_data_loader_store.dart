@@ -90,6 +90,7 @@ abstract class _ArDataLoaderStoreBase with Store {
               )
               .toList()),
         ),
+        override: true,
       );
     }
 
