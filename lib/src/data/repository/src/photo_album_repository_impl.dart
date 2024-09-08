@@ -31,7 +31,7 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
           arVideos: ObservableList.of(remoteVideos),
         );
 
-        await updateAlbum(album, override: true);
+        await updateAlbum(album);
 
         return album;
       } catch (error, stackTrace) {
@@ -42,7 +42,7 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   }
 
   @override
-  Future<void> updateAlbum(PhotoAlbumEntity album, {bool override = false}) async {
+  Future<void> updateAlbum(PhotoAlbumEntity album) async {
     await _localPhotoAlbumRepository.updateAlbum(album);
   }
 }

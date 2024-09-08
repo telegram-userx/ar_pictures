@@ -35,7 +35,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             final album = sl<QrScannerStore>().album;
 
             if (album?.isFullyDownloaded ?? false) {
-              context.navigateTo(
+              context.replaceRoute(
                 ArJsWebViewRoute(
                   albumId: album?.id ?? '',
                 ),

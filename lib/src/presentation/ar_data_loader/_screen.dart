@@ -26,7 +26,7 @@ class _ScreenState extends State<_Screen> {
     ];
 
     if (Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.isFullyDownloaded ?? false) {
-      context.navigateTo(
+      context.replaceRoute(
         ArJsWebViewRoute(albumId: Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.id ?? ''),
       );
     }
