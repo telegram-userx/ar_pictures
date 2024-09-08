@@ -41,8 +41,8 @@ class LocalServer {
       '/albums/<id>',
       (Request request, String id) async {
         try {
-          final arMarkerId = sl<QrScannerStore>().albumFuture.value?.id ?? '';
-          final arVideos = sl<QrScannerStore>().albumFuture.value?.arVideos?.nonObservableInner ?? [];
+          final arMarkerId = sl<QrScannerStore>().album?.id ?? '';
+          final arVideos = sl<QrScannerStore>().album?.arVideos?.nonObservableInner ?? [];
 
           // Generate entities and assets
           List<String> assets = [];

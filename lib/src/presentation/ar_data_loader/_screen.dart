@@ -26,7 +26,7 @@ class _ScreenState extends State<_Screen> {
     ];
 
     if (Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.isFullyDownloaded ?? false) {
-      context.pushRoute(
+      context.navigateTo(
         ArJsWebViewRoute(albumId: Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.id ?? ''),
       );
     }
@@ -64,94 +64,120 @@ class _ScreenState extends State<_Screen> {
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(AppConstants.padding),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          child: Observer(builder: (_) {
-            if (hasErrors) {
-              return Center(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.maybePop();
-                        },
-                        child: Text(context.translations.cancel),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                child: Observer(builder: (_) {
+                  if (hasErrors) {
+                    return Center(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.maybePop();
+                              },
+                              child: Text(context.translations.cancel),
+                            ),
+                          ),
+                          Space.h20,
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => _onDownload(context),
+                              child: Text(context.translations.retry),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Space.h20,
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => _onDownload(context),
-                        child: Text(context.translations.retry),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
+                    );
+                  }
 
-            if (Provider.of<ArDataLoaderStore>(context, listen: false).isDownloading) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    context.translations.downloadInProgress(
-                      total: Provider.of<ArDataLoaderStore>(context, listen: false)
-                          .totalSizeInMegaBytes
-                          .toStringAsFixed(2),
-                      received: Provider.of<ArDataLoaderStore>(context, listen: false)
-                          .downloadProgressTotal
-                          .toStringAsFixed(2),
-                    ),
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.titleLarge,
-                  ),
-                  Space.v20,
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              );
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    context.translations.areYouSureDownload(
-                      megabytes: Provider.of<ArDataLoaderStore>(context, listen: false)
-                          .totalSizeInMegaBytes
-                          .toStringAsFixed(2),
-                    ),
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.titleLarge,
-                  ),
-                  Space.v20,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context.maybePop();
-                          },
-                          child: Text(context.translations.cancel),
+                  if (Provider.of<ArDataLoaderStore>(context, listen: false).isDownloading) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          context.translations.downloadInProgress(
+                            total: Provider.of<ArDataLoaderStore>(context, listen: false)
+                                .totalSizeInMegaBytes
+                                .toStringAsFixed(2),
+                            received: Provider.of<ArDataLoaderStore>(context, listen: false)
+                                .downloadProgressTotal
+                                .toStringAsFixed(2),
+                          ),
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.titleLarge,
                         ),
-                      ),
-                      Space.h20,
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => _onDownload(context),
-                          child: Text(context.translations.download),
+                        Space.v20,
+                        const Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      ),
-                    ],
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          context.translations.areYouSureDownload(
+                            megabytes: Provider.of<ArDataLoaderStore>(context, listen: false)
+                                .totalSizeInMegaBytes
+                                .toStringAsFixed(2),
+                          ),
+                          textAlign: TextAlign.center,
+                          style: context.textTheme.titleLarge,
+                        ),
+                        Space.v20,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  context.maybePop();
+                                },
+                                child: Text(context.translations.cancel),
+                              ),
+                            ),
+                            Space.h20,
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () => _onDownload(context),
+                                child: Text(context.translations.download),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                }),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              child: SizedBox(
+                height: 40,
+                width: 40,
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    padding: EdgeInsets.zero,
                   ),
-                ],
-              );
-            }
-          }),
+                  onPressed: () {
+                    context.maybePop();
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

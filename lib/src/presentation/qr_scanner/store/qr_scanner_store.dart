@@ -18,23 +18,28 @@ abstract class _QrScannerStoreBase with Store {
 
   @observable
   @readonly
-  ObservableFuture<PhotoAlbumEntity?> albumFuture = ObservableFuture.value(null);
+  PhotoAlbumEntity? album;
+
+  @observable
+  @readonly
+  FutureStatus albumStatus = FutureStatus.fulfilled;
 
   @action
   reset() {
-    albumFuture = ObservableFuture.value(null);
+    album = null;
   }
 
   @action
   getAlbum(String id) async {
-    if (albumFuture.status.isPending) return;
+    if (albumStatus.isPending) return;
+    albumStatus = FutureStatus.pending;
 
     try {
-      albumFuture = ObservableFuture(_albumRepository.getAlbum(id));
-
-      await albumFuture;
+      album = await _albumRepository.getAlbum(id);
+      albumStatus = FutureStatus.fulfilled;
     } catch (error, stackTrace) {
       Logger.e(error, stackTrace);
+      albumStatus = FutureStatus.rejected;
     }
   }
 }

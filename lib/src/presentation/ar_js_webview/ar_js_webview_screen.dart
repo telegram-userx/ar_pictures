@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+import '../../common/config/router/app_router.gr.dart';
 import '../../common/logger/logger.dart';
 
 @RoutePage()
@@ -23,7 +25,18 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            context.navigateTo(
+              const QrScannerRoute(),
+            );
+          },
+          icon: const Icon(
+            CupertinoIcons.chevron_left,
+          ),
+        ),
+      ),
       body: InAppWebView(
         initialSettings: InAppWebViewSettings(
           javaScriptEnabled: true,

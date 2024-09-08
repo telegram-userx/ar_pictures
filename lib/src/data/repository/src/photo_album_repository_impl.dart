@@ -1,7 +1,6 @@
 import 'package:mobx/mobx.dart';
 
 import '../../../common/logger/logger.dart';
-import '../../../domain/entity/src/ar_video_entity.dart';
 import '../../../domain/entity/src/photo_album_entity.dart';
 import '../../../domain/repository/repository.dart';
 import 'local_photo_album_repository_impl.dart';
@@ -32,7 +31,7 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
           arVideos: ObservableList.of(remoteVideos),
         );
 
-        await updateAlbum(album);
+        await updateAlbum(album, override: true);
 
         return album;
       } catch (error, stackTrace) {
@@ -40,11 +39,6 @@ class PhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
         rethrow;
       }
     }
-  }
-
-  @override
-  Future<List<ArVideoEntity>> getVideos(String albumId) {
-    throw UnimplementedError();
   }
 
   @override

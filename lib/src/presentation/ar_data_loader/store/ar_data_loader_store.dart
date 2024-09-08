@@ -79,18 +79,19 @@ abstract class _ArDataLoaderStoreBase with Store {
     }
 
     if (photoAlbum != null) {
+      final updatedAlbum = photoAlbum!.copyWith(
+        isMarkerFileDownloaded: true,
+        arVideos: ObservableList.of(videos
+            .map<ArVideoEntity>(
+              (video) => video.copyWith(
+                isVideoDownloaded: true,
+              ),
+            )
+            .toList()),
+      );
+
       await _albumRepository.updateAlbum(
-        photoAlbum!.copyWith(
-          isMarkerFileDownloaded: true,
-          arVideos: ObservableList.of(videos
-              .map<ArVideoEntity>(
-                (video) => video.copyWith(
-                  isVideoDownloaded: true,
-                ),
-              )
-              .toList()),
-        ),
-        override: true,
+        updatedAlbum,
       );
     }
 

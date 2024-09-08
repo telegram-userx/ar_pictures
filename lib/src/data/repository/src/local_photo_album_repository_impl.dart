@@ -31,40 +31,8 @@ class LocalPhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
   }
 
   @override
-  Future<List<ArVideoEntity>> getVideos(String albumId) async {
-    final videosJson = _prefs.getStringList('$_key$albumId') ?? [];
-
-    return videosJson
-        .map<ArVideoEntity>(
-          (video) => ArVideoEntity.fromJson(
-            jsonDecode(video),
-          ),
-        )
-        .where(
-          (e) => e.albumId == albumId,
-        )
-        .toList();
-  }
-
-  @override
-  Future<void> updateAlbum(PhotoAlbumEntity album, {bool override = false}) async {
-    late final PhotoAlbumEntity? localAlbum;
-
-    try {
-      localAlbum = await getAlbum(album.id);
-    } catch (e) {
-      localAlbum = null;
-    }
-
-    final json = jsonEncode(
-      localAlbum == null || override
-          ? album.toJson()
-          : localAlbum
-              .copyWith(
-                arVideos: album.arVideos,
-              )
-              .toJson(),
-    );
+  Future<void> updateAlbum(PhotoAlbumEntity album) async {
+    final json = jsonEncode(album.toJson());
 
     final isSuccess = await _prefs.setString(
       '$_key${album.id}',

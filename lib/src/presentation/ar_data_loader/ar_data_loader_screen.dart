@@ -36,9 +36,8 @@ class ArDataLoaderScreen extends StatefulWidget {
 class _ArDataLoaderScreenState extends State<ArDataLoaderScreen> {
   @override
   void dispose() {
-    sl<QrScannerStore>().reset();
-
     super.dispose();
+    sl<QrScannerStore>().reset();
   }
 
   @override

@@ -7,6 +7,7 @@ import 'package:mobx/mobx.dart';
 
 import '../../common/config/router/app_router.gr.dart';
 import '../../common/extension/extensions.dart';
+import '../../common/logger/logger.dart';
 import '../../common/widget/space.dart';
 import '../../service_locator/sl.dart';
 import 'store/qr_scanner_store.dart';
@@ -28,13 +29,13 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void initState() {
     _disposers = [
       reaction(
-        (_) => sl<QrScannerStore>().albumFuture.status,
+        (_) => sl<QrScannerStore>().albumStatus,
         (status) {
           if (status.isFulfilled) {
-            final album = sl<QrScannerStore>().albumFuture.value;
+            final album = sl<QrScannerStore>().album;
 
             if (album?.isFullyDownloaded ?? false) {
-              context.pushRoute(
+              context.navigateTo(
                 ArJsWebViewRoute(
                   albumId: album?.id ?? '',
                 ),
@@ -48,7 +49,6 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             }
           }
         },
-        delay: 2000,
       ),
     ];
 
@@ -69,7 +69,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void _handleBarcode(BarcodeCapture barcodes) async {
     final barcodeValue = barcodes.barcodes.firstOrNull?.rawValue ?? '';
 
-    if (barcodeValue.isUUID) {
+    if (barcodeValue.isUUID && AutoRouter.of(context).current.name == QrScannerRoute.name) {
+      Logger.i('Detected UUID: $barcodeValue');
       sl<QrScannerStore>().getAlbum(barcodeValue);
     }
   }
@@ -91,15 +92,16 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         ],
       ),
       body: Observer(builder: (_) {
-        final albumFuture = sl<QrScannerStore>().albumFuture;
+        final albumStatus = sl<QrScannerStore>().albumStatus;
+        final album = sl<QrScannerStore>().album;
 
-        if (albumFuture.status.isPending) {
+        if (albumStatus.isPending) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (albumFuture.value != null && AutoRouter.of(context, watch: true).current.name != QrScannerRoute.name) {
+        if (album != null && AutoRouter.of(context, watch: true).current.name == QrScannerRoute.name) {
           return Space.empty;
         }
 

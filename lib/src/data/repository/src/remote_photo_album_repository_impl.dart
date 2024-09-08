@@ -29,7 +29,6 @@ class RemotePhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
     );
   }
 
-  @override
   Future<List<ArVideoEntity>> getVideos(String albumId) async {
     final videos = await _arVideoSdk.getByAlbumId(albumId);
 
