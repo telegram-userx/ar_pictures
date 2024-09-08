@@ -74,7 +74,7 @@ class LocalServer {
               <body>
                 <a-scene mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
                 uiError:no; uiScanning:no;
-                filterMinCF: 10; filterBeta: 10000" 
+                filterMinCF: 10; filterBeta: 1000"
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
                 vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
                   

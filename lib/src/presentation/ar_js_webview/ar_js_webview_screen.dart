@@ -23,12 +23,26 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
   late InAppWebViewController webViewController;
 
   @override
+  void dispose() {
+    webViewController.loadUrl(
+      urlRequest: URLRequest(
+        url: WebUri(
+          'https://google.com',
+        ),
+      ),
+    );
+    webViewController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            context.navigateTo(
+            context.replaceRoute(
               const QrScannerRoute(),
             );
           },

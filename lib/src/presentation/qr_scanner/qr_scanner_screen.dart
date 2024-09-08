@@ -27,6 +27,8 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
 
   @override
   void initState() {
+    sl<QrScannerStore>().reset();
+
     _disposers = [
       reaction(
         (_) => sl<QrScannerStore>().albumStatus,
