@@ -23,7 +23,7 @@ class ArVideoDto {
   static const className = 'ar_video';
   static const kPhotoAlbum = 'photoAlbumId';
 
-  String? get videoUrl =>video == null? '': '${dotenv.env[kVarDirectusApiUrl]!}/assets/$video';
+  String? get videoUrl => video == null ? '' : '${dotenv.env[kVarDirectusApiUrl]!}assets/$video';
 
   /// Connect the generated [_$ArVideoDtoFromJson] function to the `fromJson`
   /// factory.

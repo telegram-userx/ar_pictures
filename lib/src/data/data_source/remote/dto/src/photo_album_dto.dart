@@ -20,7 +20,7 @@ class PhotoAlbumDto {
   // ClassName
   static const className = 'photo_album';
 
-  String get markerFileUrl => '${dotenv.env[kVarDirectusApiUrl]!}/assets/$markerFile';
+  String get markerFileUrl => '${dotenv.env[kVarDirectusApiUrl]!}assets/$markerFile';
 
   /// Connect the generated [_$PhotoAlbumDtoFromJson] function to the `fromJson`
   /// factory.

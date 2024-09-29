@@ -48,33 +48,41 @@ class LocalServer {
           // Generate entities and assets
           List<String> assets = [];
           List<String> entities = [];
+          List<String> scripts = [];
 
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:3333/videos/${arVideo.id}"></video>
+              <video id="${arVideo.id}" loop="true" src="http://localhost:3333/videos/${arVideo.id}"></video>
             ''');
 
             entities.add('''
-              <a-entity ${arVideo.id} mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}">
-                <a-video autoplay="false" position="0 0 0" src="#${arVideo.id}">
+              <a-entity data-${arVideo.id} mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}">
+                <a-video src="#${arVideo.id}">
                 </a-video>
               </a-entity>
+            ''');
 
-              <script>
-                AFRAME.registerComponent('${arVideo.id}', {
+            scripts.add('''
+                AFRAME.registerComponent('data-${arVideo.id}', {
                   init: function () {
+                    const videoElement = document.getElementById('${arVideo.id}');
+
                     this.el.addEventListener('targetFound', event => {
                       console.log("target found");
-                      document.getElementById('${arVideo.id}').play();
+                      document.querySelector(`[data-${arVideo.id}]`).innerHTML = `
+                        <a-video src="#${arVideo.id}"></a-video>
+                      `;
+                      videoElement.play();
                     });
+
                     this.el.addEventListener('targetLost', event => {
                       console.log("target lost");
-                      document.getElementById('${arVideo.id}').pause();
+                      document.querySelector(`[data-${arVideo.id}]`).innerHTML = '';
+                      videoElement.pause();
                     });
                   }
                 });
-              </script>
             ''');
           }
 
@@ -91,12 +99,12 @@ class LocalServer {
               </head>
               <body>
                 <a-scene stats
-                mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
-                uiError:no; uiScanning:no;
-                filterMinCF: 0.0001; filterBeta: 0.001;
-                missTolerance: 1; warmupTolerance: 3;"
-                color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
-                vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+                  mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
+                  uiError:no; uiScanning:no;
+                  filterMinCF: 0.0001; filterBeta: 0.001; 
+                  missTolerance: 1; warmupTolerance: 1;"
+                  color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
+                  vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
                   <a-assets>
                     ${assets.join('\n')}
@@ -108,6 +116,7 @@ class LocalServer {
                 
                 </a-scene>
 
+                <script>${scripts.join('\n')}</script>
               </body>
             </html>
           ''';
