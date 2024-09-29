@@ -40,6 +40,7 @@ class RemotePhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
             isVideoDownloaded: false,
             videoSizeInBytes: e.videoSizeInBytes ?? 0,
             videoUrl: e.videoUrl ?? '',
+            height: e.height ?? 0,
           ),
         )
         .toList();

@@ -5,6 +5,7 @@ class ArVideoEntity extends Equatable {
   final String albumId;
   final String videoUrl;
   final double videoSizeInBytes;
+  final double height;
   final bool isVideoDownloaded;
 
   const ArVideoEntity({
@@ -12,6 +13,7 @@ class ArVideoEntity extends Equatable {
     this.albumId = '',
     this.videoUrl = '',
     this.videoSizeInBytes = 0,
+    this.height = 0,
     this.isVideoDownloaded = false,
   });
 
@@ -20,6 +22,7 @@ class ArVideoEntity extends Equatable {
     String? albumId,
     String? videoUrl,
     double? videoSizeInBytes,
+    double? height,
     String? videoLocation,
     bool? isVideoDownloaded,
   }) {
@@ -29,6 +32,7 @@ class ArVideoEntity extends Equatable {
       videoUrl: videoUrl ?? this.videoUrl,
       videoSizeInBytes: videoSizeInBytes ?? this.videoSizeInBytes,
       isVideoDownloaded: isVideoDownloaded ?? this.isVideoDownloaded,
+      height: height ?? this.height,
     );
   }
 
@@ -39,6 +43,7 @@ class ArVideoEntity extends Equatable {
       videoUrl: json['videoUrl'] as String? ?? '',
       videoSizeInBytes: (json['videoSizeInBytes'] as num?)?.toDouble() ?? 0,
       isVideoDownloaded: json['isVideoDownloaded'] as bool? ?? false,
+      height: (json['height'] as num?)?.toDouble() ?? 0,
     );
   }
 
@@ -49,6 +54,7 @@ class ArVideoEntity extends Equatable {
       'videoUrl': videoUrl,
       'videoSizeInBytes': videoSizeInBytes,
       'isVideoDownloaded': isVideoDownloaded,
+      'height': height,
     };
   }
 
@@ -58,6 +64,7 @@ class ArVideoEntity extends Equatable {
         albumId,
         videoUrl,
         videoSizeInBytes,
+        height,
         isVideoDownloaded,
       ];
 }

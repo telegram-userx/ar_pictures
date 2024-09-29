@@ -11,12 +11,14 @@ class ArVideoDto {
   final String? photoAlbumId;
   final String? video;
   final double? videoSizeInBytes;
+  final double? height;
 
   ArVideoDto({
     this.id,
     this.video,
     this.photoAlbumId,
     this.videoSizeInBytes,
+    this.height,
   });
 
   // ClassName

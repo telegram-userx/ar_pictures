@@ -57,10 +57,7 @@ class LocalServer {
             ''');
 
             entities.add('''
-              <a-entity data-${arVideo.id} mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}">
-                <a-video src="#${arVideo.id}">
-                </a-video>
-              </a-entity>
+              <a-entity data-${arVideo.id} mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}"></a-entity>
             ''');
 
             scripts.add('''
@@ -70,15 +67,13 @@ class LocalServer {
 
                     this.el.addEventListener('targetFound', event => {
                       console.log("target found");
-                      document.querySelector(`[data-${arVideo.id}]`).innerHTML = `
-                        <a-video src="#${arVideo.id}"></a-video>
-                      `;
+                      document.querySelector('[data-${arVideo.id}]').innerHTML = `<a-video src="#${arVideo.id}" width="1" height="${(arVideo.height == 0 ? 768 : arVideo.height) / 1000}"></a-video>`;
                       videoElement.play();
                     });
 
                     this.el.addEventListener('targetLost', event => {
                       console.log("target lost");
-                      document.querySelector(`[data-${arVideo.id}]`).innerHTML = '';
+                      document.querySelector('[data-${arVideo.id}]').innerHTML = '';
                       videoElement.pause();
                     });
                   }
