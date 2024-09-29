@@ -52,34 +52,33 @@ class LocalServer {
           for (final arVideo in arVideos) {
             // Ensure correct MIME type and format
             assets.add('''
-              <video id="${arVideo.id}" autoplay="false" loop="true" preload="none" src="http://localhost:3333/videos/${arVideo.id}"></video>
+              <video id="${arVideo.id}" autoplay="false" loop="true" src="http://localhost:3333/videos/${arVideo.id}"></video>
             ''');
 
             entities.add('''
-              <a-entity mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}">
-                <a-video autoplay="false" webkit-playsinline playsinline width="1" height="1" preload="none"
-                          position="0 0 0" src="#${arVideo.id}">
+              <a-entity ${arVideo.id} mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}">
+                <a-video autoplay="false" position="0 0 0" src="#${arVideo.id}">
                 </a-video>
               </a-entity>
+
+              <script>
+                AFRAME.registerComponent('${arVideo.id}', {
+                  init: function () {
+                    this.el.addEventListener('targetFound', event => {
+                      console.log("target found");
+                      document.getElementById('${arVideo.id}').play();
+                    });
+                    this.el.addEventListener('targetLost', event => {
+                      console.log("target lost");
+                      document.getElementById('${arVideo.id}').pause();
+                    });
+                  }
+                });
+              </script>
             ''');
           }
 
           final aframe = await rootBundle.loadString('assets/js/aframe.min.js');
-          const eventListeners = '''
-            document.addEventListener('DOMContentLoaded', () => {
-              const targets = document.querySelectorAll('a-entity');
-
-              targets.forEach(target => {
-                target.addEventListener('targetFound', (event) => {
-                  console.log('Target found', target);
-                });
-
-                target.addEventListener('targetLost', (event) => {
-                  console.log('Target lost', target);
-                });
-              });
-            });
-          ''';
 
           final html = '''
             <html>
@@ -89,14 +88,13 @@ class LocalServer {
                 <script>$aframe</script>
                 <script src="http://localhost/libs/aframe-extras.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-                <script>$eventListeners</script>
               </head>
               <body>
                 <a-scene stats
                 mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
                 uiError:no; uiScanning:no;
-                filterMinCF: 10; filterBeta: 1000;  "
+                filterMinCF: 0.0001; filterBeta: 0.001;
+                missTolerance: 1; warmupTolerance: 3;"
                 color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
                 vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
