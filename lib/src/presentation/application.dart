@@ -44,7 +44,7 @@ class Application extends StatelessWidget {
         // Builder
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaler: const TextScaler.linear(1),
+            textScaleFactor: 1.0,
           ),
           child: child ?? Space.empty,
         ),

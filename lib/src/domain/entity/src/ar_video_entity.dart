@@ -5,8 +5,15 @@ class ArVideoEntity extends Equatable {
   final String albumId;
   final String videoUrl;
   final double videoSizeInBytes;
-  final double height;
   final bool isVideoDownloaded;
+  String get localVideoUrl => 'http://localhost:5441/videos/$id.mp4';
+
+  final String pictureUrl;
+  final double pictureSizeInBytes;
+  final bool isPictureDownloaded;
+  String get localPictureUrl => 'http://localhost:5441/images/$id.jpeg';
+
+  final double height;
 
   const ArVideoEntity({
     this.id = '',
@@ -15,6 +22,9 @@ class ArVideoEntity extends Equatable {
     this.videoSizeInBytes = 0,
     this.height = 0,
     this.isVideoDownloaded = false,
+    this.pictureUrl = '',
+    this.pictureSizeInBytes = 0,
+    this.isPictureDownloaded = false,
   });
 
   ArVideoEntity copyWith({
@@ -23,16 +33,21 @@ class ArVideoEntity extends Equatable {
     String? videoUrl,
     double? videoSizeInBytes,
     double? height,
-    String? videoLocation,
     bool? isVideoDownloaded,
+    String? pictureUrl,
+    double? pictureSizeInBytes,
+    bool? isPictureDownloaded,
   }) {
     return ArVideoEntity(
       id: id ?? this.id,
       albumId: albumId ?? this.albumId,
       videoUrl: videoUrl ?? this.videoUrl,
       videoSizeInBytes: videoSizeInBytes ?? this.videoSizeInBytes,
-      isVideoDownloaded: isVideoDownloaded ?? this.isVideoDownloaded,
       height: height ?? this.height,
+      isVideoDownloaded: isVideoDownloaded ?? this.isVideoDownloaded,
+      pictureUrl: pictureUrl ?? this.pictureUrl,
+      pictureSizeInBytes: pictureSizeInBytes ?? this.pictureSizeInBytes,
+      isPictureDownloaded: isPictureDownloaded ?? this.isPictureDownloaded,
     );
   }
 
@@ -44,6 +59,9 @@ class ArVideoEntity extends Equatable {
       videoSizeInBytes: (json['videoSizeInBytes'] as num?)?.toDouble() ?? 0,
       isVideoDownloaded: json['isVideoDownloaded'] as bool? ?? false,
       height: (json['height'] as num?)?.toDouble() ?? 0,
+      pictureUrl: json['pictureUrl'] as String? ?? '',
+      pictureSizeInBytes: (json['pictureSizeInBytes'] as num?)?.toDouble() ?? 0,
+      isPictureDownloaded: json['isPictureDownloaded'] as bool? ?? false,
     );
   }
 
@@ -55,6 +73,9 @@ class ArVideoEntity extends Equatable {
       'videoSizeInBytes': videoSizeInBytes,
       'isVideoDownloaded': isVideoDownloaded,
       'height': height,
+      'pictureUrl': pictureUrl,
+      'pictureSizeInBytes': pictureSizeInBytes,
+      'isPictureDownloaded': isPictureDownloaded,
     };
   }
 
@@ -66,5 +87,8 @@ class ArVideoEntity extends Equatable {
         videoSizeInBytes,
         height,
         isVideoDownloaded,
+        pictureUrl,
+        pictureSizeInBytes,
+        isPictureDownloaded,
       ];
 }

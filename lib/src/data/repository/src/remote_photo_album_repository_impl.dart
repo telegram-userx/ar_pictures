@@ -22,9 +22,6 @@ class RemotePhotoAlbumRepositoryImpl implements PhotoAlbumRepository {
 
     return PhotoAlbumEntity(
       id: album.id ?? '',
-      markerFileSizeInBytes: album.markerFileSizeInBytes ?? 0,
-      markerFileUrl: album.markerFileUrl,
-      isMarkerFileDownloaded: false,
       arVideos: ObservableList.of(videos),
     );
   }

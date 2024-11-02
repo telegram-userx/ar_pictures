@@ -73,21 +73,25 @@ class _ScreenState extends State<_Screen> {
                 child: Observer(builder: (_) {
                   if (hasErrors) {
                     return Center(
-                      child: Row(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                context.maybePop();
-                              },
-                              child: Text(context.translations.cancel),
-                            ),
+                          Text(
+                            context.translations.somethingWentWrong,
+                            style: context.textTheme.titleMedium,
+                            textAlign: TextAlign.center,
                           ),
-                          Space.h20,
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => _onDownload(context),
-                              child: Text(context.translations.retry),
+                          SizedBox(
+                            height: 50,
+                            child: Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  context.popRoute();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -140,7 +144,7 @@ class _ScreenState extends State<_Screen> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    context.maybePop();
+                                    context.popRoute();
                                   },
                                   child: Text(context.translations.cancel),
                                 ),
@@ -172,7 +176,7 @@ class _ScreenState extends State<_Screen> {
                     padding: EdgeInsets.zero,
                   ),
                   onPressed: () {
-                    context.maybePop();
+                    context.popRoute();
                   },
                   icon: const Icon(
                     Icons.close,

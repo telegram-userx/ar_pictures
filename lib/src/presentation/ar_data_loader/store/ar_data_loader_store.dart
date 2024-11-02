@@ -55,21 +55,19 @@ abstract class _ArDataLoaderStoreBase with Store {
 
     final appCacheDirectory = await getApplicationDocumentsDirectory();
 
-    if (!photoAlbum!.isMarkerFileDownloaded) {
-      await _downloadFileService.downloadFile(
-        photoAlbum!.markerFileUrl,
-        '${appCacheDirectory.path}/${photoAlbum!.id}',
-        onReceiveProgress: (received, total) => updateProgress(received, total),
-      );
-    }
-
     final videos = photoAlbum?.arVideos?.nonObservableInner ?? [];
     if (videos.isNotEmpty) {
       await Future.forEach(videos, (video) async {
         if (video.videoUrl.isNotEmpty) {
           await _downloadFileService.downloadFile(
             video.videoUrl, // Corrected to use the actual video URL
-            '${appCacheDirectory.path}/${video.id}',
+            '${appCacheDirectory.path}/${video.id}.mp4',
+            onReceiveProgress: (received, total) => updateProgress(received, total),
+          );
+
+          await _downloadFileService.downloadFile(
+            video.pictureUrl, // Corrected to use the actual video URL
+            '${appCacheDirectory.path}/${video.id}.jpeg',
             onReceiveProgress: (received, total) => updateProgress(received, total),
           );
         }
@@ -80,7 +78,6 @@ abstract class _ArDataLoaderStoreBase with Store {
 
     if (photoAlbum != null) {
       final updatedAlbum = photoAlbum!.copyWith(
-        isMarkerFileDownloaded: true,
         arVideos: ObservableList.of(videos
             .map<ArVideoEntity>(
               (video) => video.copyWith(

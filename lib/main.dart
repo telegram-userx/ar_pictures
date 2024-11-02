@@ -3,7 +3,6 @@ import 'dart:io' as io;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'generated/strings.g.dart';
 import 'src/common/logger/logger.dart';
@@ -17,10 +16,6 @@ void main() => runZonedGuarded(
         PlatformDispatcher.instance.onError = Logger.logPlatformDispatcherError;
 
         io.HttpOverrides.global = MyHttpOverrides();
-
-        if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-          await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
-        }
 
         // Init service locator
         await initServiceLocator();

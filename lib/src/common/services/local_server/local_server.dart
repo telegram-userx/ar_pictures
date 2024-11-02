@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -39,87 +40,25 @@ class LocalServer {
         .addHandler(app.call);
 
     app.get(
-      '/albums/<id>',
+      '/ar_pictures',
       (Request request, String id) async {
         try {
-          final arMarkerId = sl<QrScannerStore>().album?.id ?? '';
           final arVideos = sl<QrScannerStore>().album?.arVideos?.nonObservableInner ?? [];
 
-          // Generate entities and assets
-          List<String> assets = [];
-          List<String> entities = [];
-          List<String> scripts = [];
-
-          for (final arVideo in arVideos) {
-            // Ensure correct MIME type and format
-            assets.add('''
-              <video id="${arVideo.id}" loop="true" src="http://localhost:3333/videos/${arVideo.id}"></video>
-            ''');
-
-            entities.add('''
-              <a-entity data-${arVideo.id} mindar-image-target="targetIndex: ${arVideos.indexOf(arVideo)}"></a-entity>
-            ''');
-
-            scripts.add('''
-                AFRAME.registerComponent('data-${arVideo.id}', {
-                  init: function () {
-                    const videoElement = document.getElementById('${arVideo.id}');
-
-                    this.el.addEventListener('targetFound', event => {
-                      console.log("target found");
-                      document.querySelector('[data-${arVideo.id}]').innerHTML = `<a-video src="#${arVideo.id}" width="1" height="${(arVideo.height == 0 ? 768 : arVideo.height) / 1000}"></a-video>`;
-                      videoElement.play();
-                    });
-
-                    this.el.addEventListener('targetLost', event => {
-                      console.log("target lost");
-                      document.querySelector('[data-${arVideo.id}]').innerHTML = '';
-                      videoElement.pause();
-                    });
-                  }
-                });
-            ''');
-          }
-
-          final aframe = await rootBundle.loadString('assets/js/aframe.min.js');
-
-          final html = '''
-            <html>
-              <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="apple-mobile-web-app-capable" content="yes">
-                <script>$aframe</script>
-                <script src="http://localhost/libs/aframe-extras.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-              </head>
-              <body>
-                <a-scene stats
-                  mindar-image="imageTargetSrc: http://localhost:3333/targets/$arMarkerId;
-                  uiError:no; uiScanning:no;
-                  filterMinCF: 0.0001; filterBeta: 0.001; 
-                  missTolerance: 1; warmupTolerance: 1;"
-                  color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
-                  vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-
-                  <a-assets>
-                    ${assets.join('\n')}
-                  </a-assets>
-
-                  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-                  
-                  ${entities.join('\n')}
-                
-                </a-scene>
-
-                <script>${scripts.join('\n')}</script>
-              </body>
-            </html>
-          ''';
+          final pictures = arVideos
+              .map(
+                (video) => {
+                  "id": video.id,
+                  "image": video.localPictureUrl,
+                  "video": video.localVideoUrl,
+                },
+              )
+              .toList();
 
           return Response.ok(
-            html,
+            jsonEncode(pictures),
             headers: {
-              'Content-Type': 'text/html',
+              'Content-Type': 'application/json',
             },
           );
         } catch (e) {
@@ -146,7 +85,7 @@ class LocalServer {
       }
     });
 
-    app.get('/targets/<fileName>', (Request request, String fileName) async {
+    app.get('/images/<fileName>', (Request request, String fileName) async {
       try {
         final appCacheDirectory = await getApplicationDocumentsDirectory();
         final file = await File('${appCacheDirectory.path}/$fileName').readAsBytes();
@@ -176,7 +115,7 @@ class LocalServer {
       }
     });
 
-    httpServer = await io.serve(handler, 'localhost', 3333);
+    httpServer = await io.serve(handler, 'localhost', 5441);
     Logger.i('Local server running at http://${httpServer.address.host}:${httpServer.port}');
   }
 }

@@ -1,6 +1,6 @@
 import '../../entity/entity.dart';
 
-abstract interface class PhotoAlbumRepository {
+abstract class PhotoAlbumRepository {
   /// Returns album with videos
   Future<PhotoAlbumEntity> getAlbum(String id);
 

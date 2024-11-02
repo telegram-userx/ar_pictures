@@ -5,31 +5,19 @@ import '../entity.dart';
 
 class PhotoAlbumEntity extends Equatable {
   final String id;
-  final String markerFileUrl;
-  final double markerFileSizeInBytes;
-  final bool isMarkerFileDownloaded;
   final ObservableList<ArVideoEntity>? arVideos;
 
   const PhotoAlbumEntity({
     this.id = '',
-    this.markerFileUrl = '',
-    this.markerFileSizeInBytes = 0,
-    this.isMarkerFileDownloaded = false,
     this.arVideos,
   });
 
   PhotoAlbumEntity copyWith({
     String? id,
-    String? markerFileUrl,
-    double? markerFileSizeInBytes,
-    bool? isMarkerFileDownloaded,
     ObservableList<ArVideoEntity>? arVideos,
   }) {
     return PhotoAlbumEntity(
       id: id ?? this.id,
-      markerFileUrl: markerFileUrl ?? this.markerFileUrl,
-      markerFileSizeInBytes: markerFileSizeInBytes ?? this.markerFileSizeInBytes,
-      isMarkerFileDownloaded: isMarkerFileDownloaded ?? this.isMarkerFileDownloaded,
       arVideos: arVideos ?? this.arVideos,
     );
   }
@@ -41,7 +29,13 @@ class PhotoAlbumEntity extends Equatable {
         ) ??
         0;
 
-    return _bytesToMegabytes(markerFileSizeInBytes + arVideosSize);
+    final arPicturesSize = arVideos?.fold<double>(
+          0,
+          (previousValue, arVideo) => previousValue + arVideo.pictureSizeInBytes,
+        ) ??
+        0;
+
+    return _bytesToMegabytes(arVideosSize + arPicturesSize);
   }
 
   bool get isFullyDownloaded {
@@ -54,8 +48,18 @@ class PhotoAlbumEntity extends Equatable {
           },
         ) ??
         false;
+    
+    final isPicturesDownloaded = arVideos?.fold<bool>(
+          false,
+          (previousValue, arVideo) {
+            if (previousValue) return previousValue;
 
-    return isMarkerFileDownloaded && isVideosDownloaded;
+            return arVideo.isPictureDownloaded;
+          },
+        ) ??
+        false;
+
+    return isPicturesDownloaded && isVideosDownloaded;
   }
 
   double _bytesToMegabytes(double bytes) {
@@ -65,9 +69,6 @@ class PhotoAlbumEntity extends Equatable {
   factory PhotoAlbumEntity.fromJson(Map<String, dynamic> json) {
     return PhotoAlbumEntity(
       id: json['id'] as String? ?? '',
-      markerFileUrl: json['markerFileUrl'] as String? ?? '',
-      markerFileSizeInBytes: (json['markerFileSizeInBytes'] as num?)?.toDouble() ?? 0,
-      isMarkerFileDownloaded: json['isMarkerFileDownloaded'] as bool? ?? false,
       arVideos: (json['arVideos'] as List<dynamic>?)
           ?.map((video) => ArVideoEntity.fromJson(video as Map<String, dynamic>))
           .toList()
@@ -78,9 +79,6 @@ class PhotoAlbumEntity extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'markerFileUrl': markerFileUrl,
-      'markerFileSizeInBytes': markerFileSizeInBytes,
-      'isMarkerFileDownloaded': isMarkerFileDownloaded,
       'arVideos': arVideos?.map((video) => video.toJson()).toList(),
     };
   }
@@ -88,9 +86,6 @@ class PhotoAlbumEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        markerFileUrl,
-        markerFileSizeInBytes,
-        isMarkerFileDownloaded,
         arVideos,
       ];
 }
