@@ -1,7 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:turkmen_localization_support/turkmen_localization_support.dart';
 
 import '../../../generated/strings.g.dart';
@@ -35,11 +34,7 @@ class Application extends StatelessWidget {
         ],
 
         // Router
-        routerConfig: sl<AppRouter>().config(
-          navigatorObservers: () => [
-            TalkerRouteObserver(sl<Talker>()),
-          ],
-        ),
+        routerConfig: sl<AppRouter>().router,
 
         // Builder
         builder: (context, child) => MediaQuery(

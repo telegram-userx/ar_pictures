@@ -1,5 +1,5 @@
-package com.example.ar_pictures
+import com.example.ar_pictures.unity.FakeUnityPlayerActivity;
 
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity()
+public class MainActivity extends FakeUnityPlayerActivity {
+	
+}

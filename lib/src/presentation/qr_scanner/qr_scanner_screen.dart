@@ -1,18 +1,17 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gozel_ay/src/common/config/router/app_routes.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../common/config/router/app_router.gr.dart';
 import '../../common/extension/extensions.dart';
 import '../../common/logger/logger.dart';
 import '../../common/widget/space.dart';
 import '../../service_locator/sl.dart';
 import 'store/qr_scanner_store.dart';
 
-@RoutePage()
 class QrScannerScreen extends StatefulWidget {
   const QrScannerScreen({super.key});
 
@@ -37,16 +36,14 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
             final album = sl<QrScannerStore>().album;
 
             if (album?.isFullyDownloaded ?? false) {
-              context.replaceRoute(
-                ArJsWebViewRoute(
-                  albumId: album?.id ?? '',
-                ),
+              context.replace(
+                AppRoutes.arJsWebView,
+                extra: album?.id ?? '',
               );
             } else {
-              context.pushRoute(
-                ArDataLoaderRoute(
-                  photoAlbum: album,
-                ),
+              context.push(
+                AppRoutes.arDataLoader,
+                extra: album,
               );
             }
           }
@@ -71,7 +68,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void _handleBarcode(BarcodeCapture barcodes) async {
     final barcodeValue = barcodes.barcodes.firstOrNull?.rawValue ?? '';
 
-    if (barcodeValue.isUUID && AutoRouter.of(context).current.name == QrScannerRoute.name) {
+    if (barcodeValue.isUUID && GoRouterState.of(context).name == AppRoutes.qrScanner) {
       Logger.i('Detected UUID: $barcodeValue');
       sl<QrScannerStore>().getAlbum(barcodeValue);
     }
@@ -86,7 +83,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => context.pushRoute(const OnboardingRoute()),
+            onPressed: () => context.push(AppRoutes.onboarding),
             icon: const Icon(
               CupertinoIcons.info,
             ),
@@ -103,7 +100,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
           );
         }
 
-        if (album != null && AutoRouter.of(context, watch: true).current.name == QrScannerRoute.name) {
+        if (album != null && GoRouterState.of(context).name == AppRoutes.qrScanner) {
           return Space.empty;
         }
 

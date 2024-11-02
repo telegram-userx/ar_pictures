@@ -1,12 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gozel_ay/src/common/config/router/app_routes.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../../../generated/strings.g.dart';
 import '../../common/config/router/app_router.dart';
-import '../../common/config/router/app_router.gr.dart';
 import '../../common/constant/app_constants.dart';
 import '../../common/extension/extensions.dart';
 import '../../common/logger/logger.dart';
@@ -20,7 +20,7 @@ import 'store/ar_data_loader_store.dart';
 
 part '_screen.dart';
 
-@RoutePage()
+
 class ArDataLoaderScreen extends StatefulWidget {
   final PhotoAlbumEntity? photoAlbum;
 

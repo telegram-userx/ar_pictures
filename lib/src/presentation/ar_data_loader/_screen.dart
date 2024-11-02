@@ -20,15 +20,16 @@ class _ScreenState extends State<_Screen> {
     _disposers = [
       reaction((_) => Provider.of<ArDataLoaderStore>(context, listen: false).isDownloadSuccess, (bool isSuccess) {
         if (isSuccess) {
-          sl<AppRouter>().replace(ArJsWebViewRoute(albumId: widget.photoAlbum?.id ?? ''));
+          sl<AppRouter>().router.replace(AppRoutes.arJsWebView, extra: widget.photoAlbum?.id ?? '');
         }
       }),
     ];
 
     if (Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.isFullyDownloaded ?? false) {
-      context.replaceRoute(
-        ArJsWebViewRoute(albumId: Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.id ?? ''),
-      );
+      sl<AppRouter>().router.replace(
+            AppRoutes.arJsWebView,
+            extra: Provider.of<ArDataLoaderStore>(context, listen: false).photoAlbum?.id ?? '',
+          );
     }
 
     super.initState();
@@ -86,7 +87,7 @@ class _ScreenState extends State<_Screen> {
                             child: Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  context.popRoute();
+                                  context.pop();
                                 },
                                 child: const Text(
                                   'Ok',
@@ -144,7 +145,7 @@ class _ScreenState extends State<_Screen> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    context.popRoute();
+                                    context.pop();
                                   },
                                   child: Text(context.translations.cancel),
                                 ),
@@ -176,7 +177,7 @@ class _ScreenState extends State<_Screen> {
                     padding: EdgeInsets.zero,
                   ),
                   onPressed: () {
-                    context.popRoute();
+                    context.pop();
                   },
                   icon: const Icon(
                     Icons.close,

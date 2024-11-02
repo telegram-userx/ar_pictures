@@ -1,11 +1,14 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
+import '../../common/config/router/app_router.dart';
+import '../../common/config/router/app_routes.dart';
 
-import '../../common/config/router/app_router.gr.dart';
 
-@RoutePage()
+import '../../service_locator/sl.dart';
+
+
 class ArJsWebViewScreen extends StatefulWidget {
   const ArJsWebViewScreen({
     super.key,
@@ -26,8 +29,9 @@ class _ArJsWebViewScreenState extends State<ArJsWebViewScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            context.replaceRoute(
-              const QrScannerRoute(),
+            
+            sl<AppRouter>().router.replace(
+              AppRoutes.qrScanner,
             );
           },
           icon: const Icon(

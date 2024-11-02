@@ -1,18 +1,20 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gozel_ay/src/common/config/router/app_routes.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../generated/strings.g.dart';
-import '../../common/config/router/app_router.gr.dart';
+
 import '../../common/constant/app_constants.dart';
 import '../../common/extension/extensions.dart';
 import '../../service_locator/sl.dart';
 import '../../common/widget/space.dart';
 import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
 
-@RoutePage()
+
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -78,8 +80,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               final pageController = (_key.currentState as IntroductionScreenState?)?.controller as PageController;
 
               if (isLastPage) {
-                context.navigateTo(
-                  const QrScannerRoute(),
+                context.go(
+                  AppRoutes.qrScanner,
                 );
               } else {
                 pageController.animateToPage(
