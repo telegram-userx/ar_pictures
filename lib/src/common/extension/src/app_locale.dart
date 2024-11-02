@@ -1,4 +1,4 @@
-import 'package:gozel_ay/generated/strings.g.dart';
+import 'package:gozelay/generated/strings.g.dart';
 
 extension AppLocaleX on AppLocale {
   getName() {

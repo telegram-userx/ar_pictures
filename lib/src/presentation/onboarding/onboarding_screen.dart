@@ -2,7 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gozel_ay/src/common/config/router/app_routes.dart';
+import 'package:gozelay/src/common/config/router/app_routes.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,9 +11,7 @@ import '../../../generated/strings.g.dart';
 import '../../common/constant/app_constants.dart';
 import '../../common/extension/extensions.dart';
 import '../../service_locator/sl.dart';
-import '../../common/widget/space.dart';
 import '../../data/data_source/local/shared_preferences/shared_preferences_helper.dart';
-
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -42,21 +40,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return IntroductionScreen(
       key: _key,
       globalHeader: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Space.v20,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppConstants.padding * 2),
-              child: Row(
-                children: [
-                  _ThemeSwitcher(),
-                  const Spacer(),
-                  _LanguageSelector(),
-                ],
-              ),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.padding * 2,
+            vertical: AppConstants.padding,
+          ),
+          child: Row(
+            children: [
+              const ThemeSwitcher(),
+              const Spacer(),
+              _LanguageSelector(),
+            ],
+          ),
         ),
       ),
       onChange: (value) => setState(() {
@@ -127,7 +122,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   : Colors.white,
               height: context.height * 0.3,
               child: Image.asset(
-                'assets/images/app_logo.png',
+                'assets/images/app_logo.jpg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -176,10 +171,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   : Colors.white,
             ),
             height: context.height * 0.3,
-            child: Lottie.asset(
-              'assets/lottie/scan_your_face.json',
-              repeat: true,
-            ),
+            // child: Lottie.asset(
+            //   'assets/lottie/scan_your_face.json',
+            //   repeat: true,
+            // ),
           ),
         ),
       ],
@@ -187,7 +182,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class _ThemeSwitcher extends StatelessWidget {
+class ThemeSwitcher extends StatelessWidget {
+  const ThemeSwitcher({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -200,16 +197,13 @@ class _ThemeSwitcher extends StatelessWidget {
         onPressed: () {
           AdaptiveTheme.of(context).toggleThemeMode();
         },
-        icon: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 450),
-          child: AdaptiveTheme.of(context).brightness == Brightness.dark
-              ? const Icon(
-                  Icons.light_mode,
-                )
-              : const Icon(
-                  Icons.dark_mode,
-                ),
-        ),
+        icon: AdaptiveTheme.of(context).brightness == Brightness.dark
+            ? const Icon(
+                Icons.light_mode,
+              )
+            : const Icon(
+                Icons.dark_mode,
+              ),
       ),
     );
   }

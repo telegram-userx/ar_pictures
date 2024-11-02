@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gozel_ay/src/common/config/router/app_routes.dart';
+import 'package:gozelay/src/common/config/router/app_routes.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 

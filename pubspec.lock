@@ -609,10 +609,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: cf7243a0c29626284ada2add68a33f5b1102affe3509393e75136e0f6616bd68
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.8"
+    version: "0.6.7"
   json2yaml:
     dependency: transitive
     description:
@@ -1131,13 +1131,13 @@ packages:
     source: hosted
     version: "3.1.0+1"
   talker:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: talker
-      sha256: "30bbc526bb2e7d465c630f087479616b6b84570728539fde536a3b652acad2f6"
+      sha256: "4e7d69f70579bf12c39206a80b74601b014691e96efd75e4a8a3a075710b859f"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.1"
+    version: "4.0.3"
   talker_flutter:
     dependency: "direct main"
     description:

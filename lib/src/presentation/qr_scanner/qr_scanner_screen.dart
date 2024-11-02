@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gozel_ay/src/common/config/router/app_routes.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mobx/mobx.dart';
 
@@ -10,6 +9,7 @@ import '../../common/extension/extensions.dart';
 import '../../common/logger/logger.dart';
 import '../../common/widget/space.dart';
 import '../../service_locator/sl.dart';
+import '../../common/config/router/app_routes.dart';
 import 'store/qr_scanner_store.dart';
 
 class QrScannerScreen extends StatefulWidget {
